@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<logic-flow>
+    <flow id="simple_logic_flow_example" name="简单逻辑流程范例" desc="简单逻辑流程范例"/>
+    <!-- 全局域 -->
+    <global-domain>
+        <import dto="goods_info"/>
+        <!-- 数据总线 -->
+        <databus>
+            <var id="" type="" name="" final="" initial=""/>
+            <var id="" type="" name="" default=""/>
+        </databus>
+    </global-domain>
+
+    <start id="start" name="开始节点" next="goodsCheck">
+        <input>
+            <var reuse="goods_info.name" />
+            <var reuse="goods_info.type" />
+        </input>
+    </start>
+
+    <node id="goodsCheck" name="货物校验" next="queryGoodsInfo">
+        <!-- 全局域 -->
+        <node-domain>
+        </node-domain>
+        <rule>
+        </rule>
+    </node>
+
+    <node id="queryGoodsInfo" name="查询货物信息" next="goodsInfoMapping">
+        <!-- 全局域 -->
+        <node-domain>
+        </node-domain>
+        <sql>
+        <![CDATA[
+        SELECT id, goods_name, price, goods_type FROM cb_goods WHERE goods_name = #{goods_name} and goods_type = #{goods_type};
+        ]]>
+        </sql>
+    </node>
+
+    <node id="goodsInfoMapping" name="货物信息格式转换" next="goodsInfoNotification">
+        <!-- 全局域 -->
+        <node-domain>
+        </node-domain>
+        <mapping>
+        </mapping>
+    </node>
+
+    <node id="goodsInfoNotification" name="货物信息消息通知" next="end">
+        <!-- 全局域 -->
+        <node-domain>
+        </node-domain>
+        <event>
+        </event>
+    </node>
+
+    <end id="end" name="结束节点">
+        <output>
+            <var id="goods_info" type="bdata" name="货物信息"/>
+            <!--<var id="null" type="bdata" name="货物信息"/>-->
+        </output>
+    </end>
+</logic-flow>
