@@ -11,19 +11,19 @@ import java.util.Map;
  * @author nuosi fsofs@163.com
  * @version 0.1.0
  * @name BizDataManager
- * @desc BizData管理类
+ * @desc 业务传输对象管理类
  * 大部分情况下深拷贝耗时都比new耗时多。
  * @date 2021/3/6 0:32
  */
 public class BizDataManager {
-    private static Map<String, BDataDefine> bizDataConfig = new HashMap<String, BDataDefine>();
+    private static Map<String, BDataDefine> bizDataDefine = new HashMap<String, BDataDefine>();
     static {
         //从配置文件中加载
-        loadDtoConfig(bizDataConfig);
+        loadDtoConfig(bizDataDefine);
     }
 
     public static BizData newInstance(String bizName) {
-        BizData bizData = new BizData(bizName, getBizDataDefine(bizName));
+        BizData bizData = new BizData(bizName, getDataDefine(bizName));
         return bizData;
     }
 
@@ -36,29 +36,29 @@ public class BizDataManager {
      */
     public static void registerDto(BDataDefine dataDefine, boolean isOverride){
         String bizName = dataDefine.getBizName();
-        if(bizDataConfig.containsKey(bizName)){
+        if(bizDataDefine.containsKey(bizName)){
             if(!isOverride){
                 //抛出异常，防止重复注册
                 IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_STRUCTURE_EXISTS);
             }
         }
-        bizDataConfig.put(bizName, dataDefine);
+        bizDataDefine.put(bizName, dataDefine);
     }
 
     public static void registerDto(BDataDefine dataDefine){
         registerDto(dataDefine, false);
     }
 
-    public static BDataDefine getBizDataDefine(String bizName){
-        BDataDefine bDataDefine = bizDataConfig.get(bizName);
+    public static boolean unregisterDto(String bizName){
+        return bizDataDefine.remove(bizName)!=null;
+    }
+
+    public static BDataDefine getDataDefine(String bizName){
+        BDataDefine bDataDefine = bizDataDefine.get(bizName);
         if(bDataDefine==null){
             IpuUtility.errorCode(LogicFlowConstants.BDATA_DEFINE_NO_EXISTS, bizName);
         }
-        return bizDataConfig.get(bizName);
-    }
-
-    public static boolean removeBizDataDefine(String bizName){
-        return bizDataConfig.remove(bizName)!=null;
+        return bizDataDefine.get(bizName);
     }
 
     private static void loadDtoConfig(Map<String, BDataDefine> javaDtoConfig) {

@@ -33,26 +33,26 @@ public class BizData extends JsonMap implements BData {
      * @date 2021/3/6 0:30
      */
     @Override
-    public BizData put(String key, Object value) {
-        if(!dataDefine.containsAttr(key)){
+    public BizData put(String attr, Object value) {
+        if(!dataDefine.containsAttr(attr)){
             //业务属性不存在时抛出异常
             IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_NOT_EXIST);
         }
-        if(!dataDefine.checkDataType(key, value)){
+        if(!dataDefine.checkDataType(attr, value)){
             //业务属性数据格式不正确时抛出异常
             IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_FORMAT_ERROR);
         }
-        super.put(key, value);
+        super.put(attr, value);
         return this;
     }
 
     @Override
-    public Object get(Object key) {
-        if(!dataDefine.containsAttr((String) key)){
+    public Object get(Object attr) {
+        if(!dataDefine.containsAttr((String) attr)){
             //业务属性不存在时抛出异常
             IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_NOT_EXIST);
         }
-        return super.get(key);
+        return super.get(attr);
     }
 
     public String getBizName() {

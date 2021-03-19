@@ -10,11 +10,12 @@ import org.junit.Test;
  * @author nuosi fsofs@163.com
  * @version 0.1.0
  * @name BizDataManagerTest
- * @desc TODO
+ * @desc 业务传输对象管理类常用方法单元测试
  * @date 2021/3/16 17:27
  */
 public class BizDataManagerTest {
     private String bizName;
+
     @Before
     public void before(){
         LogicFlowEngine.init();
@@ -22,6 +23,7 @@ public class BizDataManagerTest {
         // 注册User结构的业务对象
         BDataDefine dataDefine = new BizDataDefine(bizName);
         dataDefine.defineType("name", BDataDefine.DataType.STRING);
+        dataDefine.defineType("age", BDataDefine.DataType.INT);
         BizDataManager.registerDto(dataDefine, true);
     }
 
@@ -29,11 +31,11 @@ public class BizDataManagerTest {
     public void testNewInstanceWithRegister(){
         try{
             BData user = BizDataManager.newInstance(bizName);
-            user.put("name","zhangsan");
+            user.put("name","reynolds");
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(true);
         }catch (Exception e){
-            e.printStackTrace();
+            System.out.println("Ex:" + e.getMessage());
             Assert.assertTrue(false);
         }
     }
@@ -41,27 +43,14 @@ public class BizDataManagerTest {
     @Test
     public void testNewInstanceWithNoRegister(){
         try{
-            BizDataManager.removeBizDataDefine(bizName); //全量测试的时候提前删除
+            BizDataManager.unregisterDto(bizName); //全量测试的时候提前删除
             BData user = BizDataManager.newInstance(bizName);
-            user.put("name","zhangsan");
+            user.put("name","reynolds");
             System.out.println(bizName+ ":" + user);
             Assert.assertTrue(false);
         }catch (Exception e){
-            Assert.assertTrue(true);
             System.out.println("Ex:" + e.getMessage());
-        }
-    }
-
-    @Test
-    public void testErrorDataType(){
-        try{
-            BData user = BizDataManager.newInstance(bizName);
-            user.put("name", 123456);
-            System.out.println(bizName + ":" + user);
             Assert.assertTrue(true);
-        }catch (Exception e){
-            e.printStackTrace();
-            Assert.assertTrue(false);
         }
     }
 }

@@ -17,6 +17,8 @@ public interface BDataDefine {
         INT, STRING, DECIMAL, DATE, DATETIME, BDATA; //后续扩展更多类型
     }
 
+    public BizDataDefine defineType(String attr, DataType dataType, BDataLimit dataLimit);
+
     public BizDataDefine defineType(String attr, DataType dataType);
 
     public String getBizName();
@@ -25,11 +27,13 @@ public interface BDataDefine {
 
     public Map<String, BDataDefine.DataType> getDataTypes();
 
+    public String[] getAllAttr();
+
+    public boolean containsAttr(String attr);
+
     public Map<String, BDataLimit> getDataLimits();
 
     public BDataLimit getDataLimit(String bizName);
-
-    public boolean containsAttr(String attr);
 
     public boolean checkDataType(String key, Object value);
 }

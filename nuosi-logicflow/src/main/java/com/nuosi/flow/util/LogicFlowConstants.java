@@ -23,6 +23,8 @@ public class LogicFlowConstants {
     public static final String BDATA_CHECK_DECIMAL = "BDATA_CHECK_DECIMAL";
     public static final String BDATA_CHECK_DECIMAL_PRECISION = "BDATA_CHECK_DECIMAL_PRECISION";
     public static final String BDATA_CHECK_DECIMAL_SCALE = "BDATA_CHECK_DECIMAL_SCALE";
+    public static final String BDATA_CHECK_DECIMAL_MAX = "BDATA_CHECK_DECIMAL_MAX";
+    public static final String BDATA_CHECK_DECIMAL_MIN = "BDATA_CHECK_DECIMAL_MIN";
     public static final String BDATA_CHECK_DATE = "BDATA_CHECK_DATE";
     public static final String BDATA_CHECK_DATE_START = "BDATA_CHECK_DATE_START";
     public static final String BDATA_CHECK_DATE_END = "BDATA_CHECK_DATE_END";

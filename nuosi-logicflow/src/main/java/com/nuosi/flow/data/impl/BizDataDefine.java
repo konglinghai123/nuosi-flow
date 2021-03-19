@@ -2,6 +2,7 @@ package com.nuosi.flow.data.impl;
 
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BDataLimit;
+import com.nuosi.flow.util.DataTypeCheckUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,47 +25,58 @@ public class BizDataDefine implements BDataDefine{
         this.dataLimits = new HashMap<String, BDataLimit>();
     }
 
+    @Override
     public BizDataDefine defineType(String attr, DataType dataType, BDataLimit dataLimit){
         dataTypes.put(attr, dataType);
         dataLimits.put(attr, dataLimit);
         return this;
     }
 
+    @Override
     public BizDataDefine defineType(String attr, DataType dataType){
         dataTypes.put(attr, dataType);
         return this;
     }
 
+    @Override
     public String getBizName() {
         return bizName;
     }
 
+    @Override
     public Map<String, BDataDefine.DataType> getDataTypes() {
         return dataTypes;
     }
 
+    @Override
     public BDataDefine.DataType getDataType(String bizName){
         return dataTypes.get(bizName);
     }
 
-    public Map<String, BDataLimit> getDataLimits() {
-        return dataLimits;
-    }
-
-    public BDataLimit getDataLimit(String bizName){
-        return dataLimits.get(bizName);
-    }
-
+    @Override
     public String[] getAllAttr() {
         return dataTypes.keySet().toArray(new String[]{});
     }
 
+    @Override
     public boolean containsAttr(String attr) {
         return dataTypes.containsKey(attr);
     }
 
-    public boolean checkDataType(String key, Object value) {
+    @Override
+    public Map<String, BDataLimit> getDataLimits() {
+        return dataLimits;
+    }
+
+    @Override
+    public BDataLimit getDataLimit(String bizName){
+        return dataLimits.get(bizName);
+    }
+
+    @Override
+    public boolean checkDataType(String attr, Object value) {
         // 校验各种基础业务类型
+        DataTypeCheckUtil.check(bizName, attr, value);
         return true;
     }
 }
