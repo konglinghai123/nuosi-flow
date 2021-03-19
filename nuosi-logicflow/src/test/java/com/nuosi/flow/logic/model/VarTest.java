@@ -1,7 +1,6 @@
 package com.nuosi.flow.logic.model;
 
 import com.alibaba.fastjson.JSON;
-import com.nuosi.flow.data.BData;
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BizDataManager;
 import com.nuosi.flow.data.impl.BizData;
@@ -12,9 +11,6 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author nuosi fsofs@163.com
@@ -29,7 +25,7 @@ public class VarTest {
     public void before(){
         BizDataDefine bizDataDefine = new BizDataDefine("Var");
         bizDataDefine.defineType("id", BDataDefine.DataType.STRING);
-        bizDataDefine.defineType("type",BDataDefine.DataType.INT);
+        bizDataDefine.defineType("type",BDataDefine.DataType.STRING);
         bizDataDefine.defineType("name",BDataDefine.DataType.STRING);
         bizDataDefine.defineType("final",BDataDefine.DataType.STRING);
         bizDataDefine.defineType("default",BDataDefine.DataType.STRING);
@@ -39,7 +35,7 @@ public class VarTest {
 
     @Test
     public void testJsonToVar(){
-        BizData varData = BizDataManager.newInstance("Var");
+        BizData varData = new BizData("Var");
         varData.put("id","goods_name").put("type","string").put("name","货物名称");
         // 从获取Json开始验证
         String varJson = varData.toJSONString();

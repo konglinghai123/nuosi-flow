@@ -4,6 +4,7 @@ import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.impl.JsonMap;
 import com.nuosi.flow.data.BData;
 import com.nuosi.flow.data.BDataDefine;
+import com.nuosi.flow.data.BizDataManager;
 import com.nuosi.flow.util.LogicFlowConstants;
 
 /**
@@ -18,9 +19,9 @@ public class BizData extends JsonMap implements BData {
     private final String bizName;
     private final BDataDefine dataDefine;
 
-    public BizData(String bizName, BDataDefine dataDefine) {
+    public BizData(String bizName) {
         this.bizName = bizName;
-        this.dataDefine = dataDefine;
+        this.dataDefine = BizDataManager.getDataDefine(bizName);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.nuosi.flow.data;
 
+import com.nuosi.flow.data.impl.BizData;
 import com.nuosi.flow.data.impl.BizDataDefine;
 import com.nuosi.flow.logic.LogicFlowEngine;
 import org.junit.Assert;
@@ -30,7 +31,7 @@ public class BizDataManagerTest {
     @Test
     public void testNewInstanceWithRegister(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("name","reynolds");
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(true);
@@ -44,7 +45,7 @@ public class BizDataManagerTest {
     public void testNewInstanceWithNoRegister(){
         try{
             BizDataManager.unregisterDto(bizName); //全量测试的时候提前删除
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("name","reynolds");
             System.out.println(bizName+ ":" + user);
             Assert.assertTrue(false);

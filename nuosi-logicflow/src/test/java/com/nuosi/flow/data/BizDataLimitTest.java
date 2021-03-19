@@ -1,5 +1,6 @@
 package com.nuosi.flow.data;
 
+import com.nuosi.flow.data.impl.BizData;
 import com.nuosi.flow.data.impl.BizDataDefine;
 import com.nuosi.flow.data.impl.BizDataLimit;
 import com.nuosi.flow.logic.LogicFlowEngine;
@@ -56,7 +57,7 @@ public class BizDataLimitTest {
     @Test
     public void testStringSizeError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("name", "reynolds1234");
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -69,7 +70,7 @@ public class BizDataLimitTest {
     @Test
     public void testIntMaxError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("age", 201);
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -82,7 +83,7 @@ public class BizDataLimitTest {
     @Test
     public void testIntMinError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("age", -1);
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -95,7 +96,7 @@ public class BizDataLimitTest {
     @Test
     public void testDecimalPrecisionError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("height", 999.99);
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -108,7 +109,7 @@ public class BizDataLimitTest {
     @Test
     public void testDecimalScaleError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("height", 1.781);
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -121,7 +122,7 @@ public class BizDataLimitTest {
     @Test
     public void testDecimalMaxError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("height", 9999);
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -134,7 +135,7 @@ public class BizDataLimitTest {
     @Test
     public void testDecimalMinError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("height", 0.99);
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -147,7 +148,7 @@ public class BizDataLimitTest {
     @Test
     public void testStartDateError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("birthday", "1981-8-5");
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -160,7 +161,7 @@ public class BizDataLimitTest {
     @Test
     public void testEndDateError(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("birthday", "1985-8-5");
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -173,7 +174,7 @@ public class BizDataLimitTest {
     @Test
     public void testStartDatetime(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("create_date", "2021-3-1 23:50:11");
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);
@@ -186,7 +187,7 @@ public class BizDataLimitTest {
     @Test
     public void testEndDatetime(){
         try{
-            BData user = BizDataManager.newInstance(bizName);
+            BData user = new BizData(bizName);
             user.put("create_date", "2021-4-1 23:50:11");
             System.out.println(bizName + ":" + user);
             Assert.assertTrue(false);

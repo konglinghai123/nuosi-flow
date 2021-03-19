@@ -22,11 +22,6 @@ public class BizDataManager {
         loadDtoConfig(bizDataDefine);
     }
 
-    public static BizData newInstance(String bizName) {
-        BizData bizData = new BizData(bizName, getDataDefine(bizName));
-        return bizData;
-    }
-
     /**
      * @name registerDto
      * @version 0.1.0
