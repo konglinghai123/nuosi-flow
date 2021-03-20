@@ -2,17 +2,17 @@ package com.nuosi.flow.data.impl;
 
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BDataLimit;
-import com.nuosi.flow.util.DataTypeCheckUtil;
+import com.nuosi.flow.util.BizDataValidityUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * <p>desc: 业务传输对象的数据类型和格式定义</p>
+ * <p>date: 2021/3/16 14:36</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name 业务传输对象的数据类型和格式定义
- * @desc TODO
- * @date 2021/3/16 14:36
+ * @version v1.0.0
+ * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class BizDataDefine implements BDataDefine{
     private final String bizName;
@@ -76,7 +76,7 @@ public class BizDataDefine implements BDataDefine{
     @Override
     public boolean checkDataType(String attr, Object value) {
         // 校验各种基础业务类型
-        DataTypeCheckUtil.check(bizName, attr, value);
+        BizDataValidityUtil.check(bizName, attr, value);
         return true;
     }
 }

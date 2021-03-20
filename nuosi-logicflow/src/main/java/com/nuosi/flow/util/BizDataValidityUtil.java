@@ -9,14 +9,24 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
+ * <p>desc: 数据类型校验工具类</p>
+ * <p>date: 2021/3/16 23:24</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name DataTypeCheckUtil
- * @desc 数据类型校验工具类
- * @date 2021/3/16 23:24
+ * @version v1.0.0
+ * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
-public class DataTypeCheckUtil {
+public class BizDataValidityUtil {
 
+    /**
+     * <p>desc: 描述这个方法功能的注释</p>
+     * <p>date: 2021/3/20 20:15</p>
+     * @author nuosi fsofs@163.com
+     * @version v1.0.0
+     * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
+     * @param bizName 1
+     * @param attr 2
+     * @param value 3
+     */
     public static void check(String bizName, String attr, Object value) {
         BDataDefine dataDefine = BizDataManager.getDataDefine(bizName);
         BDataDefine.DataType dataType = dataDefine.getDataType(attr);
