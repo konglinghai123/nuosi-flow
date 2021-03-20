@@ -8,12 +8,11 @@ import com.nuosi.flow.data.BizDataManager;
 import com.nuosi.flow.util.LogicFlowConstants;
 
 /**
+ * <p>desc: 业务传输对象的弱类型实现。
+ * 基于Map数据结构的Dto、JavaBean表达类</p>
+ * <p>date: 2021/3/5 0:51</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name BizData
- * @desc 业务传输对象的弱类型实现
- * 基于Map数据结构的Dto、JavaBean表达类
- * @date 2021/3/5 0:51
+ * @version v1.0.0
  */
 public class BizData extends JsonMap implements BData {
     private final String bizName;
@@ -25,21 +24,21 @@ public class BizData extends JsonMap implements BData {
     }
 
     /**
+     * @return java.lang.Object
+     * @throws
      * @name put
      * @version 0.1.0
      * @desc 存值时判断业务属性是否存在
-     * @return java.lang.Object
-     * @throws
      * @author nuosi fsofs@163.com
      * @date 2021/3/6 0:30
      */
     @Override
     public BizData put(String attr, Object value) {
-        if(!dataDefine.containsAttr(attr)){
+        if (!dataDefine.containsAttr(attr)) {
             //业务属性不存在时抛出异常
             IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_NOT_EXIST);
         }
-        if(!dataDefine.checkDataType(attr, value)){
+        if (!dataDefine.checkData(attr, value)) {
             //业务属性数据格式不正确时抛出异常
             IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_FORMAT_ERROR);
         }
@@ -49,7 +48,7 @@ public class BizData extends JsonMap implements BData {
 
     @Override
     public Object get(Object attr) {
-        if(!dataDefine.containsAttr((String) attr)){
+        if (!dataDefine.containsAttr((String) attr)) {
             //业务属性不存在时抛出异常
             IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_NOT_EXIST);
         }

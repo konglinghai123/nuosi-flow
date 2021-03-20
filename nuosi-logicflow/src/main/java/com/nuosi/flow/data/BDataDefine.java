@@ -5,15 +5,14 @@ import com.nuosi.flow.data.impl.BizDataDefine;
 import java.util.Map;
 
 /**
+ * <p>desc: 业务数据定义接口</p>
+ * <p>date: 2021/3/16 14:36</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name BDataDefine
- * @desc TODO
- * @date 2021/3/16 14:36
+ * @version v1.0.0
  */
 public interface BDataDefine {
 
-    public enum DataType{
+    public enum DataType {
         INT, STRING, DECIMAL, DATE, DATETIME, BDATA; //后续扩展更多类型
     }
 
@@ -35,5 +34,6 @@ public interface BDataDefine {
 
     public BDataLimit getDataLimit(String bizName);
 
-    public boolean checkDataType(String key, Object value);
+    /**校验数据的基础类型*/
+    public boolean checkData(String key, Object value);
 }

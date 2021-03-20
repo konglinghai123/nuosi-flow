@@ -12,9 +12,8 @@ import java.util.Map;
  * <p>date: 2021/3/16 14:36</p>
  * @author nuosi fsofs@163.com
  * @version v1.0.0
- * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
-public class BizDataDefine implements BDataDefine{
+public class BizDataDefine implements BDataDefine {
     private final String bizName;
     private final Map<String, DataType> dataTypes;
     private final Map<String, BDataLimit> dataLimits;
@@ -26,14 +25,14 @@ public class BizDataDefine implements BDataDefine{
     }
 
     @Override
-    public BizDataDefine defineType(String attr, DataType dataType, BDataLimit dataLimit){
+    public BizDataDefine defineType(String attr, DataType dataType, BDataLimit dataLimit) {
         dataTypes.put(attr, dataType);
         dataLimits.put(attr, dataLimit);
         return this;
     }
 
     @Override
-    public BizDataDefine defineType(String attr, DataType dataType){
+    public BizDataDefine defineType(String attr, DataType dataType) {
         dataTypes.put(attr, dataType);
         return this;
     }
@@ -49,7 +48,7 @@ public class BizDataDefine implements BDataDefine{
     }
 
     @Override
-    public BDataDefine.DataType getDataType(String bizName){
+    public BDataDefine.DataType getDataType(String bizName) {
         return dataTypes.get(bizName);
     }
 
@@ -69,14 +68,13 @@ public class BizDataDefine implements BDataDefine{
     }
 
     @Override
-    public BDataLimit getDataLimit(String bizName){
+    public BDataLimit getDataLimit(String bizName) {
         return dataLimits.get(bizName);
     }
 
     @Override
-    public boolean checkDataType(String attr, Object value) {
-        // 校验各种基础业务类型
-        BizDataValidityUtil.check(bizName, attr, value);
+    public boolean checkData(String attr, Object value) {
+        BizDataValidityUtil.checkData(bizName, attr, value);
         return true;
     }
 }
