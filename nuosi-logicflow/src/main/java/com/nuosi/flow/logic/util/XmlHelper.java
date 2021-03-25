@@ -1,5 +1,6 @@
 package com.nuosi.flow.logic.util;
 
+import com.ai.ipu.common.xml.Dom4jHelper;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.dom4j.Attribute;
@@ -15,10 +16,10 @@ import java.util.Iterator;
  * @desc TODO
  * @date 2021/3/7 17:00
  */
-public class Dom4jHelper extends com.ai.ipu.common.xml.Dom4jHelper{
+public class XmlHelper extends Dom4jHelper {
     public static final String CHILDREN_TAG = "children";
 
-    public Dom4jHelper(InputStream in) throws Exception {
+    public XmlHelper(InputStream in) throws Exception {
         super(in);
     }
 
@@ -48,9 +49,11 @@ public class Dom4jHelper extends com.ai.ipu.common.xml.Dom4jHelper{
             attrMap.put(attr.getName(), attr.getValue());
         }
 
-        childrenMap.put(element.getName() + Dom4jHelper.SUFFIX_ATTR, attrMap);
-        childrenMap.put(element.getName() + Dom4jHelper.SUFFIX_TEXT, element.getTextTrim());
-        childrenMap.put(CHILDREN_TAG, childElements);
+        childrenMap.put(element.getName() + XmlHelper.SUFFIX_ATTR, attrMap);
+        childrenMap.put(element.getName() + XmlHelper.SUFFIX_TEXT, element.getTextTrim());
+        if(!childElements.isEmpty()){
+            childrenMap.put(CHILDREN_TAG, childElements);
+        }
 
         eleMap.put(element.getName(), childrenMap);
         return eleMap;

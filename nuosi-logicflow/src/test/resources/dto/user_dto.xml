@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bdata id="user" name="用户资料">
+<model id="user" name="用户资料">
     <attr id="user_id" type="int" name="用户标识"/>
     <attr id="user_name" type="string" name="用户名称"/>
-</bdata>
+</model>

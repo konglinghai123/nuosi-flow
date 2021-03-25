@@ -12,12 +12,12 @@ import java.util.List;
  * @desc TODO
  * @date 2021/3/6 12:16
  */
-public class Node {
+public class Action {
     protected String id;
     protected String name;
     protected String next;
-    protected List<Input> inputs;
-    protected List<Output> outputs;
+    protected Input input;
+    protected Output output;
 
     public String getId() {
         return id;
@@ -43,19 +43,21 @@ public class Node {
         this.next = next;
     }
 
-    public List<Input> getInputs() {
-        return inputs;
+    public Input getInput() {
+        return input;
     }
 
-    public void setInputs(List<Input> inputs) {
-        this.inputs = inputs;
+    public Action setInput(Input input) {
+        this.input = input;
+        return this;
     }
 
-    public List<Output> getOutputs() {
-        return outputs;
+    public Output getOutput() {
+        return output;
     }
 
-    public void setOutputs(List<Output> outputs) {
-        this.outputs = outputs;
+    public Action setOutput(Output output) {
+        this.output = output;
+        return this;
     }
 }

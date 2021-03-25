@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bdata id="goods_info" name="货物信息">
-    <attr id="id" type="int" name="货物ID"/>
+<model id="goods_info" name="货物信息">
+    <attr id="goods_id" type="int" name="货物ID"/>
     <attr id="goods_name" type="string" name="货物名称"/>
     <attr id="goods_type" type="int" name="货物类型"/>
-    <attr id="price" type="decimal" name="货物价格"/>
+    <attr id="goods_price" type="decimal" name="货物价格"/>
 
-    <action id="goodsCheck" name="货物校验">
-        <node-domain>
-        </node-domain>
-        <rule>
-        </rule>
+    <action id="queryGoodsInfo" name="查询货物信息">
+        <!-- 全局域 -->
+        <input>
+            <var attr="goods_name"/>
+            <var attr="goods_type"/>
+        </input>
+        <sql>
+        <![CDATA[
+        SELECT id, goods_name, price, goods_type
+            FROM cb_goods
+            WHERE goods_name = #{goods_name} and goods_type = #{goods_type};
+        ]]>
+        </sql>
+        <output>
+            <var attr="goods_id" />
+            <var attr="goods_name"/>
+            <var attr="goods_price"/>
+            <var attr="goods_type"/>
+        </output>
     </action>
-</bdata>
+</model>

@@ -1,12 +1,11 @@
 package com.nuosi.flow.logic.parse;
 
 import com.alibaba.fastjson.JSONObject;
-import com.nuosi.flow.logic.util.Dom4jHelper;
+import com.nuosi.flow.logic.util.XmlHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.InputStream;
-import java.util.Map;
 
 /**
  * @author nuosi fsofs@163.com
@@ -35,7 +34,7 @@ public class LogicFlowParserTest {
         try{
             String flowConfig = "flow/simple_flow.xml";
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
-            Dom4jHelper dh = new Dom4jHelper(is);
+            XmlHelper dh = new XmlHelper(is);
             JSONObject originData = dh.getAllJson();
             System.out.println(originData.toJSONString());
             Assert.assertTrue(true);

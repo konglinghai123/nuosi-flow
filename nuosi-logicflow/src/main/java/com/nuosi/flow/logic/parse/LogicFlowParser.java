@@ -1,16 +1,14 @@
 package com.nuosi.flow.logic.parse;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.LogicFlow;
 import com.nuosi.flow.logic.model.body.EndNode;
-import com.nuosi.flow.logic.model.body.Node;
+import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.SqlNode;
 import com.nuosi.flow.logic.model.body.StartNode;
-import com.nuosi.flow.logic.model.element.Var;
 import com.nuosi.flow.logic.model.header.GlobalDomain;
-import com.nuosi.flow.logic.util.Dom4jHelper;
+import com.nuosi.flow.logic.util.XmlHelper;
 import com.nuosi.flow.logic.util.DtoUtil;
 
 import java.io.InputStream;
@@ -38,12 +36,12 @@ public class LogicFlowParser {
     public static final String NODE_DOMAIN = "node_domain";
     public static final String SQL = "sql";
 
-    public static final String CHILDREN = Dom4jHelper.CHILDREN_TAG;
+    public static final String CHILDREN = XmlHelper.CHILDREN_TAG;
     public static final String SUFFIX_ATTR = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_ATTR;
     public static final String SUFFIX_TEXT = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_TEXT;
 
     public LogicFlow parser(InputStream flowInputStream) throws Exception {
-        Dom4jHelper dh = new Dom4jHelper(flowInputStream);
+        XmlHelper dh = new XmlHelper(flowInputStream);
         JSONObject originData = dh.getAllJson();
         LogicFlow logicFlow = parserLogicFlow(originData);
         return logicFlow;
@@ -87,7 +85,7 @@ public class LogicFlowParser {
         return null;
     }
 
-    public Node parserNode(JSONObject node) {
+    public Action parserNode(JSONObject node) {
         // 生成node的Java对象。
         JSONObject nodeAttr = node.getJSONObject(NODE + SUFFIX_ATTR);
         SqlNode sqlNode = nodeAttr.toJavaObject(SqlNode.class);
