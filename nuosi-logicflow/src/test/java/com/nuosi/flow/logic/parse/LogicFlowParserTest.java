@@ -18,6 +18,19 @@ import java.util.Map;
 public class LogicFlowParserTest {
 
     @Test
+    public void parseAllTest() throws Exception {
+        try{
+            String flowConfig = "flow/simple_flow.xml";
+            InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
+            new LogicFlowParser().parser(is);
+            Assert.assertTrue(true);
+        }catch (Exception e){
+            Assert.assertTrue(false);
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void parseTest() throws Exception {
         try{
             String flowConfig = "flow/simple_flow.xml";

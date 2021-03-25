@@ -11,8 +11,6 @@ public class Var {
     private String id;
     private String type;
     private String name;
-    private boolean _final;
-    private String _default;
     private String initial;
 
     public String getId() {
@@ -37,22 +35,6 @@ public class Var {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isFinal() {
-        return _final;
-    }
-
-    public void setFinal(boolean _final) {
-        this._final = _final;
-    }
-
-    public String getDefault() {
-        return _default;
-    }
-
-    public void setDefault(String _default) {
-        this._default = _default;
     }
 
     public String getInitial() {

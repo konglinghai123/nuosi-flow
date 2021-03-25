@@ -7,5 +7,14 @@ package com.nuosi.flow.logic.model.body;
  * @desc TODO
  * @date 2021/3/6 12:16
  */
-public class SqlNode {
+public class SqlNode extends Node{
+    private String sql;
+
+    public String getSql() {
+        return sql;
+    }
+
+    public void setSql(String sql) {
+        this.sql = sql;
+    }
 }

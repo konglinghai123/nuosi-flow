@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bdata id="goods_info" name="货物信息">
-    <var id="id" type="int" name="货物ID"/>
-    <var id="goods_name" type="string" name="货物名称"/>
-    <var id="goods_type" type="int" name="货物类型"/>
-    <var id="price" type="decimal" name="货物价格"/>
+    <attr id="id" type="int" name="货物ID"/>
+    <attr id="goods_name" type="string" name="货物名称"/>
+    <attr id="goods_type" type="int" name="货物类型"/>
+    <attr id="price" type="decimal" name="货物价格"/>
 
     <action id="goodsCheck" name="货物校验">
         <node-domain>

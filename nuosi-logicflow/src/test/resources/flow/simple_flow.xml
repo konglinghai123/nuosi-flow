@@ -1,62 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<logic-flow>
-    <flow id="simple_logic_flow_example" name="简单逻辑流程范例" desc="简单逻辑流程范例"/>
+<logic-flow id="simple_logic_flow_example"
+            name="简单逻辑流程范例"
+            desc="简单逻辑流程范例">
     <!-- 全局域 -->
     <global-domain>
+        <!-- 引入dto定义 -->
         <import dto="goods_info"/>
         <!-- 数据总线 -->
         <databus>
-            <var id="" type="" name="" final="" initial=""/>
-            <var id="" type="" name="" default=""/>
+            <!-- 定义数据格式，会触发校验 -->
+            <var id="" type="" name="" initial=""/>
         </databus>
     </global-domain>
 
     <start id="start" name="开始节点" next="goodsCheck">
-        <input>
-            <var reuse="goods_info.name" />
-            <var reuse="goods_info.type" />
-        </input>
+        <!-- 逻辑入口参数校验 -->
+        <var reuse="goods_info" attr="goods_name" id="goods_name" buskey="goods_name" validity-check=""/>
+        <var reuse="goods_info" attr="goods_type" />
     </start>
 
     <node id="goodsCheck" name="货物校验" next="queryGoodsInfo">
-        <!-- 全局域 -->
-        <node-domain>
-        </node-domain>
+        <input>
+        </input>
         <rule>
         </rule>
+        <output>
+        </output>
     </node>
 
     <node id="queryGoodsInfo" name="查询货物信息" next="goodsInfoMapping">
         <!-- 全局域 -->
-        <node-domain>
-        </node-domain>
+        <input>
+            <var reuse="goods_info" attr="goods_name"/>
+            <var reuse="goods_info" attr="goods_type"/>
+        </input>
         <sql>
         <![CDATA[
-        SELECT id, goods_name, price, goods_type FROM cb_goods WHERE goods_name = #{goods_name} and goods_type = #{goods_type};
+        SELECT id, goods_name, price, goods_type
+            FROM cb_goods
+            WHERE goods_name = #{goods_name} and goods_type = #{goods_type};
         ]]>
         </sql>
+        <output>
+            <var reuse="goods_info" attr="id" buskey="goods_id"/>
+            <var reuse="goods_info" attr="goods_name"/>
+            <var reuse="goods_info" attr="price" buskey="goods_price"/>
+            <var reuse="goods_info" attr="goods_type"/>
+        </output>
     </node>
 
     <node id="goodsInfoMapping" name="货物信息格式转换" next="goodsInfoNotification">
-        <!-- 全局域 -->
-        <node-domain>
-        </node-domain>
+        <input>
+        </input>
         <mapping>
         </mapping>
+        <output>
+        </output>
     </node>
 
     <node id="goodsInfoNotification" name="货物信息消息通知" next="end">
-        <!-- 全局域 -->
-        <node-domain>
-        </node-domain>
+        <input>
+        </input>
         <event>
         </event>
+        <output>
+        </output>
     </node>
 
     <end id="end" name="结束节点">
-        <output>
-            <var id="goods_info" type="bdata" name="货物信息"/>
-            <!--<var id="null" type="bdata" name="货物信息"/>-->
-        </output>
+        <var id="goods_info" type="bdata" name="货物信息"/>
+        <!--<var id="null" type="bdata" name="货物信息"/>-->
     </end>
 </logic-flow>
