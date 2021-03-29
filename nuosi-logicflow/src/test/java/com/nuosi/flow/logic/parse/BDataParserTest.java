@@ -1,7 +1,8 @@
-package com.nuosi.flow.data.parse;
+package com.nuosi.flow.logic.parse;
 
 import com.alibaba.fastjson.JSON;
 import com.nuosi.flow.logic.model.domain.DomainModel;
+import com.nuosi.flow.logic.parse.BizDataParser;
 import org.junit.Assert;
 import org.junit.Test;
 

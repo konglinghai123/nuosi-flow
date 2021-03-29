@@ -3,7 +3,7 @@
             name="简单逻辑流程范例"
             desc="简单逻辑流程范例">
     <!-- 全局域 -->
-    <global-domain>
+    <globalDomain>
         <!-- 引入dto定义 -->
         <import dto="goods_info"/>
         <!-- 数据总线 -->
@@ -11,11 +11,11 @@
             <!-- 定义数据格式，会触发校验 -->
             <var id="" type="" name="" initial=""/>
         </databus>
-    </global-domain>
+    </globalDomain>
 
     <start id="start" name="开始节点" next="goodsCheck">
         <!-- 逻辑入口参数校验 -->
-        <var reuse="goods_info" attr="goods_name" id="goods_name" buskey="goods_name" validity-check=""/>
+        <var reuse="goods_info" attr="goods_name" id="goods_name" buskey="goods_name" validityCheck=""/>
         <var reuse="goods_info" attr="goods_type" />
     </start>
 

@@ -3,10 +3,10 @@ package com.nuosi.flow.logic.parse;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.LogicFlow;
-import com.nuosi.flow.logic.model.body.EndNode;
+import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Action;
-import com.nuosi.flow.logic.model.body.SqlNode;
-import com.nuosi.flow.logic.model.body.StartNode;
+import com.nuosi.flow.logic.model.action.Sql;
+import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.header.GlobalDomain;
 import com.nuosi.flow.logic.util.XmlHelper;
 import com.nuosi.flow.logic.util.DtoUtil;
@@ -88,7 +88,7 @@ public class LogicFlowParser {
     public Action parserNode(JSONObject node) {
         // 生成node的Java对象。
         JSONObject nodeAttr = node.getJSONObject(NODE + SUFFIX_ATTR);
-        SqlNode sqlNode = nodeAttr.toJavaObject(SqlNode.class);
+        Sql sqlNode = nodeAttr.toJavaObject(Sql.class);
         System.out.println("node===" + DtoUtil.toString(sqlNode));
 
         // 判断children并循环。
@@ -101,7 +101,7 @@ public class LogicFlowParser {
         return null;
     }
 
-    public StartNode parserStart(JSONObject node) {
+    public Start parserStart(JSONObject node) {
         // 生成node的Java对象。
 
         //判断children并循环。
@@ -109,7 +109,7 @@ public class LogicFlowParser {
         return null;
     }
 
-    public EndNode parserEnd(JSONObject node) {
+    public End parserEnd(JSONObject node) {
         // 生成node的Java对象。
 
         //判断children并循环。

@@ -1,9 +1,10 @@
-package com.nuosi.flow.data.parse;
+package com.nuosi.flow.logic.parse;
 
 import com.ai.ipu.basic.util.IpuUtility;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.domain.DomainModel;
@@ -38,12 +39,8 @@ public class BizDataParser {
 
     public static final String VAR = "var";
     public static final String SUFFIX_ATTR = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_ATTR;
-    public static final String SUFFIX_TEXT = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_TEXT;
 
-    private Map<String, Attr> attrMap;
-    public BizDataParser(){
-        attrMap = new HashMap<String, Attr>();
-    }
+    private Map<String, Attr> attrMap = new HashMap<String, Attr>();
 
     public DomainModel parser(InputStream flowInputStream) throws Exception {
         XmlHelper dh = new XmlHelper(flowInputStream);
@@ -72,8 +69,7 @@ public class BizDataParser {
                     Action action = parserAction(modelItem.getJSONObject(ACTION));
                     actions.add(action);
                 } else{
-                    // 抛无指定节点异常
-                    IpuUtility.error("");
+                    IpuUtility.error("无可匹配标签："+ modelItem);
                 }
             }
             if(!attrs.isEmpty()){
@@ -98,23 +94,30 @@ public class BizDataParser {
         Action action = actionJson.toJavaObject(Action.class);
 
         JSONArray children = actionObject.getJSONArray(CHILDREN);
-        JSONObject actionItem;
         if (children != null && !children.isEmpty()) {
+            JSONObject actionItem;
+            List<Input> inputs = null;
+            List<Output> outputs = null;
+            List<Sql> sqlActions = null;
             for (int i = 0; i < children.size(); i++) {
                 actionItem = children.getJSONObject(i);
                 if (actionItem.containsKey(OUTPUT)) {
+                    outputs = outputs==null?new ArrayList<Output>():outputs;
                     Output output = parserOutput(actionItem.getJSONObject(OUTPUT));
-                    action.setOutput(output);
+                    outputs.add(output);
                 } else if (actionItem.containsKey(INPUT)) {
+                    inputs = inputs==null?new ArrayList<Input>():inputs;
                     Input input = parserInput(actionItem.getJSONObject(INPUT));
-                    action.setInput(input);
+                    inputs.add(input);
                 } else if (actionItem.containsKey(SQL)) {
+                    sqlActions = sqlActions==null?new ArrayList<Sql>():sqlActions;
 
                 }else{
-                    // 抛无指定节点异常
-                    IpuUtility.error("无匹配标签");
+                    IpuUtility.error("无可匹配标签："+ actionItem);
                 }
             }
+            action.setInputs(inputs);
+            action.setOutputs(outputs);
         }
         return action;
     }

@@ -16,8 +16,9 @@ public class Action {
     protected String id;
     protected String name;
     protected String next;
-    protected Input input;
-    protected Output output;
+    protected List<Input> inputs;
+    protected List<Output> outputs;
+    protected List<Input> Sql;
 
     public String getId() {
         return id;
@@ -43,21 +44,22 @@ public class Action {
         this.next = next;
     }
 
-    public Input getInput() {
-        return input;
+    public List<Input> getInputs() {
+        return inputs;
     }
 
-    public Action setInput(Input input) {
-        this.input = input;
+    public Action setInputs(List<Input> inputs) {
+        this.inputs = inputs;
         return this;
     }
 
-    public Output getOutput() {
-        return output;
+    public List<Output> getOutputs() {
+        return outputs;
     }
 
-    public Action setOutput(Output output) {
-        this.output = output;
+    public Action setOutputs(List<Output> outputs) {
+        this.outputs = outputs;
         return this;
     }
+
 }
