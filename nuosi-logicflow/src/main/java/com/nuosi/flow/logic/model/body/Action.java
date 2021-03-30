@@ -1,5 +1,6 @@
 package com.nuosi.flow.logic.model.body;
 
+import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 
@@ -13,12 +14,18 @@ import java.util.List;
  * @date 2021/3/6 12:16
  */
 public class Action {
-    protected String id;
-    protected String name;
-    protected String next;
-    protected List<Input> inputs;
-    protected List<Output> outputs;
-    protected List<Input> Sql;
+
+    public static enum ActionType{
+        SQL,SERVICE,RULE,MAPPING,EXPRESSION,EVENT
+    }
+
+    private String id;
+    private String name;
+    private String next;
+    private List<Input> inputs;
+    private List<Output> outputs;
+    private ActionType actionType;
+    private List<Sql> sqls;
 
     public String getId() {
         return id;
@@ -62,4 +69,17 @@ public class Action {
         return this;
     }
 
+    public ActionType getActionType() {
+        return actionType;
+    }
+
+    public List<Sql> getSqls() {
+        return sqls;
+    }
+
+    public Action setSqls(List<Sql> sqls) {
+        this.sqls = sqls;
+        actionType = ActionType.SQL;
+        return this;
+    }
 }

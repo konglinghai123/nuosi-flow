@@ -23,9 +23,9 @@ import java.util.Map;
  * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class XmlToBizDataParser extends Dom4jHelper {
-    public static final String ATTR = "attr";
-    public static final String ID = "id";
-    public static final String VAR = "var";
+    private static final String ATTR = "attr";
+    private static final String ID = "id";
+    private static final String VAR = "var";
 
     private Map<String, JSONObject> attrMap = new HashMap<String, JSONObject>();
 
@@ -48,6 +48,8 @@ public class XmlToBizDataParser extends Dom4jHelper {
             Attribute attr = (Attribute)ait.next();
             attrJsonObject.put(attr.getName(), attr.getValue());
         }
+
+        // 缓存attr标签的内容，提供给具有attr属性的var标签复用
         if(ATTR.equals(element.getName())){
             attrMap.put(attrJsonObject.getString(ID), attrJsonObject);
         }else if(VAR.equals(element.getName())){
@@ -64,22 +66,23 @@ public class XmlToBizDataParser extends Dom4jHelper {
         elementMap.putAll(attrJsonObject);
 
         if(!element.getTextTrim().isEmpty()){
+            // 存储标签的text内容
             elementMap.put(element.getName(), element.getTextTrim());
-        }
-
-        //存储标签的子标签
-        JSONObject childElement = null;
-        Iterator<?> eit = element.elementIterator();
-        while(eit.hasNext()) {
-            Element ele = (Element)eit.next();
-            childElement = this.getElementBeanJson(ele); //递归获取子元素
-            if(elementMap.containsKey(convertPlural(ele.getName()))){
-                JSONArray childElements = (JSONArray) elementMap.get(convertPlural(ele.getName()));
-                childElements.add(childElement);
-            }else{
-                JSONArray childElements = new JSONArray();
-                childElements.add(childElement);
-                elementMap.put(convertPlural(ele.getName()), childElements);
+        }else{
+            // 存储标签的子标签
+            JSONObject childElement = null;
+            Iterator<?> eit = element.elementIterator();
+            while(eit.hasNext()) {
+                Element ele = (Element)eit.next();
+                childElement = this.getElementBeanJson(ele); //递归获取子元素
+                if(elementMap.containsKey(convertPlural(ele.getName()))){
+                    JSONArray childElements = (JSONArray) elementMap.get(convertPlural(ele.getName()));
+                    childElements.add(childElement);
+                }else{
+                    JSONArray childElements = new JSONArray();
+                    childElements.add(childElement);
+                    elementMap.put(convertPlural(ele.getName()), childElements);
+                }
             }
         }
         return elementMap;

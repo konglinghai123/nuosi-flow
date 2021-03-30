@@ -9,5 +9,5 @@ import com.nuosi.flow.logic.model.body.Action;
  * @desc TODO
  * @date 2021/3/6 12:17
  */
-public class Mapping extends Action {
+public class Mapping {
 }

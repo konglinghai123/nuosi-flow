@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <model id="goods_info" name="货物信息">
-    <attr id="goods_id" type="int" name="货物ID"/>
+    <attr id="id" type="int" name="货物ID"/>
     <attr id="goods_name" type="string" name="货物名称"/>
     <attr id="goods_type" type="int" name="货物类型"/>
-    <attr id="goods_price" type="decimal" name="货物价格"/>
+    <attr id="price" type="decimal" name="货物价格"/>
 
     <action id="queryGoodsInfo" name="查询货物信息">
         <!-- 全局域 -->
@@ -19,10 +19,10 @@
         ]]>
         </sql>
         <output>
-            <var attr="goods_id" />
+            <var attr="id" />
             <var attr="goods_name"/>
-            <var attr="goods_price"/>
             <var attr="goods_type"/>
+            <var attr="price"/>
         </output>
     </action>
 </model>

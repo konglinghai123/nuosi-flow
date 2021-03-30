@@ -39,6 +39,7 @@ public class BizDataParser {
 
     public static final String VAR = "var";
     public static final String SUFFIX_ATTR = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_ATTR;
+    public static final String SUFFIX_TEXT = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_TEXT;
 
     private Map<String, Attr> attrMap = new HashMap<String, Attr>();
 
@@ -98,7 +99,7 @@ public class BizDataParser {
             JSONObject actionItem;
             List<Input> inputs = null;
             List<Output> outputs = null;
-            List<Sql> sqlActions = null;
+            List<Sql> sqls = null;
             for (int i = 0; i < children.size(); i++) {
                 actionItem = children.getJSONObject(i);
                 if (actionItem.containsKey(OUTPUT)) {
@@ -110,14 +111,20 @@ public class BizDataParser {
                     Input input = parserInput(actionItem.getJSONObject(INPUT));
                     inputs.add(input);
                 } else if (actionItem.containsKey(SQL)) {
-                    sqlActions = sqlActions==null?new ArrayList<Sql>():sqlActions;
-
+                    sqls = sqls==null?new ArrayList<Sql>():sqls;
+                    Sql sql = new Sql();
+                    sql.setSql(actionItem.getJSONObject(SQL).getString(SQL+SUFFIX_TEXT));
+                    sqls.add(sql);
                 }else{
                     IpuUtility.error("无可匹配标签："+ actionItem);
                 }
             }
             action.setInputs(inputs);
-            action.setOutputs(outputs);
+            if(outputs!=null)
+                action.setOutputs(outputs);
+            if(sqls!=null){
+                action.setSqls(sqls);
+            }
         }
         return action;
     }

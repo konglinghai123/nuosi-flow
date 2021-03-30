@@ -3,7 +3,7 @@
             name="简单逻辑流程范例"
             desc="简单逻辑流程范例">
     <!-- 全局域 -->
-    <globalDomain>
+    <global>
         <!-- 引入dto定义 -->
         <import dto="goods_info"/>
         <!-- 数据总线 -->
@@ -11,24 +11,24 @@
             <!-- 定义数据格式，会触发校验 -->
             <var id="" type="" name="" initial=""/>
         </databus>
-    </globalDomain>
+    </global>
 
     <start id="start" name="开始节点" next="goodsCheck">
         <!-- 逻辑入口参数校验 -->
-        <var reuse="goods_info" attr="goods_name" id="goods_name" buskey="goods_name" validityCheck=""/>
+        <var reuse="goods_info" attr="goods_name" buskey="goods_name" validityCheck=""/>
         <var reuse="goods_info" attr="goods_type" />
     </start>
 
-    <node id="goodsCheck" name="货物校验" next="queryGoodsInfo">
+    <action id="goodsCheck" name="货物校验" next="queryGoodsInfo">
         <input>
         </input>
         <rule>
         </rule>
         <output>
         </output>
-    </node>
+    </action>
 
-    <node id="queryGoodsInfo" name="查询货物信息" next="goodsInfoMapping">
+    <action id="queryGoodsInfo" name="查询货物信息" next="goodsInfoMapping">
         <!-- 全局域 -->
         <input>
             <var reuse="goods_info" attr="goods_name"/>
@@ -47,28 +47,9 @@
             <var reuse="goods_info" attr="price" buskey="goods_price"/>
             <var reuse="goods_info" attr="goods_type"/>
         </output>
-    </node>
-
-    <node id="goodsInfoMapping" name="货物信息格式转换" next="goodsInfoNotification">
-        <input>
-        </input>
-        <mapping>
-        </mapping>
-        <output>
-        </output>
-    </node>
-
-    <node id="goodsInfoNotification" name="货物信息消息通知" next="end">
-        <input>
-        </input>
-        <event>
-        </event>
-        <output>
-        </output>
-    </node>
+    </action>
 
     <end id="end" name="结束节点">
         <var id="goods_info" type="bdata" name="货物信息"/>
-        <!--<var id="null" type="bdata" name="货物信息"/>-->
     </end>
 </logic-flow>

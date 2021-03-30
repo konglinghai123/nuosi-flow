@@ -9,7 +9,7 @@ import com.nuosi.flow.logic.model.body.Action;
  * @version v1.0.0
  * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
-public class Sql extends Action {
+public class Sql {
     private String sql;
 
     public String getSql() {
