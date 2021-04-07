@@ -1,13 +1,10 @@
 package com.nuosi.flow.logic.model.action;
 
-import com.nuosi.flow.logic.model.body.Action;
-
 /**
+ * <p>desc: 逻辑流元素：规则行为</p>
+ * <p>date: 2021/3/6 12:17</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name RuleNode
- * @desc TODO
- * @date 2021/3/6 12:17
+ * @version v1.0.0
  */
 public class Rule {
 }

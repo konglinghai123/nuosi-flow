@@ -3,22 +3,21 @@ package com.nuosi.flow.logic.parse;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.LogicFlow;
-import com.nuosi.flow.logic.model.body.End;
-import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.action.Sql;
+import com.nuosi.flow.logic.model.body.Action;
+import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.header.Global;
-import com.nuosi.flow.logic.util.XmlHelper;
 import com.nuosi.flow.logic.util.DtoUtil;
+import com.nuosi.flow.logic.util.XmlHelper;
 
 import java.io.InputStream;
 
 /**
+ * <p>desc: 逻辑流模型解析</p>
+ * <p>date: 2021/3/7 16:37</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name LogicFlowParser
- * @desc TODO
- * @date 2021/3/7 16:37
+ * @version v1.0.0
  */
 public class LogicFlowParser {
     public static final String LOGIC_FLOW = "logic-flow";
@@ -62,13 +61,12 @@ public class LogicFlowParser {
     }
 
     /**
-     * <p>desc: 频率node>其他</p>
+     * <p>desc: 解析逻辑流子节点，频率node>其他</p>
      * <p>date: 2021/3/24 11:43</p>
-     *
-     * @param logicFlowChildren 1
-     * @return com.nuosi.flow.logic.model.LogicFlow
      * @author nuosi fsofs@163.com
      * @version v1.0.0
+     * @param logicFlowChildren 1
+     * @return com.nuosi.flow.logic.model.LogicFlow
      */
     public LogicFlow parserLogicFlowChildren(JSONObject logicFlowChildren) {
         if (logicFlowChildren.containsKey(NODE)) {

@@ -12,7 +12,6 @@ import java.util.Map;
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
- * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class ActionProcesserManager {
     private static final Map<Action.ActionType, IActionProcesser> actionProcessers;

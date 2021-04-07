@@ -18,12 +18,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>desc: 描述这个类功能的注释 </p>
+ * <p>desc: 业务逻辑流执行容器 </p>
  * <p>date: 2021/3/29 20:19 </p>
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
- * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class ExecutionContainer {
     private Map<String, Object> databus = new HashMap<String, Object>();

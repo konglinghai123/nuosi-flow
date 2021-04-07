@@ -13,11 +13,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * <p>desc: Var标签测试</p>
+ * <p>date: 2021/3/6 16:33</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name VarTest
- * @desc Var标签测试
- * @date 2021/3/6 16:33
+ * @version v1.0.0
  */
 public class VarTest {
 

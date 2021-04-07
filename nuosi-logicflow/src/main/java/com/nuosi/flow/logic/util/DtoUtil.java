@@ -3,11 +3,10 @@ package com.nuosi.flow.logic.util;
 import java.lang.reflect.Field;
 
 /**
+ * <p>desc: Dto工具类，提供类似toString方法</p>
+ * <p>date: 2021/3/6 17:19</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name DtoUtil
- * @desc TODO
- * @date 2021/3/6 17:19
+ * @version v1.0.0
  */
 public class DtoUtil {
 

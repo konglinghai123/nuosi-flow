@@ -3,20 +3,16 @@ package com.nuosi.flow.logic.parse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.domain.DomainModel;
-import com.nuosi.flow.logic.parse.BizDataParser;
-import com.nuosi.flow.logic.parse.XmlToBizDataParser;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.InputStream;
 
 /**
- * <p>desc: 描述这个类功能的注释 </p>
- * <p>date: 2021/3/27 13:32 </p>
- *
+ * <p>desc: 业务传输对象解析单元测试</p>
+ * <p>date: 2021/4/7 16:50</p>
  * @author nuosi fsofs@163.com
  * @version v1.0.0
- * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class XmlToBizDataParserTest {
 

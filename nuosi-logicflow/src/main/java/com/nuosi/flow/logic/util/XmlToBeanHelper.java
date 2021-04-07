@@ -15,7 +15,6 @@ import java.util.Iterator;
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
- * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class XmlToBeanHelper extends Dom4jHelper {
     public XmlToBeanHelper(InputStream in) throws Exception {

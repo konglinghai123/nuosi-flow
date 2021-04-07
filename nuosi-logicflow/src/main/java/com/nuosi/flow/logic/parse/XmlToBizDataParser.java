@@ -2,10 +2,8 @@ package com.nuosi.flow.logic.parse;
 
 import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.common.xml.Dom4jHelper;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nuosi.flow.logic.model.domain.Attr;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
 
@@ -15,12 +13,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * <p>desc: 描述这个类功能的注释 </p>
- * <p>date: 2021/3/27 13:03 </p>
- *
+ * <p>desc: 业务传输对象解析</p>
+ * <p>date: 2021/3/27 13:03</p>
  * @author nuosi fsofs@163.com
  * @version v1.0.0
- * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class XmlToBizDataParser extends Dom4jHelper {
     private static final String ATTR = "attr";

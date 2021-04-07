@@ -6,11 +6,10 @@ import com.nuosi.flow.logic.invoke.ExecutionContainer;
 import com.nuosi.flow.logic.model.LogicFlow;
 
 /**
+ * <p>desc: 逻辑流引擎入口类</p>
+ * <p>date: 2021/3/6 11:26</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name LogicFlowEngine
- * @desc 逻辑流引擎入口类
- * @date 2021/3/6 11:26
+ * @version v1.0.0
  */
 public class LogicFlowEngine {
 

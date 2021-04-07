@@ -8,11 +8,10 @@ import org.junit.Test;
 import java.io.InputStream;
 
 /**
+ * <p>desc: 逻辑流模型解析单元测试</p>
+ * <p>date: 2021/3/7 16:37</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name LogicFlowParserTest
- * @desc TODO
- * @date 2021/3/7 16:37
+ * @version v1.0.0
  */
 public class LogicFlowParserTest {
 
