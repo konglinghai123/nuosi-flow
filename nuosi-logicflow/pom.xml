@@ -66,5 +66,10 @@
             <artifactId>ipu-common</artifactId>
             <version>${ipu}</version>
         </dependency>
+        <dependency>
+            <groupId>com.ai.ipu</groupId>
+            <artifactId>ipu-database</artifactId>
+            <version>${ipu}</version>
+        </dependency>
     </dependencies>
 </project>

@@ -19,7 +19,7 @@
 
     <start id="start" name="开始节点" next="goodsCheck">
         <!-- 逻辑入口参数校验 -->
-        <var reuse="goods_info" attr="goods_name" buskey="goods_name" validityCheck=""/>
+        <var reuse="goods_info" attr="goods_name" key="goods_name" validityCheck=""/>
         <var reuse="goods_info" attr="goods_type" />
     </start>
 
@@ -35,10 +35,10 @@
     <action id="queryGoodsInfo" name="查询货物信息" next="goodsInfoMapping">
         <!-- 全局域 -->
         <input>
-            <var reuse="goods_info" attr="goods_name"/>
-            <var reuse="goods_info" attr="goods_type"/>
+            <var key="goods_name"/>
+            <var key="goods_type"/>
         </input>
-        <sql>
+        <sql conn="dynamic-form-test">
         <![CDATA[
         SELECT id, goods_name, price, goods_type
             FROM cb_goods
@@ -46,9 +46,9 @@
         ]]>
         </sql>
         <output>
-            <var reuse="goods_info" attr="id" buskey="goods_id"/>
+            <var reuse="goods_info" attr="id" key="goods_id"/>
             <var reuse="goods_info" attr="goods_name"/>
-            <var reuse="goods_info" attr="price" buskey="goods_price"/>
+            <var reuse="goods_info" attr="price" key="goods_price"/>
             <var reuse="goods_info" attr="goods_type"/>
         </output>
     </action>

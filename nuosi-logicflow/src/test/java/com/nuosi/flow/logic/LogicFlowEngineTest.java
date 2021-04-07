@@ -24,6 +24,14 @@ import java.io.InputStream;
  */
 public class LogicFlowEngineTest {
 
+    @Test
+    public void testExecute(){
+        JMap param = new JsonMap();
+        param.put("goods_name","橙汁");
+        param.put("goods_type",1);
+        LogicFlowEngine.execute("simple_logic_flow_example",param);
+    }
+
     @Before
     public void setUp(){
         String dtoConfig = "dto/goods_info_dto.xml";
@@ -51,12 +59,5 @@ public class LogicFlowEngineTest {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Test
-    public void testExecute(){
-        JMap param = new JsonMap();
-        param.put("id","abc");
-        LogicFlowEngine.execute("simple_logic_flow_example",param);
     }
 }

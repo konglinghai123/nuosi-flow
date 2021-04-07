@@ -10,5 +10,5 @@ import com.nuosi.flow.logic.invoke.ExecutionContainer;
  */
 public interface IActionProcesser {
 
-    public void execute(ExecutionContainer container, Object ... param);
+    public Object execute(ExecutionContainer container, Object ... param) throws Exception;
 }

@@ -7,6 +7,7 @@ package com.nuosi.flow.logic.model.action;
  * @version v1.0.0
  */
 public class Sql {
+    private String conn;
     private String sql;
 
     public String getSql() {
@@ -15,5 +16,13 @@ public class Sql {
 
     public void setSql(String sql) {
         this.sql = sql;
+    }
+
+    public String getConn() {
+        return conn;
+    }
+
+    public void setConn(String conn) {
+        this.conn = conn;
     }
 }

@@ -3,7 +3,7 @@ package com.nuosi.flow.logic.invoke;
 import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
 import com.ai.ipu.data.impl.JsonMap;
-import com.nuosi.flow.data.impl.BizData;
+import com.ai.ipu.database.conn.SqlSessionManager;
 import com.nuosi.flow.logic.invoke.handler.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.handler.IActionProcesser;
 import com.nuosi.flow.logic.model.LogicFlow;
@@ -11,6 +11,7 @@ import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
+import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Var;
 
 import java.util.HashMap;
@@ -43,12 +44,29 @@ public class ExecutionContainer {
     }
 
     public JMap execute(JMap param){
+        invokeGlobal(param);
+
         String next = checkInput(param);
 
-        next = executeAction(next);
+        try{
+            next = executeAction(next);
+            SqlSessionManager.commitAll();
+        }catch (Exception e){
+            SqlSessionManager.rollbackAll();
+            IpuUtility.error(e);
+        }finally {
+            SqlSessionManager.closeAll();
+        }
 
         JMap result = checkOutput(next);
         return result;
+    }
+
+    public void invokeGlobal(JMap param){
+        String[] keys = param.getKeys();
+        for(String key : keys){
+            databus.put(key, param.get(key));
+        }
     }
 
     public String checkInput(JMap param){
@@ -64,31 +82,22 @@ public class ExecutionContainer {
 
                 // 做数据校验
 
-                if(var.getBuskey()!=null){
-                    databus.put(var.getBuskey(), param.get(key));
+                if(var.getKey()!=null){
+                    databus.put(var.getKey(), param.get(key));
                 }
             }
         }
         return start.getNext();
     }
 
-    public Start getStart(JMap param){
-        List<Start> starts =  logicFlow.getStarts();
-        if(starts==null){
-            IpuUtility.error("流程需要一个开始节点");
-        }else if(starts.size()!=1){
-            IpuUtility.error("流程只能有一个开始节点");
-        }
-        return starts.get(0);
-    }
-
-    public String executeAction(String next){
+    public String executeAction(String next) throws Exception {
         Action action = actionMap.get(next);
+        JMap param = invokeActionInput(action);
 
         IActionProcesser IActionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SQL);
         if (action.getActionType() == Action.ActionType.SQL) {
             Sql sql = action.getSqls().get(0);
-            IActionProcesser.execute(this, sql);
+            IActionProcesser.execute(this, sql, param);
         }
 
         next = action.getNext();
@@ -97,6 +106,26 @@ public class ExecutionContainer {
         }else{
             return next;
         }
+    }
+
+    private JMap invokeActionInput(Action action){
+        List<Input> inputs = action.getInputs();
+        if(inputs==null){
+            return null;
+        }
+        if(inputs.size()!=1){
+            IpuUtility.error("Action节点只能有一个Input");
+        }
+        Input input = inputs.get(0);
+        List<Var> vars = input.getVars();
+        if(vars==null||vars.size()==0){
+            return null;
+        }
+        JMap param = new JsonMap();
+        for(Var var : vars){
+            param.put(var.getKey(), databus.get(var.getKey()));
+        }
+        return param;
     }
 
     public JMap checkOutput(String next){
@@ -120,6 +149,16 @@ public class ExecutionContainer {
             }
         }
         return result;
+    }
+
+    public Start getStart(JMap param){
+        List<Start> starts =  logicFlow.getStarts();
+        if(starts==null){
+            IpuUtility.error("流程需要一个开始节点");
+        }else if(starts.size()!=1){
+            IpuUtility.error("流程只能有一个开始节点");
+        }
+        return starts.get(0);
     }
 
     public End getEnd(){

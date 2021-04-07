@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "./src/test/resources/mybatis-3-config.dtd">
+
+<configuration>
+    <settings>
+		<setting name="defaultFetchSize" value="1000" /> <!-- 结果集获取数量提示值，分批传输 -->
+		<setting name="logImpl" value="STDOUT_LOGGING" />
+	</settings>
+    <plugins>
+        <!-- 分页插件，可根据参数定制化 -->
+	    <plugin interceptor="com.github.pagehelper.PageInterceptor">
+	        <!-- config params as the following -->
+		</plugin>
+	</plugins>
+	<environments default="dynamic-form-test">
+		<environment id="dynamic-form-test">
+			<transactionManager type="jdbc" />
+			<dataSource type="com.ai.ipu.database.datasource.DruidDataSourceFactory">
+				<property name="jdbcUrl" value="jdbc:mysql://121.42.183.206:3307/dynamic-form-test" />
+				<property name="username" value="ipu" />
+                <property name="password" value="ipumysql" />
+				<!-- 配置获取连接的等待超时时间 -->
+				<property name="maxWait" value="5000" />
+			</dataSource>
+		</environment>
+	</environments>
+</configuration>

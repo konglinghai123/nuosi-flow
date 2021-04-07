@@ -11,7 +11,7 @@ import com.nuosi.flow.logic.model.domain.Attr;
 public class Var extends Attr {
     private String reuse;
     private String attr;
-    private String buskey;
+    private String key;
     private String validityCheck;
 
     public String getReuse() {
@@ -30,12 +30,12 @@ public class Var extends Attr {
         this.attr = attr;
     }
 
-    public String getBuskey() {
-        return buskey;
+    public String getKey() {
+        return key;
     }
 
-    public void setBuskey(String buskey) {
-        this.buskey = buskey;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getValidityCheck() {

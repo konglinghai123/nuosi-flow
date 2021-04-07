@@ -1,7 +1,13 @@
 package com.nuosi.flow.logic.invoke.handler;
 
+import com.ai.ipu.data.JMap;
+import com.ai.ipu.database.dao.ISqlDao;
+import com.ai.ipu.database.dao.impl.SqlDao;
 import com.nuosi.flow.logic.invoke.ExecutionContainer;
 import com.nuosi.flow.logic.model.action.Sql;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>desc: 节点执行处理器的SQL类型实现 </p>
@@ -13,8 +19,13 @@ import com.nuosi.flow.logic.model.action.Sql;
 public class SqlProcesser implements IActionProcesser {
 
     @Override
-    public void execute(ExecutionContainer container, Object ... param) {
+    public Object execute(ExecutionContainer container, Object ... param) throws Exception {
         Sql sql = (Sql) param[0];
-        System.out.println("执行SQL：" + sql.getSql());
+        JMap params = (JMap) param[1];
+        System.out.println("执行SQL语句：" + sql.getSql());
+        System.out.println("执行SQL参数：" + params);
+        ISqlDao dao = new SqlDao(sql.getConn());
+        List<Map<String, Object>> result = dao.executeSelect(sql.getSql(), params);
+        return result;
     }
 }
