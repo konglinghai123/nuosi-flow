@@ -7,11 +7,10 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
+ * <p>desc: 业务传输对象的数据限制和校验</p>
+ * <p>date: 2021/3/16 23:40</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name 业务传输对象的数据限制和校验
- * @desc TODO
- * @date 2021/3/16 23:40
+ * @version v1.0.0
  */
 public class BizDataLimit implements BDataLimit {
     /**属性需要初始化空值，用于后续的判断逻辑*/

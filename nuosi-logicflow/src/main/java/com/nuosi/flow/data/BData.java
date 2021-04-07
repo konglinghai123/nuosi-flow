@@ -3,11 +3,10 @@ package com.nuosi.flow.data;
 import com.ai.ipu.data.JMap;
 
 /**
+ * <p>desc: 弱类型业务传输对象的接口抽象</p>
+ * <p>date: 2021/3/5 0:48</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name BData
- * @desc 业务传输对象的弱类型抽象
- * @date 2021/3/5 0:48
+ * @version v1.0.0
  */
 public interface BData extends JMap {
 

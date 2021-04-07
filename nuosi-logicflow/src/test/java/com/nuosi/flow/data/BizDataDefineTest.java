@@ -8,11 +8,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
+ * <p>desc: 业务传输对象的数据类型和格式定义的单元测试</p>
+ * <p>date: 2021/3/19 23:07</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name BizDataDefineTest
- * @desc 业务传输对象的数据类型和格式定义的单元测试
- * @date 2021/3/19 23:07
+ * @version v1.0.0
  */
 public class BizDataDefineTest {
     private String bizName;

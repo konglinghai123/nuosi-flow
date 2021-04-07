@@ -8,12 +8,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * <p>desc: 业务传输对象管理类常用方法的单元测试</p>
- * <p>date: 2021/3/16 17:27</p>
+ * <p>desc: 业务传输对象的单元测试 </p>
+ * <p>date: 2021/4/7 14:28 </p>
+ *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class BizDataManagerTest {
+public class BizDataTest {
     private String bizName;
 
     @Before
@@ -28,7 +29,7 @@ public class BizDataManagerTest {
     }
 
     @Test
-    public void testNewInstanceWithRegister(){
+    public void testPut(){
         try{
             BData user = new BizData(bizName);
             user.put("name","reynolds");
@@ -41,16 +42,15 @@ public class BizDataManagerTest {
     }
 
     @Test
-    public void testNewInstanceWithNoRegister(){
+    public void testGet(){
         try{
-            BizDataManager.unregisterDto(bizName); //全量测试的时候提前删除
             BData user = new BizData(bizName);
-            user.put("name","reynolds");
-            System.out.println(bizName+ ":" + user);
-            Assert.assertTrue(false);
+            user.put("age",20);
+            System.out.println(bizName + " age :" + user.get("age"));
+            Assert.assertTrue(true);
         }catch (Exception e){
             System.out.println("Ex:" + e.getMessage());
-            Assert.assertTrue(true);
+            Assert.assertTrue(false);
         }
     }
 }

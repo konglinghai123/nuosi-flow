@@ -5,7 +5,7 @@ import com.nuosi.flow.data.impl.BizDataDefine;
 import java.util.Map;
 
 /**
- * <p>desc: 业务数据定义接口</p>
+ * <p>desc: 业务传输对象数据定义的接口抽象</p>
  * <p>date: 2021/3/16 14:36</p>
  * @author nuosi fsofs@163.com
  * @version v1.0.0

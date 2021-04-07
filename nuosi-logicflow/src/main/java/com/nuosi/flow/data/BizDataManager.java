@@ -1,19 +1,16 @@
 package com.nuosi.flow.data;
 
 import com.ai.ipu.basic.util.IpuUtility;
-import com.nuosi.flow.data.impl.BizData;
 import com.nuosi.flow.util.LogicFlowConstants;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * <p>desc: 业务传输对象管理类</p>
+ * <p>date: 2021/3/6 0:32</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name BizDataManager
- * @desc 业务传输对象管理类
- * 大部分情况下深拷贝耗时都比new耗时多。
- * @date 2021/3/6 0:32
+ * @version v1.0.0
  */
 public class BizDataManager {
     private static Map<String, BDataDefine> bizDataDefine = new HashMap<String, BDataDefine>();

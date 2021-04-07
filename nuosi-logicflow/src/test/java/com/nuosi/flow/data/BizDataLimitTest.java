@@ -15,11 +15,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 /**
+ * <p>desc: 业务传输对象的数据限制和校验单元测试</p>
+ * <p>date: 2021/3/19 23:06</p>
  * @author nuosi fsofs@163.com
- * @version 0.1.0
- * @name BizDataLimitTest
- * @desc 业务传输对象的数据限制和校验
- * @date 2021/3/19 23:06
+ * @version v1.0.0
  */
 public class BizDataLimitTest {
     private String bizName;
