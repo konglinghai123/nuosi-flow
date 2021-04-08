@@ -10,29 +10,30 @@ import java.util.Map;
 /**
  * <p>desc: 业务传输对象的数据类型和格式定义</p>
  * <p>date: 2021/3/16 14:36</p>
+ *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
 public class BizDataDefine implements BDataDefine {
     private final String bizName;
-    private final Map<String, DataType> dataTypes;
+    private final Map<String, BDataType> dataTypes;
     private final Map<String, BDataLimit> dataLimits;
 
     public BizDataDefine(String bizName) {
         this.bizName = bizName;
-        this.dataTypes = new HashMap<String, DataType>();
+        this.dataTypes = new HashMap<String, BDataType>();
         this.dataLimits = new HashMap<String, BDataLimit>();
     }
 
     @Override
-    public BizDataDefine defineType(String attr, DataType dataType, BDataLimit dataLimit) {
+    public BizDataDefine defineType(String attr, BDataType dataType, BDataLimit dataLimit) {
         dataTypes.put(attr, dataType);
         dataLimits.put(attr, dataLimit);
         return this;
     }
 
     @Override
-    public BizDataDefine defineType(String attr, DataType dataType) {
+    public BizDataDefine defineType(String attr, BDataType dataType) {
         dataTypes.put(attr, dataType);
         return this;
     }
@@ -43,12 +44,12 @@ public class BizDataDefine implements BDataDefine {
     }
 
     @Override
-    public Map<String, BDataDefine.DataType> getDataTypes() {
+    public Map<String, BDataDefine.BDataType> getDataTypes() {
         return dataTypes;
     }
 
     @Override
-    public BDataDefine.DataType getDataType(String bizName) {
+    public BDataDefine.BDataType getDataType(String bizName) {
         return dataTypes.get(bizName);
     }
 

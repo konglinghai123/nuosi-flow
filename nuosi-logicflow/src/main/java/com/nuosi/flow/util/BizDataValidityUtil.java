@@ -4,6 +4,7 @@ import com.ai.ipu.basic.util.IpuUtility;
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BDataLimit;
 import com.nuosi.flow.data.BizDataManager;
+import com.nuosi.flow.data.limit.*;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -27,45 +28,54 @@ public class BizDataValidityUtil {
      */
     public static void checkData(String bizName, String attr, Object value) {
         BDataDefine dataDefine = BizDataManager.getDataDefine(bizName);
-        BDataDefine.DataType dataType = dataDefine.getDataType(attr);
+        BDataDefine.BDataType dataType = dataDefine.getDataType(attr);
         BDataLimit dataLimit = dataDefine.getDataLimit(attr);
         switch (dataType) {
             /*校验整数类型*/
             case INT:
-                checkInt(value, dataLimit, bizName, attr);
+                Integer intValue = checkInt(value, bizName, attr);
+                checkIntLimit(intValue, dataLimit, bizName, attr);
                 break;
             /*校验字符类型*/
             case STRING:
-                checkString(value, dataLimit, bizName, attr);
+                String stringValue = checkString(value, bizName, attr);
+                checkStringLimit(stringValue, dataLimit, bizName, attr);
                 break;
             /*校验小数类型*/
             case DECIMAL:
-                checkDecimal(value, dataLimit, bizName, attr);
+                BigDecimal decimalValue = checkDecimal(value, bizName, attr);
+                checkDecimalLimit(decimalValue, dataLimit, bizName, attr);
                 break;
             /*校验日期类型*/
             case DATE:
-                checkDate(value, dataLimit, bizName, attr);
+                java.sql.Date dateValue = checkDate(value, bizName, attr);
+                checkDateLimit(dateValue, dataLimit, bizName, attr);
                 break;
             /*校验日期时间类型*/
             case DATETIME:
-                checkDatetime(value, dataLimit, bizName, attr);
+                Timestamp timestampValue = checkDatetime(value, bizName, attr);
+                checkDatetimeLimit(timestampValue, dataLimit, bizName, attr);
                 break;
             default:
                 break;
         }
     }
 
-    static void checkInt(Object value, BDataLimit dataLimit, String bizName, String attr) {
+    public static Integer checkInt(Object value, String bizName, String attr) {
         Integer val = null;
         try {
             val = Integer.parseInt(String.valueOf(value));
         } catch (Exception e) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_INT, bizName, attr);
         }
-        if (dataLimit == null) {
+        return val;
+    }
+
+    public static void checkIntLimit(Integer val, BDataLimit bdataLimit, String bizName, String attr) {
+        if (bdataLimit == null) {
             return;
         }
-
+        IntegerLimit dataLimit = (IntegerLimit) bdataLimit;
         if (dataLimit.getMax() != null && val > dataLimit.getMax()) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_INT_MAX, bizName, attr, String.valueOf(dataLimit.getMax()));
         }
@@ -74,26 +84,37 @@ public class BizDataValidityUtil {
         }
     }
 
-    static void checkString(Object value, BDataLimit dataLimit, String bizName, String attr) {
-        if (dataLimit == null) {
+    public static String checkString(Object value, String bizName, String attr) {
+        String val = String.valueOf(value);
+        return val;
+    }
+
+    public static void checkStringLimit(String val, BDataLimit bdataLimit, String bizName, String attr) {
+        if (bdataLimit == null) {
             return;
         }
-        String val = String.valueOf(value);
+        StringLimit dataLimit = (StringLimit) bdataLimit;
+
         if (dataLimit.getSize() != -1 && val.length() > dataLimit.getSize()) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_STRING_LENGTH, bizName, attr, String.valueOf(dataLimit.getSize()));
         }
     }
 
-    static void checkDecimal(Object value, BDataLimit dataLimit, String bizName, String attr) {
+    public static BigDecimal checkDecimal(Object value, String bizName, String attr) {
         BigDecimal val = null;
         try {
             val = new BigDecimal(String.valueOf(value));
         } catch (Exception e) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_DECIMAL, bizName, attr);
         }
-        if (dataLimit == null) {
+        return val;
+    }
+
+    public static void checkDecimalLimit(BigDecimal val, BDataLimit bdataLimit, String bizName, String attr) {
+        if (bdataLimit == null) {
             return;
         }
+        DecimalLimit dataLimit = (DecimalLimit) bdataLimit;
 
         if (dataLimit.getPrecision() != -1 && val.precision() > dataLimit.getPrecision()) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_DECIMAL_PRECISION, bizName, attr, String.valueOf(dataLimit.getPrecision()));
@@ -109,16 +130,21 @@ public class BizDataValidityUtil {
         }
     }
 
-    static void checkDate(Object value, BDataLimit dataLimit, String bizName, String attr) {
+    public static java.sql.Date checkDate(Object value, String bizName, String attr) {
         java.sql.Date val = null;
         try {
             val = java.sql.Date.valueOf(String.valueOf(value));
         } catch (Exception e) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_DATE, bizName, attr);
         }
-        if (dataLimit == null) {
+        return val;
+    }
+
+    public static void checkDateLimit(java.sql.Date val, BDataLimit bdataLimit, String bizName, String attr) {
+        if (bdataLimit == null) {
             return;
         }
+        DateLimit dataLimit = (DateLimit) bdataLimit;
 
         if (dataLimit.getStartDate() != null && val.compareTo(dataLimit.getStartDate()) < 0) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_DATE_START, bizName, attr, String.valueOf(dataLimit.getStartDate()));
@@ -128,16 +154,22 @@ public class BizDataValidityUtil {
         }
     }
 
-    static void checkDatetime(Object value, BDataLimit dataLimit, String bizName, String attr) {
+
+    public static Timestamp checkDatetime(Object value, String bizName, String attr) {
         Timestamp val = null;
         try {
             val = Timestamp.valueOf(String.valueOf(value));
         } catch (Exception e) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_DATETIME, bizName, attr);
         }
-        if (dataLimit == null) {
+        return val;
+    }
+
+    public static void checkDatetimeLimit(Timestamp val, BDataLimit bdataLimit, String bizName, String attr) {
+        if (bdataLimit == null) {
             return;
         }
+        DatetimeLimit dataLimit = (DatetimeLimit) bdataLimit;
 
         if (dataLimit.getStartDatetime() != null && val.compareTo(dataLimit.getStartDatetime()) < 0) {
             IpuUtility.errorCode(LogicFlowConstants.BDATA_CHECK_DATETIME_START, bizName, attr, String.valueOf(dataLimit.getStartDatetime()));

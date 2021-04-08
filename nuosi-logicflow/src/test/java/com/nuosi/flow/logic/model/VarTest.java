@@ -23,12 +23,12 @@ public class VarTest {
     @Before
     public void before(){
         BizDataDefine bizDataDefine = new BizDataDefine("Var");
-        bizDataDefine.defineType("id", BDataDefine.DataType.STRING);
-        bizDataDefine.defineType("type",BDataDefine.DataType.STRING);
-        bizDataDefine.defineType("name",BDataDefine.DataType.STRING);
-        bizDataDefine.defineType("final",BDataDefine.DataType.STRING);
-        bizDataDefine.defineType("default",BDataDefine.DataType.STRING);
-        bizDataDefine.defineType("initial",BDataDefine.DataType.STRING);
+        bizDataDefine.defineType("id", BDataDefine.BDataType.STRING);
+        bizDataDefine.defineType("type",BDataDefine.BDataType.STRING);
+        bizDataDefine.defineType("name",BDataDefine.BDataType.STRING);
+        bizDataDefine.defineType("final",BDataDefine.BDataType.STRING);
+        bizDataDefine.defineType("default",BDataDefine.BDataType.STRING);
+        bizDataDefine.defineType("initial",BDataDefine.BDataType.STRING);
         BizDataManager.registerDto(bizDataDefine);
     }
 

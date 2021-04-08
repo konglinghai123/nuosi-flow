@@ -12,19 +12,19 @@ import java.util.Map;
  */
 public interface BDataDefine {
 
-    public enum DataType {
+    public enum BDataType {
         INT, STRING, DECIMAL, DATE, DATETIME, BDATA; //后续扩展更多类型
     }
 
-    public BizDataDefine defineType(String attr, DataType dataType, BDataLimit dataLimit);
+    public BizDataDefine defineType(String attr, BDataType dataType, BDataLimit dataLimit);
 
-    public BizDataDefine defineType(String attr, DataType dataType);
+    public BizDataDefine defineType(String attr, BDataType dataType);
 
     public String getBizName();
 
-    public BDataDefine.DataType getDataType(String bizName);
+    public BDataDefine.BDataType getDataType(String bizName);
 
-    public Map<String, BDataDefine.DataType> getDataTypes();
+    public Map<String, BDataDefine.BDataType> getDataTypes();
 
     public String[] getAllAttr();
 

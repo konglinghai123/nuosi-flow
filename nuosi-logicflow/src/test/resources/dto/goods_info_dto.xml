@@ -3,7 +3,7 @@
     <attr id="id" type="int" name="货物ID"/>
     <attr id="goods_name" type="string" name="货物名称"/>
     <attr id="goods_type" type="int" name="货物类型"/>
-    <attr id="price" type="decimal" name="货物价格"/>
+    <attr id="price" type="decimal" name="货物价格" />
 
     <action id="queryGoodsInfo" name="查询货物信息">
         <!-- 全局域 -->

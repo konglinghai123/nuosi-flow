@@ -22,16 +22,16 @@ public class BizDataDefineTest {
         bizName = "User";
         // 注册User结构的业务对象
         BDataDefine userDefine = new BizDataDefine(bizName);
-        userDefine.defineType("name", BDataDefine.DataType.STRING);
-        userDefine.defineType("age", BDataDefine.DataType.INT);
-        userDefine.defineType("height", BDataDefine.DataType.DECIMAL);
-        userDefine.defineType("birthday", BDataDefine.DataType.DATE);
-        userDefine.defineType("create_date", BDataDefine.DataType.DATETIME);
+        userDefine.defineType("name", BDataDefine.BDataType.STRING);
+        userDefine.defineType("age", BDataDefine.BDataType.INT);
+        userDefine.defineType("height", BDataDefine.BDataType.DECIMAL);
+        userDefine.defineType("birthday", BDataDefine.BDataType.DATE);
+        userDefine.defineType("create_date", BDataDefine.BDataType.DATETIME);
         BizDataManager.registerDto(userDefine, true);
     }
 
     @Test
-    public void testStringDataType(){
+    public void testStringBDataType(){
         try{
             BData user = new BizData(bizName);
             user.put("name", "reynolds");
@@ -44,7 +44,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testIntDataType(){
+    public void testIntBDataType(){
         try{
             BData user = new BizData(bizName);
             user.put("age", 20);
@@ -57,7 +57,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testIntDataTypeError(){
+    public void testIntBDataTypeError(){
         try{
             BData user = new BizData(bizName);
             user.put("age", "abc");
@@ -70,7 +70,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testDecimalDataType(){
+    public void testDecimalBDataType(){
         try{
             BData user = new BizData(bizName);
             user.put("height", 1.78);
@@ -83,7 +83,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testDecimalDataTypeError(){
+    public void testDecimalBDataTypeError(){
         try{
             BData user = new BizData(bizName);
             user.put("height", "abc");
@@ -96,7 +96,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testDateDataType(){
+    public void testDateBDataType(){
         try{
             BData user = new BizData(bizName);
             user.put("birthday", "1983-8-5");
@@ -109,7 +109,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testDateDataTypeError(){
+    public void testDateBDataTypeError(){
         try{
             BData user = new BizData(bizName);
             user.put("birthday", "abc");
@@ -122,7 +122,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testDatetimeDataType(){
+    public void testDatetimeBDataType(){
         try{
             BData user = new BizData(bizName);
             user.put("create_date", "2021-3-19 23:50:11");
@@ -135,7 +135,7 @@ public class BizDataDefineTest {
     }
 
     @Test
-    public void testDatetimeDataTypeError(){
+    public void testDatetimeBDataTypeError(){
         try{
             BData user = new BizData(bizName);
             user.put("create_date", "abc");

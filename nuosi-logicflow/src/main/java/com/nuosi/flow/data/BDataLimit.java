@@ -11,25 +11,5 @@ import java.sql.Timestamp;
  * @version v1.0.0
  */
 public interface BDataLimit {
-    public Integer getMax();
 
-    public Integer getMin();
-
-    public int getSize();
-
-    public int getPrecision();
-
-    public int getScale();
-
-    public BigDecimal getMaxDecimal();
-
-    public BigDecimal getMinDecimal();
-
-    public Date getStartDate();
-
-    public Date getEndDate();
-
-    public Timestamp getStartDatetime();
-
-    public Timestamp getEndDatetime();
 }

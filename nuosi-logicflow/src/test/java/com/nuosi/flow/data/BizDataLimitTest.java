@@ -2,7 +2,7 @@ package com.nuosi.flow.data;
 
 import com.nuosi.flow.data.impl.BizData;
 import com.nuosi.flow.data.impl.BizDataDefine;
-import com.nuosi.flow.data.impl.BizDataLimit;
+import com.nuosi.flow.data.limit.*;
 import com.nuosi.flow.logic.LogicFlowEngine;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,28 +28,28 @@ public class BizDataLimitTest {
         LogicFlowEngine.init();
         bizName = "User";
 
-        BDataLimit stringLimit = new BizDataLimit().setSize(10);
-        BDataLimit intLimit = new BizDataLimit().setMax(200).setMin(0);
-        BDataLimit decimalLimit = new BizDataLimit().setPrecision(4).setScale(2)
+        BDataLimit stringLimit = new StringLimit().setSize(10);
+        BDataLimit intLimit = new IntegerLimit().setMax(200).setMin(0);
+        BDataLimit decimalLimit = new DecimalLimit().setPrecision(4).setScale(2)
                 .setMaxDecimal(new BigDecimal("1111.11")).setMinDecimal(new BigDecimal("1.11"));
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date startDate = new Date(dateFormat.parse("1982-1-1").getTime());
         Date endDate = new Date(dateFormat.parse("1984-12-30").getTime());
-        BDataLimit dateLimit = new BizDataLimit().setStartDate(startDate).setEndDate(endDate);
+        BDataLimit dateLimit = new DateLimit().setStartDate(startDate).setEndDate(endDate);
 
         SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Timestamp startDatetime = new Timestamp(dateFormat.parse("2021-3-19 00:00:00").getTime());
         Timestamp endDatetime = new Timestamp(dateFormat.parse("2021-3-20 23:59:59").getTime());
-        BDataLimit datetimeLimit = new BizDataLimit().setStartDatetime(startDatetime).setEndDatetime(endDatetime);
+        BDataLimit datetimeLimit = new DatetimeLimit().setStartDatetime(startDatetime).setEndDatetime(endDatetime);
 
         // 注册User结构的业务对象
         BDataDefine userDefine = new BizDataDefine(bizName);
-        userDefine.defineType("name", BDataDefine.DataType.STRING, stringLimit);
-        userDefine.defineType("age", BDataDefine.DataType.INT, intLimit);
-        userDefine.defineType("height", BDataDefine.DataType.DECIMAL, decimalLimit);
-        userDefine.defineType("birthday", BDataDefine.DataType.DATE, dateLimit);
-        userDefine.defineType("create_date", BDataDefine.DataType.DATETIME, datetimeLimit);
+        userDefine.defineType("name", BDataDefine.BDataType.STRING, stringLimit);
+        userDefine.defineType("age", BDataDefine.BDataType.INT, intLimit);
+        userDefine.defineType("height", BDataDefine.BDataType.DECIMAL, decimalLimit);
+        userDefine.defineType("birthday", BDataDefine.BDataType.DATE, dateLimit);
+        userDefine.defineType("create_date", BDataDefine.BDataType.DATETIME, datetimeLimit);
         BizDataManager.registerDto(userDefine, true);
     }
 

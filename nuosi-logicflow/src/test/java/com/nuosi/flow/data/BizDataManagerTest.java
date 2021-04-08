@@ -22,8 +22,8 @@ public class BizDataManagerTest {
         bizName = "User";
         // 注册User结构的业务对象
         BDataDefine dataDefine = new BizDataDefine(bizName);
-        dataDefine.defineType("name", BDataDefine.DataType.STRING);
-        dataDefine.defineType("age", BDataDefine.DataType.INT);
+        dataDefine.defineType("name", BDataDefine.BDataType.STRING);
+        dataDefine.defineType("age", BDataDefine.BDataType.INT);
         BizDataManager.registerDto(dataDefine, true);
     }
 
