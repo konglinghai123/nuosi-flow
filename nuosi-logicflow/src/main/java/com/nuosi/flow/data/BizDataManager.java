@@ -31,7 +31,7 @@ public class BizDataManager {
         if(bizDataDefine.containsKey(bizName)){
             if(!isOverride){
                 //抛出异常，防止重复注册
-                IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_STRUCTURE_EXISTS);
+                IpuUtility.errorCode(LogicFlowConstants.BDATA_STRUCTURE_EXISTS);
             }
         }
         bizDataDefine.put(bizName, dataDefine);

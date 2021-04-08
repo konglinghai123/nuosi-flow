@@ -12,7 +12,6 @@ import com.nuosi.flow.util.LogicFlowConstants;
  * @version v1.0.0
  */
 public class StringLimit implements BDataLimit {
-
     private int size = -1;
 
     public int getSize() {

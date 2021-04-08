@@ -9,12 +9,13 @@ package com.nuosi.flow.util;
 public class LogicFlowConstants {
 
     /*LogicFlow异常编码*/
-    public static final String LOGICFLOW_ATTR_NOT_EXIST = "LOGICFLOW_ATTR_NOT_EXIST";
-    public static final String LOGICFLOW_ATTR_FORMAT_ERROR = "LOGICFLOW_ATTR_FORMAT_ERROR";
-    public static final String LOGICFLOW_STRUCTURE_EXISTS = "LOGICFLOW_STRUCTURE_EXISTS";
-    /*BData异常编码*/
 
+    /*BData异常编码*/
     public static final String BDATA_DEFINE_NO_EXISTS = "BDATA_DEFINE_NO_EXISTS";
+    public static final String BDATA_STRUCTURE_EXISTS = "BDATA_STRUCTURE_EXISTS";
+    public static final String BDATA_ATTR_DEFINE_NO_EXISTS = "BDATA_ATTR_DEFINE_NO_EXISTS";
+    public static final String BDATA_ATTR_FORMAT_ERROR = "BDATA_ATTR_FORMAT_ERROR";
+
     public static final String BDATA_CHECK_INT = "BDATA_CHECK_INT";
     public static final String BDATA_CHECK_INT_MAX = "BDATA_CHECK_INT_MAX";
     public static final String BDATA_CHECK_INT_MIN = "BDATA_CHECK_INT_MIN";

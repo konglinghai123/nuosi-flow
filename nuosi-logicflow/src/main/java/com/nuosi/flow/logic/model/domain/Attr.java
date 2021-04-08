@@ -1,5 +1,7 @@
 package com.nuosi.flow.logic.model.domain;
 
+import java.util.List;
+
 /**
  * <p>desc: 逻辑流元素：领域模型属性 </p>
  * <p>date: 2021/3/25 18:08 </p>
@@ -12,6 +14,7 @@ public class Attr {
     private String type;
     private String name;
     private String initial;
+    private List<Limit> limits;
 
     public String getId() {
         return id;
@@ -43,5 +46,13 @@ public class Attr {
 
     public void setInitial(String initial) {
         this.initial = initial;
+    }
+
+    public List<Limit> getLimits() {
+        return limits;
+    }
+
+    public void setLimits(List<Limit> limits) {
+        this.limits = limits;
     }
 }

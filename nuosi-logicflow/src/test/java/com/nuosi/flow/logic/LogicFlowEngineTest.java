@@ -20,7 +20,6 @@ import java.io.InputStream;
  * <p>date: 2021/3/29 21:17</p>
  * @author nuosi fsofs@163.com
  * @version v1.0.0
- * update:[序号][日期YYYY-MM-DD] [更改人姓名][变更描述]
  */
 public class LogicFlowEngineTest {
 

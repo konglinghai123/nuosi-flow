@@ -36,11 +36,11 @@ public class BizData extends JsonMap implements BData {
     public BizData put(String attr, Object value) {
         if (!dataDefine.containsAttr(attr)) {
             //业务属性不存在时抛出异常
-            IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_NOT_EXIST);
+            IpuUtility.errorCode(LogicFlowConstants.BDATA_ATTR_DEFINE_NO_EXISTS, bizName, attr);
         }
         if (!dataDefine.checkData(attr, value)) {
             //业务属性数据格式不正确时抛出异常
-            IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_FORMAT_ERROR);
+            IpuUtility.errorCode(LogicFlowConstants.BDATA_ATTR_FORMAT_ERROR, bizName, attr);
         }
         super.put(attr, value);
         return this;
@@ -50,7 +50,7 @@ public class BizData extends JsonMap implements BData {
     public Object get(Object attr) {
         if (!dataDefine.containsAttr((String) attr)) {
             //业务属性不存在时抛出异常
-            IpuUtility.errorCode(LogicFlowConstants.LOGICFLOW_ATTR_NOT_EXIST);
+            IpuUtility.errorCode(LogicFlowConstants.BDATA_ATTR_DEFINE_NO_EXISTS, bizName, (String) attr);
         }
         return super.get(attr);
     }
