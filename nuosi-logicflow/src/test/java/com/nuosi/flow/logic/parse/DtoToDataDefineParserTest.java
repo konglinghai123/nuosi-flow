@@ -5,9 +5,12 @@ import com.nuosi.flow.data.BData;
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BizDataManager;
 import com.nuosi.flow.data.impl.BizData;
+import com.nuosi.flow.logic.model.domain.DomainModel;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.InputStream;
 
 /**
  * <p>desc: 描述这个类功能的注释 </p>
@@ -20,9 +23,10 @@ public class DtoToDataDefineParserTest {
 
     @Test
     public void testParseDataDefine() throws Exception {
-        String flowConfig = "dto/goods_info_dto.xml";
-        DtoToDataDefineParser parser = new DtoToDataDefineParser(flowConfig);
-        BDataDefine dataDefine = parser.parse();
+        String modelConfig = "model/goods_info.xml";
+        InputStream in = getClass().getClassLoader().getResourceAsStream(modelConfig);
+        DomainModel domainModel = new XmlToBizDataParser(in).getDomainModel();
+        BDataDefine dataDefine = new DtoToDataDefineParser().parse(domainModel);
 
         BizDataManager.registerDto(dataDefine, true);
         BData bData = new BizData(dataDefine.getBizName());

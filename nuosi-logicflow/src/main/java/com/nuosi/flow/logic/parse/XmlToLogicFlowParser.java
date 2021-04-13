@@ -1,21 +1,13 @@
 package com.nuosi.flow.logic.parse;
 
-import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.common.xml.Dom4jHelper;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.nuosi.flow.logic.LogicFlowManager;
-import com.nuosi.flow.logic.model.domain.Attr;
-import com.nuosi.flow.logic.model.domain.DomainModel;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * <p>desc: 逻辑流模型解析</p>
@@ -29,9 +21,7 @@ public class XmlToLogicFlowParser extends Dom4jHelper {
     private static final String ID = "id";
     private static final String VAR = "var";
     private static final String IMPORT = "import";
-    private static final String DTO = "dto";
-
-    private Map<String, Map<String, JSONObject>> dtoMap = new HashMap<String, Map<String, JSONObject>>();
+    private static final String MODEL = "model";
 
     public XmlToLogicFlowParser(InputStream in) throws Exception {
         super(in);
@@ -51,35 +41,6 @@ public class XmlToLogicFlowParser extends Dom4jHelper {
         while (ait.hasNext()) {
             Attribute attr = (Attribute) ait.next();
             attrJsonObject.put(attr.getName(), attr.getValue());
-        }
-
-        // 缓存attr标签的内容，提供给具有attr属性的var标签复用
-        if (VAR.equals(element.getName())) {
-            if (attrJsonObject.containsKey(REUSE) && attrJsonObject.containsKey(ATTR)) {
-                String reuse = attrJsonObject.getString(REUSE);
-                if (dtoMap.containsKey(reuse)) {
-                    Map<String, JSONObject> reuseMap = dtoMap.get(reuse);
-                    String attr = attrJsonObject.getString(ATTR);
-                    if (reuseMap.containsKey(attr)){
-                        JSONObject varJsonObject = reuseMap.get(attr);
-                        attrJsonObject.putAll(varJsonObject);
-                    }else{
-                        IpuUtility.error("未声明属性" + attr);
-                    }
-                } else {
-                    IpuUtility.error("未声明对象" + reuse);
-                }
-            }
-        } else if (IMPORT.equals(element.getName())) {
-            String dtoName = attrJsonObject.getString(DTO);
-            //String dtoName = element.attribute("dto").getValue();
-            DomainModel domainModel = LogicFlowManager.getDomainModel(dtoName);
-            List<Attr> attrs = domainModel.getAttrs();
-            Map<String, JSONObject> attrMap = new HashMap<String, JSONObject>();
-            for (Attr attr : attrs) {
-                attrMap.put(attr.getId(), (JSONObject) JSON.toJSON(attr));
-            }
-            dtoMap.put(dtoName, attrMap);
         }
         elementMap.putAll(attrJsonObject);
 

@@ -1,7 +1,5 @@
 package com.nuosi.flow.logic.parse;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BDataLimit;
 import com.nuosi.flow.data.impl.BizDataDefine;
@@ -9,8 +7,8 @@ import com.nuosi.flow.data.limit.*;
 import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.domain.DomainModel;
 import com.nuosi.flow.logic.model.domain.Limit;
+import com.nuosi.flow.logic.model.element.Var;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -21,69 +19,89 @@ import java.util.List;
  * @version v1.0.0
  */
 public class DtoToDataDefineParser {
-    private String dtoConfig;
 
-    public DtoToDataDefineParser(String dtoConfig) {
-        this.dtoConfig = dtoConfig;
+    public DtoToDataDefineParser() {
     }
 
-    public BDataDefine parse() throws Exception {
-        JSONObject beanJson = parseJSONObject();
-        DomainModel domainModel = JSON.toJavaObject(beanJson, DomainModel.class);
-
+    public BDataDefine parse(DomainModel domainModel) throws Exception {
         BDataDefine dataDefine = new BizDataDefine(domainModel.getId());
         List<Attr> attrs = domainModel.getAttrs();
         for (Attr attr : attrs) {
             BDataDefine.BDataType dataType = BDataDefine.BDataType.valueOf(attr.getType().toUpperCase());
             List<Limit> limits = attr.getLimits();
-            if (limits == null) {
+            if (limits == null || limits.isEmpty()) {
                 dataDefine.defineType(attr.getId(), dataType);
                 continue;
             }
 
             Limit limit = limits.get(0);
-            BDataLimit dataLimit = null;
-            switch (dataType) {
-                /*校验整数类型*/
-                case INT:
-                    dataLimit = parseIntegerLimit(limit);
-                    break;
-                /*校验字符类型*/
-                case STRING:
-                    dataLimit = parseStringLimit(limit);
-                    break;
-                /*校验小数类型*/
-                case DECIMAL:
-                    dataLimit = parseDecimalLimit(limit);
-                    break;
-                /*校验日期类型*/
-                case DATE:
-                    dataLimit = parseDateLimit(limit);
-                    break;
-                /*校验日期时间类型*/
-                case DATETIME:
-                    dataLimit = parseDatetimeLimit(limit);
-                    break;
-                default:
-                    break;
-            }
+            BDataLimit dataLimit = parseLimitToBDataLimit(dataType, limit);
             dataDefine.defineType(attr.getId(), dataType, dataLimit);
         }
         return dataDefine;
     }
 
-    private JSONObject parseJSONObject() throws Exception {
-        InputStream is = null;
-        JSONObject beanJson;
-        try {
-            is = getClass().getClassLoader().getResourceAsStream(dtoConfig);
-            beanJson = new XmlToBizDataParser(is).getBeanJson();
-        } finally {
-            if (is != null) {
-                is.close();
+    public BDataDefine parseByAttrs(String bizName, List<Attr> attrs){
+        BDataDefine dataDefine = new BizDataDefine(bizName);
+        for (Attr attr : attrs) {
+            BDataDefine.BDataType dataType = BDataDefine.BDataType.valueOf(attr.getType().toUpperCase());
+            List<Limit> limits = attr.getLimits();
+            if (limits == null || limits.isEmpty()) {
+                dataDefine.defineType(attr.getId(), dataType);
+                continue;
             }
+
+            Limit limit = limits.get(0);
+            BDataLimit dataLimit = parseLimitToBDataLimit(dataType, limit);
+            dataDefine.defineType(attr.getId(), dataType, dataLimit);
         }
-        return beanJson;
+        return dataDefine;
+    }
+
+    public BDataDefine parse(String bizName, List<Var> vars){
+        BDataDefine dataDefine = new BizDataDefine(bizName);
+        for (Var var : vars) {
+            BDataDefine.BDataType dataType = BDataDefine.BDataType.valueOf(var.getType().toUpperCase());
+            List<Limit> limits = var.getLimits();
+            if (limits == null || limits.isEmpty()) {
+                dataDefine.defineType(var.getId(), dataType);
+                continue;
+            }
+
+            Limit limit = limits.get(0);
+            BDataLimit dataLimit = parseLimitToBDataLimit(dataType, limit);
+            dataDefine.defineType(var.getId(), dataType, dataLimit);
+        }
+        return dataDefine;
+    }
+
+    private BDataLimit parseLimitToBDataLimit(BDataDefine.BDataType dataType, Limit limit) {
+        BDataLimit dataLimit = null;
+        switch (dataType) {
+            /*校验整数类型*/
+            case INT:
+                dataLimit = parseIntegerLimit(limit);
+                break;
+            /*校验字符类型*/
+            case STRING:
+                dataLimit = parseStringLimit(limit);
+                break;
+            /*校验小数类型*/
+            case DECIMAL:
+                dataLimit = parseDecimalLimit(limit);
+                break;
+            /*校验日期类型*/
+            case DATE:
+                dataLimit = parseDateLimit(limit);
+                break;
+            /*校验日期时间类型*/
+            case DATETIME:
+                dataLimit = parseDatetimeLimit(limit);
+                break;
+            default:
+                break;
+        }
+        return dataLimit;
     }
 
     private BDataLimit parseIntegerLimit(Limit limit) {

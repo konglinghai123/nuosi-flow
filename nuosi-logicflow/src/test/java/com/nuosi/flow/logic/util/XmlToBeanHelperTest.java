@@ -19,7 +19,7 @@ public class XmlToBeanHelperTest {
     @Test
     public void testGetBeanJson(){
         try{
-            String flowConfig = "dto/goods_info_dto.xml";
+            String flowConfig = "model/goods_info.xml";
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
             JSONObject beanJson = new XmlToBeanHelper(is).getBeanJson();
             System.out.println(beanJson);

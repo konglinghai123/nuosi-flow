@@ -3,7 +3,7 @@ package com.nuosi.flow.logic.model;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
-import com.nuosi.flow.logic.model.header.Global;
+import com.nuosi.flow.logic.model.global.Define;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class LogicFlow {
     private String id;
     private String name;
     private String desc;
-    private List<Global> globals;
+    private List<Define> defines;
     private List<Start> starts;
     private List<End> ends;
     private List<Action> actions;
@@ -46,12 +46,12 @@ public class LogicFlow {
         this.desc = desc;
     }
 
-    public List<Global> getGlobals() {
-        return globals;
+    public List<Define> getDefines() {
+        return defines;
     }
 
-    public void setGlobals(List<Global> globals) {
-        this.globals = globals;
+    public void setDefines(List<Define> defines) {
+        this.defines = defines;
     }
 
     public List<Start> getStarts() {

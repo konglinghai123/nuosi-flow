@@ -20,11 +20,12 @@ public class XmlToBizDataParserTest {
     @Test
     public void testGetBeanJson(){
         try{
-            String flowConfig = "dto/goods_info_dto.xml";
+            String flowConfig = "model/goods_info.xml";
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
-            JSONObject beanJson = new XmlToBizDataParser(is).getBeanJson();
+            XmlToBizDataParser parser = new XmlToBizDataParser(is);
+            JSONObject beanJson = parser.getBeanJson();
             System.out.println("beanJson==="+beanJson);
-            DomainModel domainModel = JSON.toJavaObject(beanJson, DomainModel.class);
+            DomainModel domainModel = parser.getDomainModel();
             System.out.println("domainModel==="+JSON.toJSONString(domainModel));
             Assert.assertTrue(true);
         }catch (Exception e){
@@ -36,10 +37,10 @@ public class XmlToBizDataParserTest {
     @Test
     public void testDomainModelIsEquals(){
         try{
-            String flowConfig = "dto/goods_info_dto.xml";
+            String flowConfig = "model/goods_info.xml";
             InputStream is1 = getClass().getClassLoader().getResourceAsStream(flowConfig);
-            JSONObject beanJson = new XmlToBizDataParser(is1).getBeanJson();
-            DomainModel domainModel1 = JSON.toJavaObject(beanJson, DomainModel.class);
+            XmlToBizDataParser parser = new XmlToBizDataParser(is1);
+            DomainModel domainModel1 = parser.getDomainModel();
             System.out.println("domainModel1==="+JSON.toJSONString(domainModel1));
 
             InputStream is2 = getClass().getClassLoader().getResourceAsStream(flowConfig);

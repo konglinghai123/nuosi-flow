@@ -3,24 +3,20 @@
             name="简单逻辑流程范例"
             desc="简单逻辑流程范例">
     <!-- 全局域 -->
-    <global>
-        <!-- 引入dto定义 -->
-        <import dto="goods_info"/>
-        <attr id="id" type="int" name="货物ID"/>
-        <attr id="goods_name" type="string" name="货物名称"/>
-        <attr id="goods_type" type="int" name="货物类型"/>
-        <attr id="price" type="decimal" name="货物价格"/>
-        <!-- 数据总线 -->
-        <databus>
-            <!-- 定义数据格式，会触发校验 -->
-            <var id="" type="" name="" initial=""/>
-        </databus>
-    </global>
+    <define>
+        <!-- 引入model定义 -->
+        <import model="goods_info"/>
+        <var id="goods_type" type="int" name="货物类型">
+            <limit max="10"/>
+        </var>
+        <var id="user_id" type="int" name="用户标识"/>
+        <var id="user_name" type="string" name="用户名称"/>
+    </define>
 
     <start id="start" name="开始节点" next="goodsCheck">
         <!-- 逻辑入口参数校验 -->
-        <var reuse="goods_info" attr="goods_name" key="goods_name" validityCheck=""/>
-        <var reuse="goods_info" attr="goods_type" />
+        <var model="goods_info" attr="goods_name" key="goods_name"/>
+        <var model="goods_info" attr="goods_type" key="goods_type"/>
     </start>
 
     <action id="goodsCheck" name="货物校验" next="queryGoodsInfo">
@@ -37,6 +33,7 @@
         <input>
             <var key="goods_name"/>
             <var key="goods_type"/>
+            <var key="user_id" id="user_id"/>
         </input>
         <sql conn="dynamic-form-test">
         <![CDATA[
@@ -46,10 +43,10 @@
         ]]>
         </sql>
         <output>
-            <var reuse="goods_info" attr="id" key="goods_id"/>
-            <var reuse="goods_info" attr="goods_name"/>
-            <var reuse="goods_info" attr="price" key="goods_price"/>
-            <var reuse="goods_info" attr="goods_type"/>
+            <var model="goods_info" attr="id" key="goods_id"/>
+            <var model="goods_info" attr="goods_name"/>
+            <var model="goods_info" attr="price" key="goods_price"/>
+            <var model="goods_info" attr="goods_type"/>
         </output>
     </action>
 

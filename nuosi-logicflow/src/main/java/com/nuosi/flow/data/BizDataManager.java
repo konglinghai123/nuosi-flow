@@ -53,6 +53,10 @@ public class BizDataManager {
         return bizDataDefine.get(bizName);
     }
 
+    public static boolean contains(String bizName){
+        return bizDataDefine.containsKey(bizName);
+    }
+
     private static void loadDtoConfig(Map<String, BDataDefine> javaDtoConfig) {
     }
 }

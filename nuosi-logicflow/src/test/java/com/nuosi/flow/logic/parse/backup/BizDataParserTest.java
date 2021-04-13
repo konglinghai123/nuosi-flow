@@ -2,7 +2,6 @@ package com.nuosi.flow.logic.parse.backup;
 
 import com.alibaba.fastjson.JSON;
 import com.nuosi.flow.logic.model.domain.DomainModel;
-import com.nuosi.flow.logic.parse.backup.BizDataParser;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -19,7 +18,7 @@ public class BizDataParserTest {
     @Test
     public void parseAllTest() throws Exception {
         try{
-            String flowConfig = "dto/goods_info_dto.xml";
+            String flowConfig = "model/goods_info.xml";
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
             DomainModel domainModel = new BizDataParser().parser(is);
             String strDomainModel = JSON.toJSONString(domainModel);
