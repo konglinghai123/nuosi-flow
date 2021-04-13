@@ -3,6 +3,7 @@ package com.nuosi.flow.logic.parse;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.domain.DomainModel;
+import com.nuosi.flow.logic.parse.backup.BizDataParser;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -1,7 +1,6 @@
-package com.nuosi.flow.logic.parse;
+package com.nuosi.flow.logic.parse.backup;
 
 import com.ai.ipu.basic.util.IpuUtility;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.action.Sql;
@@ -12,13 +11,11 @@ import com.nuosi.flow.logic.model.domain.Limit;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
-import com.nuosi.flow.logic.util.XmlHelper;
+import com.nuosi.flow.logic.util.XmlToJsonHelper;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * <p>desc: 业务传输对象解析</p>
@@ -30,7 +27,7 @@ public class BizDataParser {
     public static final String MODEL = "model";
     public static final String ATTR = "attr";
     public static final String ACTION = "action";
-    public static final String CHILDREN = XmlHelper.CHILDREN_TAG;
+    public static final String CHILDREN = XmlToJsonHelper.CHILDREN_TAG;
 
     public static final String INPUT = "input";
     public static final String OUTPUT = "output";
@@ -54,7 +51,7 @@ public class BizDataParser {
     public static final String END_DATETIME = "endDatetime";
 
     public DomainModel parser(InputStream flowInputStream) throws Exception {
-        XmlHelper dh = new XmlHelper(flowInputStream);
+        XmlToJsonHelper dh = new XmlToJsonHelper(flowInputStream);
         JSONObject allJson = dh.getAllJson();
         DomainModel domainModel = parserDomainModel(allJson);
         return domainModel;

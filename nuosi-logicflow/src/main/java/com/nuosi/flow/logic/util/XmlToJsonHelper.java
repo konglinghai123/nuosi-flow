@@ -15,10 +15,10 @@ import java.util.Iterator;
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class XmlHelper extends Dom4jHelper {
+public class XmlToJsonHelper extends Dom4jHelper {
     public static final String CHILDREN_TAG = "children";
 
-    public XmlHelper(InputStream in) throws Exception {
+    public XmlToJsonHelper(InputStream in) throws Exception {
         super(in);
     }
 
@@ -48,8 +48,8 @@ public class XmlHelper extends Dom4jHelper {
             attrMap.put(attr.getName(), attr.getValue());
         }
 
-        childrenMap.put(element.getName() + XmlHelper.SUFFIX_ATTR, attrMap);
-        childrenMap.put(element.getName() + XmlHelper.SUFFIX_TEXT, element.getTextTrim());
+        childrenMap.put(element.getName() + XmlToJsonHelper.SUFFIX_ATTR, attrMap);
+        childrenMap.put(element.getName() + XmlToJsonHelper.SUFFIX_TEXT, element.getTextTrim());
         if(!childElements.isEmpty()){
             childrenMap.put(CHILDREN_TAG, childElements);
         }

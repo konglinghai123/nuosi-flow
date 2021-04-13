@@ -1,4 +1,4 @@
-package com.nuosi.flow.logic.parse;
+package com.nuosi.flow.logic.parse.backup;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -9,7 +9,7 @@ import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.header.Global;
 import com.nuosi.flow.logic.util.DtoUtil;
-import com.nuosi.flow.logic.util.XmlHelper;
+import com.nuosi.flow.logic.util.XmlToJsonHelper;
 
 import java.io.InputStream;
 
@@ -35,12 +35,12 @@ public class LogicFlowParser {
     public static final String NODE_DOMAIN = "node_domain";
     public static final String SQL = "sql";
 
-    public static final String CHILDREN = XmlHelper.CHILDREN_TAG;
+    public static final String CHILDREN = XmlToJsonHelper.CHILDREN_TAG;
     public static final String SUFFIX_ATTR = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_ATTR;
     public static final String SUFFIX_TEXT = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_TEXT;
 
     public LogicFlow parser(InputStream flowInputStream) throws Exception {
-        XmlHelper dh = new XmlHelper(flowInputStream);
+        XmlToJsonHelper dh = new XmlToJsonHelper(flowInputStream);
         JSONObject originData = dh.getAllJson();
         LogicFlow logicFlow = parserLogicFlow(originData);
         return logicFlow;
