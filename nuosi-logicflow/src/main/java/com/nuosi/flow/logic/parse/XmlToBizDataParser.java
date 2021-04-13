@@ -1,6 +1,5 @@
 package com.nuosi.flow.logic.parse;
 
-import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.common.xml.Dom4jHelper;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -8,9 +7,7 @@ import org.dom4j.Attribute;
 import org.dom4j.Element;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 /**
  * <p>desc: 业务传输对象解析</p>
@@ -23,7 +20,7 @@ public class XmlToBizDataParser extends Dom4jHelper {
     private static final String ID = "id";
     private static final String VAR = "var";
 
-    private Map<String, JSONObject> attrMap = new HashMap<String, JSONObject>();
+    // private Map<String, JSONObject> attrMap = new HashMap<String, JSONObject>();
 
     public XmlToBizDataParser(InputStream in) throws Exception {
         super(in);
@@ -46,7 +43,7 @@ public class XmlToBizDataParser extends Dom4jHelper {
         }
 
         // 缓存attr标签的内容，提供给具有attr属性的var标签复用
-        if(ATTR.equals(element.getName())){
+        /*if(ATTR.equals(element.getName())){
             attrMap.put(attrJsonObject.getString(ID), attrJsonObject);
         }else if(VAR.equals(element.getName())){
             if (attrJsonObject.containsKey(ATTR)) {
@@ -58,7 +55,7 @@ public class XmlToBizDataParser extends Dom4jHelper {
                     IpuUtility.error("未声明属性"+attrId);
                 }
             }
-        }
+        }*/
         elementMap.putAll(attrJsonObject);
 
         if(!element.getTextTrim().isEmpty()){

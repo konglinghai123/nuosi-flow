@@ -30,6 +30,7 @@ public class DtoToDataDefineParserTest {
             bData.put("price", 99.999999999);
             Assert.assertTrue(false);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             Assert.assertTrue(true);
         }
     }
@@ -40,7 +41,7 @@ public class DtoToDataDefineParserTest {
     }
 
     @Before
-    public void before(){
+    public void before() throws Exception {
         String exceptionMessagesConfig = "com/nuosi/flow/exception_messages";
         IpuBaseException.registerCode(exceptionMessagesConfig);
     }

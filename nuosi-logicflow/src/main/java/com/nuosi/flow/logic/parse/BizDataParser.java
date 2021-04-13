@@ -8,6 +8,7 @@ import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.domain.DomainModel;
+import com.nuosi.flow.logic.model.domain.Limit;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
@@ -39,7 +40,18 @@ public class BizDataParser {
     public static final String SUFFIX_ATTR = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_ATTR;
     public static final String SUFFIX_TEXT = com.ai.ipu.common.xml.Dom4jHelper.SUFFIX_TEXT;
 
-    private Map<String, Attr> attrMap = new HashMap<String, Attr>();
+    public static final String LIMIT = "limit";
+    public static final String MAX = "max";
+    public static final String MIN = "min";
+    public static final String SIZE = "size";
+    public static final String PRECISION = "precision";
+    public static final String SCALE = "scale";
+    public static final String MAX_DECIMAL = "maxDecimal";
+    public static final String MIN_DECIMAL = "minDecimal";
+    public static final String START_DATE = "startDate";
+    public static final String END_DATE = "endDate";
+    public static final String START_DATETIME = "startDatetime";
+    public static final String END_DATETIME = "endDatetime";
 
     public DomainModel parser(InputStream flowInputStream) throws Exception {
         XmlHelper dh = new XmlHelper(flowInputStream);
@@ -62,7 +74,6 @@ public class BizDataParser {
                 modelItem = children.getJSONObject(i);
                 if (modelItem.containsKey(ATTR)) {
                     Attr attr = parserAttr(modelItem.getJSONObject(ATTR));
-                    attrMap.put(attr.getId(), attr);
                     attrs.add(attr);
                 } else if (modelItem.containsKey(ACTION)) {
                     Action action = parserAction(modelItem.getJSONObject(ACTION));
@@ -85,7 +96,30 @@ public class BizDataParser {
     public Attr parserAttr(JSONObject attrObject){
         JSONObject attrJson = attrObject.getJSONObject(ATTR + SUFFIX_ATTR);
         Attr attr = attrJson.toJavaObject(Attr.class);
+
+        JSONArray children = attrObject.getJSONArray(CHILDREN);
+        if (children != null && !children.isEmpty()) {
+            Limit limit = parserLimit(children.getJSONObject(0));
+            List<Limit> limits = null;
+            if(limit!=null){
+                limits = new ArrayList<Limit>();
+                limits.add(limit);
+            }
+            attr.setLimits(limits);
+        }
         return attr;
+    }
+
+    public Limit parserLimit(JSONObject limitObject){
+        JSONObject limitItem = limitObject.getJSONObject(LIMIT);
+        JSONObject limitAttr = limitItem.getJSONObject(LIMIT + SUFFIX_ATTR);
+        if(limitAttr!=null){
+            Limit limit = limitAttr.toJavaObject(Limit.class);
+            return limit;
+        }else{
+            return null;
+        }
+
     }
 
     public Action parserAction(JSONObject actionObject){
@@ -156,15 +190,6 @@ public class BizDataParser {
     public Var parserVar(JSONObject varObject){
         JSONObject varJson = varObject.getJSONObject(VAR);
         JSONObject varAttr = varJson.getJSONObject(VAR + SUFFIX_ATTR);
-        if (varAttr.containsKey(ATTR)) {
-            String attrId = varAttr.getString(ATTR);
-            if(attrMap.containsKey(attrId)){
-                Attr attr = attrMap.get(attrId);
-                varAttr.putAll((JSONObject) JSON.toJSON(attr));
-            }else{
-                IpuUtility.error("未声明属性"+attrId);
-            }
-        }
         Var var = varAttr.toJavaObject(Var.class);
         return var;
     }
