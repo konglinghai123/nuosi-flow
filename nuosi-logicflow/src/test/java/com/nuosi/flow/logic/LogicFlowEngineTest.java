@@ -30,8 +30,9 @@ public class LogicFlowEngineTest {
     public void testExecute(){
         JMap param = new JsonMap();
         param.put("goods_name","橙汁");
-        param.put("goods_type",9);
-        LogicFlowEngine.execute("simple_logic_flow_example",param);
+        param.put("goods_type",1);
+        Object result = LogicFlowEngine.execute("simple_logic_flow_example",param);
+        System.out.println("result===" + result);
     }
 
     @Before

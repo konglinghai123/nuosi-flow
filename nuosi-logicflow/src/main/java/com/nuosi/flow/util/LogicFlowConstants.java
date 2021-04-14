@@ -9,6 +9,12 @@ package com.nuosi.flow.util;
 public class LogicFlowConstants {
 
     /*LogicFlow异常编码*/
+    public static final String FLOW_DATABUS_VAR_NO_EXISTS = "FLOW_DATABUS_VAR_NO_EXISTS";
+    public static final String FLOW_NODE_TAG_ARRT_EXCEPT = "FLOW_NODE_TAG_ARRT_EXCEPT";
+    public static final String FLOW_NODE_OUTPUT_VAR_NULL = "FLOW_NODE_OUTPUT_VAR_NULL";
+    public static final String FLOW_END_NO_MATCH = "FLOW_END_NO_MATCH";
+    public static final String FLOW_START_SINGLE = "FLOW_START_SINGLE";
+    public static final String FLOW_END_SINGLE = "FLOW_END_SINGLE";
 
     /*BData异常编码*/
     public static final String BDATA_DEFINE_NO_EXISTS = "BDATA_DEFINE_NO_EXISTS";

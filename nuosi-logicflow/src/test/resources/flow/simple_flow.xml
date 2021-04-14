@@ -16,7 +16,7 @@
     <start id="start" name="开始节点" next="goodsCheck">
         <!-- 逻辑入口参数校验 -->
         <var model="goods_info" attr="goods_name" key="goods_name"/>
-        <var model="goods_info" attr="goods_type" key="goods_type"/>
+        <var id="goods_type" key="goods_type"/>
     </start>
 
     <action id="goodsCheck" name="货物校验" next="queryGoodsInfo">
@@ -28,12 +28,12 @@
         </output>
     </action>
 
-    <action id="queryGoodsInfo" name="查询货物信息" next="goodsInfoMapping">
+    <action id="queryGoodsInfo" name="查询货物信息" next="end">
         <!-- 全局域 -->
         <input>
             <var key="goods_name"/>
             <var key="goods_type"/>
-            <var key="user_id" id="user_id"/>
+            <var key="user_id" initial="zhangsan"/>
         </input>
         <sql conn="dynamic-form-test">
         <![CDATA[
@@ -43,14 +43,11 @@
         ]]>
         </sql>
         <output>
-            <var model="goods_info" attr="id" key="goods_id"/>
-            <var model="goods_info" attr="goods_name"/>
-            <var model="goods_info" attr="price" key="goods_price"/>
-            <var model="goods_info" attr="goods_type"/>
+            <var key="goods_infos"/>
         </output>
     </action>
 
     <end id="end" name="结束节点">
-        <var id="goods_info" type="bdata" name="货物信息"/>
+        <var key="goods_infos"/>
     </end>
 </logic-flow>

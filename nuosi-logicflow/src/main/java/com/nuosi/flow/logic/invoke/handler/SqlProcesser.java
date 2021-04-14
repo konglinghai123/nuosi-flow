@@ -3,7 +3,6 @@ package com.nuosi.flow.logic.invoke.handler;
 import com.ai.ipu.data.JMap;
 import com.ai.ipu.database.dao.ISqlDao;
 import com.ai.ipu.database.dao.impl.SqlDao;
-import com.nuosi.flow.logic.invoke.ExecutionContainer;
 import com.nuosi.flow.logic.model.action.Sql;
 
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Map;
 public class SqlProcesser implements IActionProcesser {
 
     @Override
-    public Object execute(ExecutionContainer container, Object ... param) throws Exception {
+    public Object execute(Map<String, Object> databus, Object ... param) throws Exception {
         Sql sql = (Sql) param[0];
         JMap params = (JMap) param[1];
         System.out.println("执行SQL语句：" + sql.getSql());

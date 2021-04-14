@@ -11,56 +11,11 @@ import java.util.List;
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class Var {
-    private String id;
-    private String type;
-    private String name;
-    private String initial;
-    private List<Limit> limits;
+public class Var extends Attr{
     private String model;
     private String attr;
     private String key;
     private String validityCheck;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getInitial() {
-        return initial;
-    }
-
-    public void setInitial(String initial) {
-        this.initial = initial;
-    }
-
-    public List<Limit> getLimits() {
-        return limits;
-    }
-
-    public void setLimits(List<Limit> limits) {
-        this.limits = limits;
-    }
 
     public String getModel() {
         return model;

@@ -14,10 +14,12 @@ import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.element.Input;
+import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
 import com.nuosi.flow.logic.model.global.Define;
 import com.nuosi.flow.logic.model.global.Import;
 import com.nuosi.flow.logic.parse.DtoToDataDefineParser;
+import com.nuosi.flow.util.LogicFlowConstants;
 
 import java.util.*;
 
@@ -29,10 +31,13 @@ import java.util.*;
  * @version v1.0.0
  */
 public class ExecutionContainer {
-    private Map<String, Object> databus = new HashMap<String, Object>();
-    private Set<String> importSet = new HashSet<String>();
-    private BDataDefine bDataDefine;
-    private Map<String, Action> actionMap = new HashMap<String, Action>();
+    private Set<String> importSet = new HashSet<String>();  //记录引用的业务对象
+    private BDataDefine bDataDefine;    //将define中的var定义转化成BDataDefine，使用其数据校验逻辑
+
+    private Map<String, Action> actionMap = new HashMap<String, Action>();  //节点名和节点实体映射关系
+
+    private Map<String, Object> databus = new HashMap<String, Object>();    //数据总线
+    private Map<String, Object> nodeResult = new HashMap<String, Object>(); //节点返回数据
 
     private LogicFlow logicFlow;
 
@@ -102,10 +107,11 @@ public class ExecutionContainer {
     private void storeDatabus(JMap param) {
         String[] keys = param.getKeys();
         for (String key : keys) {
-            //存在则进行业务对象校验
+            //入参存储到数据总线前的校验
             if (bDataDefine.getDataTypes().containsKey(key)) {
                 bDataDefine.checkData(key, param.get(key));
             }
+            //入参存储到数据总线
             databus.put(key, param.get(key));
         }
     }
@@ -114,21 +120,26 @@ public class ExecutionContainer {
         Start start = getStart();
         List<Var> vars = start.getVars();
         if (vars != null) {
+            // 校验调用业务逻辑的入参数据
             String key;
             for (Var var : vars) {
-                key = var.getId();
-                if (key != null) {
-                    if (!databus.containsKey(key)) {
-                        IpuUtility.error("执行XX节点的参数key不存在");
-                    } else {
-                        // 做数据校验
-                        bDataDefine.checkData(key, databus.get(key));
-                    }
-                } else if (var.getModel() != null && var.getAttr() != null && var.getKey() != null) {
-                    BDataDefine bDataDefine = BizDataManager.getDataDefine(var.getModel());
-                    bDataDefine.checkData(var.getAttr(), databus.get(var.getKey()));
+                key = var.getKey();
+                if (key == null) {
+                    IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_TAG_ARRT_EXCEPT, logicFlow.getId(), "Start", "Var");
+                }
+                if (!databus.containsKey(key)) {
+                    IpuUtility.errorCode(LogicFlowConstants.FLOW_DATABUS_VAR_NO_EXISTS, logicFlow.getId(), key);
                 } else {
-                    IpuUtility.error("属性不正确");
+                    if(var.getId()!=null){
+                        // 根据定义的数据模型做数据校验
+                        bDataDefine.checkData(key, databus.get(key));
+                    }else if(var.getModel() != null && var.getAttr() != null){
+                        // 根据引入的业务模型做数据校验
+                        BDataDefine bDataDefine = BizDataManager.getDataDefine(var.getModel());
+                        bDataDefine.checkData(var.getAttr(), databus.get(var.getKey()));
+                    } else{
+                        IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_TAG_ARRT_EXCEPT, logicFlow.getId(), "Start", "Var");
+                    }
                 }
             }
         }
@@ -137,13 +148,16 @@ public class ExecutionContainer {
 
     public String executeAction(String next) throws Exception {
         Action action = actionMap.get(next);
-        JMap param = prepareActionParam(action);
+        JMap param = prepareNodeInput(action);
 
-        IActionProcesser IActionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SQL);
+        IActionProcesser actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SQL);
+        Object result = null;
         if (action.getActionType() == Action.ActionType.SQL) {
             Sql sql = action.getSqls().get(0);
-            IActionProcesser.execute(this, sql, param);
+            result = actionProcesser.execute(databus, sql, param);
         }
+
+        prepareNodeOutput(action, result);
 
         next = action.getNext();
         if (actionMap.containsKey(next)) {
@@ -153,30 +167,66 @@ public class ExecutionContainer {
         }
     }
 
-    private JMap prepareActionParam(Action action) {
+    private JMap prepareNodeInput(Action action) {
         List<Input> inputs = action.getInputs();
         if (inputs == null) {
             return null;
         }
-        if (inputs.size() != 1) {
-            IpuUtility.error("Action节点只能有一个Input");
-        }
         Input input = inputs.get(0);
         List<Var> vars = input.getVars();
-        if (vars == null || vars.size() == 0) {
+        if (vars == null) {
             return null;
         }
         JMap param = new JsonMap();
+        String key;
+        Object value = null;
         for (Var var : vars) {
-            param.put(var.getKey(), databus.get(var.getKey()));
+            if (!databus.containsKey(var.getKey()) && var.getInitial() == null) {
+                IpuUtility.errorCode(LogicFlowConstants.FLOW_DATABUS_VAR_NO_EXISTS, logicFlow.getId(), var.getKey());
+            } else {
+                value = databus.get(var.getKey());
+                value = value == null ? var.getInitial() : value;
+            }
+            key = var.getId() == null ? var.getKey() : var.getId();
+            param.put(key, value);
         }
         return param;
     }
 
+    private void prepareNodeOutput(Action action, Object result){
+        List<Output> outputs = action.getOutputs();
+        if (outputs == null) {
+            return;
+        }
+        Output output = outputs.get(0);
+        List<Var> vars = output.getVars();
+        if (vars == null) {
+            return;
+        }
+
+        if(result instanceof Map){
+            Map resultMap = (Map) result;
+            String key;
+            for (Var var : vars) {
+                key = var.getKey();
+                if(key==null){
+                    IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_OUTPUT_VAR_NULL, logicFlow.getId(), action.getId());
+                }
+                if(databus.containsKey(key)){
+                    // 覆盖数据总线的数据需要记录日志，便于debug。
+                }
+                databus.put(key, resultMap.get(key));
+            }
+        } else {
+            String key = vars.get(0).getKey();
+            databus.put(key, result);
+        }
+    }
+
     public JMap checkEnd(String next) {
         End end = getEnd();
-        if (next.equals(end.getId())) {
-            IpuUtility.error("配置错误：结束节点没有被正确调用");
+        if (!next.equals(end.getId())) {
+            IpuUtility.errorCode(LogicFlowConstants.FLOW_END_NO_MATCH, logicFlow.getId());
         }
 
         JMap result = null;
@@ -185,34 +235,31 @@ public class ExecutionContainer {
             result = new JsonMap();
             String key;
             for (Var var : vars) {
-                key = var.getId();
-                if (!bDataDefine.getDataTypes().containsKey(key)) {
-                    //需要做一些告警处理，记录没有回传的值
-                    continue;
-                } else {
-                    result.put(key, databus.get(key));
+                key = var.getKey();
+                if(key==null){
+                    IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_OUTPUT_VAR_NULL, logicFlow.getId(), end.getId());
                 }
+                if (bDataDefine.getDataTypes().containsKey(key)) {
+                    bDataDefine.checkData(key, databus.get(key));
+                }
+                result.put(key, databus.get(key));
             }
         }
         return result;
     }
 
-    public Start getStart() {
+    private Start getStart() {
         List<Start> starts = logicFlow.getStarts();
-        if (starts == null) {
-            IpuUtility.error("流程需要一个开始节点");
-        } else if (starts.size() != 1) {
-            IpuUtility.error("流程只能有一个开始节点");
+        if (starts == null||starts.size() != 1) {
+            IpuUtility.errorCode(LogicFlowConstants.FLOW_START_SINGLE, logicFlow.getId());
         }
         return starts.get(0);
     }
 
-    public End getEnd() {
+    private End getEnd() {
         List<End> ends = logicFlow.getEnds();
-        if (ends == null) {
-            IpuUtility.error("流程需要一个结束节点");
-        } else if (ends.size() != 1) {
-            IpuUtility.error("流程只能有一个结束节点");
+        if (ends == null||ends.size() != 1) {
+            IpuUtility.errorCode(LogicFlowConstants.FLOW_END_SINGLE, logicFlow.getId());
         }
         return ends.get(0);
     }

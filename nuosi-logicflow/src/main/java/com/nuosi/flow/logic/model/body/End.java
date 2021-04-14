@@ -14,7 +14,6 @@ import java.util.List;
 public class End{
     private String id;
     private String name;
-    private String next;
     private List<Var> vars;
 
     public String getId() {
@@ -31,14 +30,6 @@ public class End{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getNext() {
-        return next;
-    }
-
-    public void setNext(String next) {
-        this.next = next;
     }
 
     public List<Var> getVars() {
