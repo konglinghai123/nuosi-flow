@@ -38,12 +38,13 @@
         </output>
     </action>
 
-    <action id="switchGoodsInfo" name="查询货物信息" next="printGoods">
+    <action id="switchGoodsInfo" name="查询货物信息" next="end">
         <!-- 全局域 -->
         <input>
             <var key="goods_infos"/>
         </input>
-        <if test="INPUT.goods_infos.size==0" next="printGoods"/>
+        <!--<if test="INPUT.goods_infos.size==0" next="printGoods"/>-->
+        <if test="INPUT.goods_infos.size==0" interrupt="${DATABUS.goods_name}货物信息不能为空!"/>
         <!--<if test="INPUT.goods_infos.size>0" next="end"/>-->
     </action>
 

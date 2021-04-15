@@ -1,5 +1,6 @@
 package com.nuosi.flow.logic.invoke.handler;
 
+import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.model.action.If;
 import com.nuosi.flow.util.LogicFlowConstants;
@@ -28,10 +29,16 @@ public class IfProcesser implements IActionProcesser {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put(INPUT, params);
         Object result = null;
-        for(If _if : ifs){
+        for (If _if : ifs) {
             result = MVEL.eval(_if.getTest(), vars);
-            if(TURE.equals(result)){
-                return _if.getNext();
+            if (TURE.equals(result)) {
+                if (_if.getInterrupt() != null) {
+                    IpuUtility.error(_if.getInterrupt());
+                } else if (_if.getNext() != null) {
+                    return _if.getNext();
+                } else {
+                    IpuUtility.error("IF节点属性配置异常");
+                }
             }
         }
         return null;

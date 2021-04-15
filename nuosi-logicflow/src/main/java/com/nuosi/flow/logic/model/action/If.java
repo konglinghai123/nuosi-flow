@@ -8,6 +8,7 @@ package com.nuosi.flow.logic.model.action;
  */
 public class If {
     private String test;
+    private String interrupt;
     private String next;
 
     public String getTest() {
@@ -16,6 +17,14 @@ public class If {
 
     public void setTest(String test) {
         this.test = test;
+    }
+
+    public String getInterrupt() {
+        return interrupt;
+    }
+
+    public void setInterrupt(String interrupt) {
+        this.interrupt = interrupt;
     }
 
     public String getNext() {
