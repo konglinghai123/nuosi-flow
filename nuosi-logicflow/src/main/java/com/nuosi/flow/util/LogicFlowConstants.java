@@ -7,6 +7,9 @@ package com.nuosi.flow.util;
  * @version v1.0.0
  */
 public class LogicFlowConstants {
+    /*表达式内置变量*/
+    public static final String DATABUS = "DATABUS";
+    public static final String INPUT = "INPUT";
 
     /*LogicFlow异常编码*/
     public static final String FLOW_DATABUS_VAR_NO_EXISTS = "FLOW_DATABUS_VAR_NO_EXISTS";

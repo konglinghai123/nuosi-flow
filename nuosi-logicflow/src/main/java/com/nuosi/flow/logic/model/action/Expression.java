@@ -7,4 +7,13 @@ package com.nuosi.flow.logic.model.action;
  * @version v1.0.0
  */
 public class Expression {
+    private String expression;
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
 }

@@ -1,6 +1,6 @@
 package com.nuosi.flow.logic.model.body;
 
-import com.nuosi.flow.logic.model.action.Rule;
+import com.nuosi.flow.logic.model.action.Expression;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
@@ -26,7 +26,7 @@ public class Action {
     private List<Output> outputs;
     private ActionType actionType;
     private List<Sql> sqls;
-    private List<Rule> rules;
+    private List<Expression> expressions;
 
     public String getId() {
         return id;
@@ -84,13 +84,13 @@ public class Action {
         return this;
     }
 
-    public List<Rule> getRules() {
-        return rules;
+    public List<Expression> getExpressions() {
+        return expressions;
     }
 
-    public Action setRules(List<Rule> rules) {
-        this.rules = rules;
-        actionType = ActionType.RULE;
+    public Action setExpressions(List<Expression> expressions) {
+        this.expressions = expressions;
+        actionType = ActionType.EXPRESSION;
         return this;
     }
 }

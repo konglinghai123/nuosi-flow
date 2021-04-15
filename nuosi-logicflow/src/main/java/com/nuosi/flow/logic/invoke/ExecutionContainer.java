@@ -9,6 +9,7 @@ import com.nuosi.flow.data.BizDataManager;
 import com.nuosi.flow.logic.invoke.handler.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.handler.IActionProcesser;
 import com.nuosi.flow.logic.model.LogicFlow;
+import com.nuosi.flow.logic.model.action.Expression;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
@@ -150,12 +151,7 @@ public class ExecutionContainer {
         Action action = actionMap.get(next);
         JMap param = prepareNodeInput(action);
 
-        IActionProcesser actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SQL);
-        Object result = null;
-        if (action.getActionType() == Action.ActionType.SQL) {
-            Sql sql = action.getSqls().get(0);
-            result = actionProcesser.execute(databus, sql, param);
-        }
+        Object result = executeProcesser(action, param);
 
         prepareNodeOutput(action, result);
 
@@ -165,6 +161,27 @@ public class ExecutionContainer {
         } else {
             return next;
         }
+    }
+
+    private Object executeProcesser(Action action, JMap param) throws Exception {
+        Object result = null;
+        IActionProcesser actionProcesser = null;
+        switch (action.getActionType()){
+            case SQL:
+                Sql sql = action.getSqls().get(0);
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SQL);
+                result = actionProcesser.execute(databus, sql, param);
+                break;
+            case EXPRESSION:
+                Expression expr = action.getExpressions().get(0);
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.EXPRESSION);
+                result = actionProcesser.execute(databus, expr, param);
+                break;
+            default:
+                break;
+        }
+
+        return result;
     }
 
     private JMap prepareNodeInput(Action action) {
@@ -185,7 +202,13 @@ public class ExecutionContainer {
                 IpuUtility.errorCode(LogicFlowConstants.FLOW_DATABUS_VAR_NO_EXISTS, logicFlow.getId(), var.getKey());
             } else {
                 value = databus.get(var.getKey());
-                value = value == null ? var.getInitial() : value;
+                if(value == null){
+                    // 入参使用默认值的校验
+                    if (bDataDefine.getDataTypes().containsKey(var.getKey())) {
+                        bDataDefine.checkData(var.getKey(), var.getInitial());
+                    }
+                    value = var.getInitial();
+                }
             }
             key = var.getId() == null ? var.getKey() : var.getId();
             param.put(key, value);

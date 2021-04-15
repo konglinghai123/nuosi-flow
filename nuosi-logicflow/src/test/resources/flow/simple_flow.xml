@@ -21,9 +21,18 @@
 
     <action id="goodsCheck" name="货物校验" next="queryGoodsInfo">
         <input>
+            <var key="goods_name"/>
+            <var key="goods_type"/>
+            <var key="user_id" initial="123456"/>
         </input>
-        <rule>
-        </rule>
+        <expression>
+        <![CDATA[
+            System.out.println("goods_name==="+INPUT.goods_name);
+            System.out.println("goods_name==="+DATABUS.goods_name);
+            System.out.println("goods_type==="+INPUT.goods_type);
+            System.out.println("user_id==="+INPUT.user_id);
+        ]]>
+        </expression>
         <output>
         </output>
     </action>
@@ -33,7 +42,7 @@
         <input>
             <var key="goods_name"/>
             <var key="goods_type"/>
-            <var key="user_id" initial="zhangsan"/>
+            <var key="user_id" initial="123456"/>
         </input>
         <sql conn="dynamic-form-test">
         <![CDATA[
