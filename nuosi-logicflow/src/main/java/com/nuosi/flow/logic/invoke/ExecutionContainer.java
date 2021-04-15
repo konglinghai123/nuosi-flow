@@ -10,6 +10,7 @@ import com.nuosi.flow.logic.invoke.handler.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.handler.IActionProcesser;
 import com.nuosi.flow.logic.model.LogicFlow;
 import com.nuosi.flow.logic.model.action.Expression;
+import com.nuosi.flow.logic.model.action.If;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
@@ -155,7 +156,13 @@ public class ExecutionContainer {
 
         prepareNodeOutput(action, result);
 
-        next = action.getNext();
+        if (action.getActionType() == Action.ActionType.IF) {
+            // 条件判断节点则不取默认的next属性
+            next = result == null ? action.getNext() : result.toString();
+        } else {
+            next = action.getNext();
+        }
+
         if (actionMap.containsKey(next)) {
             return executeAction(next);
         } else {
@@ -176,6 +183,11 @@ public class ExecutionContainer {
                 Expression expr = action.getExpressions().get(0);
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.EXPRESSION);
                 result = actionProcesser.execute(databus, expr, param);
+                break;
+            case IF:
+                List<If> ifs = action.getIfs();
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.IF);
+                result = actionProcesser.execute(databus, ifs, param);
                 break;
             default:
                 break;
@@ -217,6 +229,9 @@ public class ExecutionContainer {
     }
 
     private void prepareNodeOutput(Action action, Object result){
+        if(result==null){
+            return;
+        }
         List<Output> outputs = action.getOutputs();
         if (outputs == null) {
             return;

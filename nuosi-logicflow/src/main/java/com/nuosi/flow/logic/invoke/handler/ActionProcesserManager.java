@@ -20,6 +20,7 @@ public class ActionProcesserManager {
         Map<Action.ActionType, IActionProcesser> map = new HashMap<Action.ActionType, IActionProcesser>(6);
         map.put(Action.ActionType.SQL, new SqlProcesser());
         map.put(Action.ActionType.EXPRESSION, new ExpressionProcesser());
+        map.put(Action.ActionType.IF, new IfProcesser());
         actionProcessers = Collections.unmodifiableMap(map);
     }
 
