@@ -1,6 +1,7 @@
 package com.nuosi.flow.logic.model.body;
 
 import com.nuosi.flow.logic.model.action.Expression;
+import com.nuosi.flow.logic.model.action.Foreach;
 import com.nuosi.flow.logic.model.action.If;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.element.Input;
@@ -17,7 +18,7 @@ import java.util.List;
 public class Action {
 
     public static enum ActionType{
-        SQL,EXPRESSION,IF,SERVICE,RULE,MAPPING,EVENT
+        SQL,EXPRESSION,IF,FOREACH,SERVICE,RULE,MAPPING,EVENT
     }
 
     private String id;
@@ -29,6 +30,7 @@ public class Action {
     private List<Sql> sqls;
     private List<Expression> expressions;
     private List<If> ifs;
+    private List<Foreach> foreachs;
 
     public String getId() {
         return id;
@@ -103,6 +105,16 @@ public class Action {
     public Action setIfs(List<If> ifs) {
         this.ifs = ifs;
         actionType = ActionType.IF;
+        return this;
+    }
+
+    public List<Foreach> getForeachs() {
+        return foreachs;
+    }
+
+    public Action setForeachs(List<Foreach> foreachs) {
+        this.foreachs = foreachs;
+        actionType = ActionType.FOREACH;
         return this;
     }
 }

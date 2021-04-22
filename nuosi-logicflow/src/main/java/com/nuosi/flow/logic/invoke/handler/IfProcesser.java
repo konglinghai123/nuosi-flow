@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>desc: 节点执行处理器的IF类型实现 </p>
+ * <p>desc: 节点执行处理器的条件判断类型实现 </p>
  * <p>date: 2021/4/15 13:30 </p>
  *
  * @author nuosi fsofs@163.com
@@ -19,6 +19,7 @@ import java.util.Map;
  */
 public class IfProcesser implements IActionProcesser {
     private static final String INPUT = LogicFlowConstants.INPUT;
+    private static final String DATABUS = LogicFlowConstants.DATABUS;
     private static final Boolean TURE = Boolean.valueOf(true);
 
     @Override
@@ -28,6 +29,7 @@ public class IfProcesser implements IActionProcesser {
 
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put(INPUT, params);
+        vars.put(DATABUS, databus);
         Object result = null;
         for (If _if : ifs) {
             result = MVEL.eval(_if.getTest(), vars);

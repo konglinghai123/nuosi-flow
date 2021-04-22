@@ -10,6 +10,7 @@ import com.nuosi.flow.logic.invoke.handler.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.handler.IActionProcesser;
 import com.nuosi.flow.logic.model.LogicFlow;
 import com.nuosi.flow.logic.model.action.Expression;
+import com.nuosi.flow.logic.model.action.Foreach;
 import com.nuosi.flow.logic.model.action.If;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
@@ -189,6 +190,11 @@ public class ExecutionContainer {
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.IF);
                 result = actionProcesser.execute(databus, ifs, param);
                 break;
+            case FOREACH:
+                List<Foreach> foreachs = action.getForeachs();
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FOREACH);
+                result = actionProcesser.execute(databus, foreachs, param);
+                break;
             default:
                 break;
         }
@@ -258,6 +264,7 @@ public class ExecutionContainer {
         } else {
             String key = vars.get(0).getKey();
             databus.put(key, result);
+            System.out.println("result=="+result);
         }
     }
 

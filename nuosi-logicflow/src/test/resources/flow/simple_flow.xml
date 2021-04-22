@@ -38,14 +38,9 @@
         </output>
     </action>
 
-    <action id="switchGoodsInfo" name="查询货物信息" next="end">
-        <!-- 全局域 -->
-        <input>
-            <var key="goods_infos"/>
-        </input>
-        <!--<if test="INPUT.goods_infos.size==0" next="printGoods"/>-->
-        <if test="INPUT.goods_infos.size==0" interrupt="${DATABUS.goods_name}货物信息不能为空!"/>
-        <!--<if test="INPUT.goods_infos.size>0" next="end"/>-->
+    <action id="switchGoodsInfo" name="查询货物信息" next="forGoods">
+        <if test="DATABUS.goods_infos.size==0" interrupt="${DATABUS.goods_name}货物信息不能为空!"/>
+        <if test="DATABUS.goods_infos.size>=5" next="printGoods"/>
     </action>
 
     <action id="printGoods" name="货物校验" next="end">
@@ -55,18 +50,29 @@
             <var key="user_id" initial="123456"/>
         </input>
         <expression>
-            <![CDATA[
+        <![CDATA[
             System.out.println("goods_name==="+INPUT.goods_name);
             System.out.println("goods_name==="+DATABUS.goods_name);
             System.out.println("goods_type==="+INPUT.goods_type);
             System.out.println("user_id==="+INPUT.user_id);
         ]]>
         </expression>
+    </action>
+
+    <action id="forGoods" name="循环打印货物信息" next="end">
+        <foreach iterable="goods_infos">
+        <![CDATA[
+            System.out.println("第"+INDEX+"个元素："+ITERATOR.price);
+            RESULT = RESULT + ITERATOR.price;
+        ]]>
+        </foreach>
         <output>
+            <var key="total_price"/>
         </output>
     </action>
 
     <end id="end" name="结束节点">
         <var key="goods_infos"/>
+        <var key="total_price"/>
     </end>
 </logic-flow>

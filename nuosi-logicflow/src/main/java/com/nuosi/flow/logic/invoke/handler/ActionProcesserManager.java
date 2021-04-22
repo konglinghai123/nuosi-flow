@@ -21,6 +21,7 @@ public class ActionProcesserManager {
         map.put(Action.ActionType.SQL, new SqlProcesser());
         map.put(Action.ActionType.EXPRESSION, new ExpressionProcesser());
         map.put(Action.ActionType.IF, new IfProcesser());
+        map.put(Action.ActionType.FOREACH, new ForeachProcesser());
         actionProcessers = Collections.unmodifiableMap(map);
     }
 
