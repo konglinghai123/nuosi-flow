@@ -10,7 +10,7 @@ import java.util.List;
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class Define {
+public class Databus {
     private List<Import> imports;
     private List<Var> vars;
 

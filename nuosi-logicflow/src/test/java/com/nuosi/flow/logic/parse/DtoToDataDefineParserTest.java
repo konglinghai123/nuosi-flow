@@ -47,6 +47,6 @@ public class DtoToDataDefineParserTest {
     @Before
     public void before() throws Exception {
         String exceptionMessagesConfig = "com/nuosi/flow/exception_messages";
-        IpuBaseException.registerCode(exceptionMessagesConfig);
+        IpuBaseException.registerCode(exceptionMessagesConfig, true);
     }
 }
