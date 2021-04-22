@@ -19,7 +19,7 @@ import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
-import com.nuosi.flow.logic.model.global.Define;
+import com.nuosi.flow.logic.model.global.Databus;
 import com.nuosi.flow.logic.model.global.Import;
 import com.nuosi.flow.logic.parse.DtoToDataDefineParser;
 import com.nuosi.flow.util.LogicFlowConstants;
@@ -55,13 +55,13 @@ public class ExecutionContainer {
     }
 
     private void initGlobalDefine() {
-        List<Define> defines = logicFlow.getDefines();
-        for (Define define : defines) {
-            List<Import> imports = define.getImports();
+        List<Databus> databuses = logicFlow.getDatabuses();
+        for (Databus databus1 : databuses) {
+            List<Import> imports = databus1.getImports();
             if (imports != null) {
                 initGlobalImport(imports);
             }
-            List<Var> vars = define.getVars();
+            List<Var> vars = databus1.getVars();
             if (vars != null) {
                 initGlobalVar(vars);
             }
