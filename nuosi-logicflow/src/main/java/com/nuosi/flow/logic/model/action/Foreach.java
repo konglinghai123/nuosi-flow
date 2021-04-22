@@ -11,6 +11,7 @@ package com.nuosi.flow.logic.model.action;
 public class Foreach {
     private String iterable;
     private String foreach;
+    private String resultType;
 
     public String getIterable() {
         return iterable;
@@ -26,5 +27,13 @@ public class Foreach {
 
     public void setForeach(String foreach) {
         this.foreach = foreach;
+    }
+
+    public String getResultType() {
+        return resultType;
+    }
+
+    public void setResultType(String resultType) {
+        this.resultType = resultType;
     }
 }

@@ -60,10 +60,10 @@
     </action>
 
     <action id="forGoods" name="循环打印货物信息" next="end">
-        <foreach iterable="goods_infos">
+        <foreach iterable="goods_infos" resultType="map">
         <![CDATA[
             System.out.println("第"+INDEX+"个元素："+ITERATOR.price);
-            RESULT = RESULT + ITERATOR.price;
+            RESULT.put(INDEX, ITERATOR.price);
         ]]>
         </foreach>
         <output>

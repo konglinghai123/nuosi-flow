@@ -248,23 +248,26 @@ public class ExecutionContainer {
             return;
         }
 
-        if(result instanceof Map){
-            Map resultMap = (Map) result;
-            String key;
-            for (Var var : vars) {
-                key = var.getKey();
-                if(key==null){
-                    IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_OUTPUT_VAR_NULL, logicFlow.getId(), action.getId());
+        if(vars.size()>1){  //大于1表示要从结果集中获取多个值存储到数据总线中
+            if(result instanceof Map){
+                Map resultMap = (Map) result;
+                String key;
+                for (Var var : vars) {
+                    key = var.getKey();
+                    if(key==null){
+                        IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_OUTPUT_VAR_NULL, logicFlow.getId(), action.getId());
+                    }
+                    if(databus.containsKey(key)){
+                        // 覆盖数据总线的数据需要记录日志，便于debug。
+                    }
+                    databus.put(key, resultMap.get(key));
                 }
-                if(databus.containsKey(key)){
-                    // 覆盖数据总线的数据需要记录日志，便于debug。
-                }
-                databus.put(key, resultMap.get(key));
+            }else{
+                IpuUtility.error("配置异常：XX流程XX节点中的返回结果类型不为Map，不支持取多个值");
             }
         } else {
             String key = vars.get(0).getKey();
             databus.put(key, result);
-            System.out.println("result=="+result);
         }
     }
 

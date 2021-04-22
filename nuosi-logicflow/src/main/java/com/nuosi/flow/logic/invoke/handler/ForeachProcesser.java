@@ -24,6 +24,10 @@ public class ForeachProcesser implements IActionProcesser{
     private static final String INDEX = "INDEX";
     private static final String RESULT = "RESULT";
 
+    public enum ResultType {
+        INT, STRING, MAP, LIST;
+    }
+
 
     @Override
     public Object execute(Map<String, Object> databus, Object... param) throws Exception {
@@ -44,15 +48,36 @@ public class ForeachProcesser implements IActionProcesser{
 
             StringBuilder expr = new StringBuilder();
             expr.append("int INDEX = 0; \n");
-            expr.append("var ").append(RESULT).append(" = 0;").append("\r");
-            expr.append("foreach(").append(ITERATOR).append(" : ").append(ITERATORS).append("){").append("\r");
+            appendResult(foreach, expr);
+            expr.append("foreach(ITERATOR : ITERATORS){ \r");
+            expr.append("INDEX++; \r");
             expr.append(foreach.getForeach()==null?"":foreach.getForeach()).append("\r");
-            expr.append(INDEX).append("++;").append("\r");
-            expr.append("}").append("\r");
-            expr.append("return ").append(RESULT).append(";").append("\r");
+            expr.append("} \r");
+            expr.append("return RESULT; \r");
             result = MVEL.eval(expr.toString(), vars);
         }
 
         return result;
+    }
+
+    private void appendResult(Foreach foreach, StringBuilder expr){
+        ResultType resultType = ResultType.valueOf(foreach.getResultType().toUpperCase());
+
+        switch (resultType) {
+            case INT:
+                expr.append("var RESULT = 0; \r");
+                break;
+            case STRING:
+                expr.append("var RESULT = \"\"; \r");
+                break;
+            case MAP:
+                expr.append("var RESULT = new java.util.HashMap(); \r");
+                break;
+            case LIST:
+                expr.append("var RESULT = new java.util.ArrayList(); \r");
+                break;
+            default:
+                break;
+        }
     }
 }
