@@ -7,7 +7,6 @@ import com.nuosi.flow.data.limit.*;
 import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.domain.DomainModel;
 import com.nuosi.flow.logic.model.domain.Limit;
-import com.nuosi.flow.logic.model.element.Var;
 
 import java.util.List;
 
@@ -54,23 +53,6 @@ public class DtoToDataDefineParser {
             Limit limit = limits.get(0);
             BDataLimit dataLimit = parseLimitToBDataLimit(dataType, limit);
             dataDefine.defineType(attr.getId(), dataType, dataLimit);
-        }
-        return dataDefine;
-    }
-
-    public BDataDefine parse(String bizName, List<Var> vars){
-        BDataDefine dataDefine = new BizDataDefine(bizName);
-        for (Var var : vars) {
-            BDataDefine.BDataType dataType = BDataDefine.BDataType.valueOf(var.getType().toUpperCase());
-            List<Limit> limits = var.getLimits();
-            if (limits == null || limits.isEmpty()) {
-                dataDefine.defineType(var.getId(), dataType);
-                continue;
-            }
-
-            Limit limit = limits.get(0);
-            BDataLimit dataLimit = parseLimitToBDataLimit(dataType, limit);
-            dataDefine.defineType(var.getId(), dataType, dataLimit);
         }
         return dataDefine;
     }

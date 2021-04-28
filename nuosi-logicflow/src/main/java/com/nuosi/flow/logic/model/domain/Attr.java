@@ -13,7 +13,6 @@ public class Attr {
     private String id;
     private String type;
     private String name;
-    private String initial;
     private List<Limit> limits;
 
     public String getId() {
@@ -38,14 +37,6 @@ public class Attr {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getInitial() {
-        return initial;
-    }
-
-    public void setInitial(String initial) {
-        this.initial = initial;
     }
 
     public List<Limit> getLimits() {

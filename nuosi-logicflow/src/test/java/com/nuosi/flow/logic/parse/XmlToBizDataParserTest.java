@@ -20,7 +20,7 @@ public class XmlToBizDataParserTest {
     @Test
     public void testGetBeanJson(){
         try{
-            String flowConfig = "model/goods_info.xml";
+            String flowConfig = "model/goods_model.xml";
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
             XmlToBizDataParser parser = new XmlToBizDataParser(is);
             JSONObject beanJson = parser.getBeanJson();
@@ -37,7 +37,7 @@ public class XmlToBizDataParserTest {
     @Test
     public void testDomainModelIsEquals(){
         try{
-            String flowConfig = "model/goods_info.xml";
+            String flowConfig = "model/goods_model.xml";
             InputStream is1 = getClass().getClassLoader().getResourceAsStream(flowConfig);
             XmlToBizDataParser parser = new XmlToBizDataParser(is1);
             DomainModel domainModel1 = parser.getDomainModel();

@@ -18,7 +18,7 @@ public class BizDataParserTest {
     @Test
     public void parseAllTest() throws Exception {
         try{
-            String flowConfig = "model/goods_info.xml";
+            String flowConfig = "model/goods_model.xml";
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
             DomainModel domainModel = new BizDataParser().parser(is);
             String strDomainModel = JSON.toJSONString(domainModel);

@@ -19,7 +19,7 @@ import java.io.InputStream;
  */
 public class XmlToLogicFlowParserTest {
     static {
-        String flowConfig = "model/goods_info.xml";
+        String flowConfig = "model/goods_model.xml";
         InputStream is = XmlToLogicFlowParserTest.class.getClassLoader().getResourceAsStream(flowConfig);
         try {
             JSONObject beanJson = new XmlToBizDataParser(is).getBeanJson();

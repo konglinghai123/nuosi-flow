@@ -1,6 +1,6 @@
 package com.nuosi.flow.logic.model.global;
 
-import com.nuosi.flow.logic.model.element.Var;
+import com.nuosi.flow.logic.model.domain.Attr;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Databus {
     private List<Import> imports;
-    private List<Var> vars;
+    private List<Attr> attrs;
 
     public List<Import> getImports() {
         return imports;
@@ -22,11 +22,11 @@ public class Databus {
         this.imports = imports;
     }
 
-    public List<Var> getVars() {
-        return vars;
+    public List<Attr> getAttrs() {
+        return attrs;
     }
 
-    public void setVars(List<Var> vars) {
-        this.vars = vars;
+    public void setAttrs(List<Attr> attrs) {
+        this.attrs = attrs;
     }
 }

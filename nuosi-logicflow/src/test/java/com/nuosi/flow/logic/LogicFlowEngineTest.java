@@ -37,7 +37,7 @@ public class LogicFlowEngineTest {
 
     @Before
     public void setUp(){
-        String dtoConfig = "model/goods_info.xml";
+        String dtoConfig = "model/goods_model.xml";
         InputStream is1 = XmlToLogicFlowParserTest.class.getClassLoader().getResourceAsStream(dtoConfig);
         String flowConfig = "flow/simple_flow.xml";
         InputStream is2 = getClass().getClassLoader().getResourceAsStream(flowConfig);

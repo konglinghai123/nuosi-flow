@@ -6,17 +6,17 @@
     <databus>
         <!-- 引入model定义 -->
         <import model="goods_info"/>
-        <var id="goods_type" type="int" name="货物类型">
+        <attr id="goods_type" type="int" name="货物类型">
             <limit max="10"/>
-        </var>
-        <var id="user_id" type="int" name="用户标识"/>
-        <var id="user_name" type="string" name="用户名称"/>
+        </attr>
+        <attr id="user_id" type="int" name="用户标识"/>
+        <attr id="user_name" type="string" name="用户名称"/>
     </databus>
 
     <start id="start" name="开始节点" next="queryGoodsInfo">
         <!-- 逻辑入口参数校验 -->
-        <var model="goods_info" attr="goods_name" key="goods_name"/>
-        <var id="goods_type" key="goods_type"/>
+        <var key="goods_name" model="goods_info" attr="goods_name"/>
+        <var key="goods_type"/>
     </start>
 
     <action id="queryGoodsInfo" name="查询货物信息" next="switchGoodsInfo">

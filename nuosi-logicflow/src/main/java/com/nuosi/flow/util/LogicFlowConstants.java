@@ -18,6 +18,7 @@ public class LogicFlowConstants {
     public static final String FLOW_END_NO_MATCH = "FLOW_END_NO_MATCH";
     public static final String FLOW_START_SINGLE = "FLOW_START_SINGLE";
     public static final String FLOW_END_SINGLE = "FLOW_END_SINGLE";
+    public static final String FLOW_NOT_SUPPORT_MULTIPLE_KEY = "FLOW_NOT_SUPPORT_MULTIPLE_KEY";
 
     /*BData异常编码*/
     public static final String BDATA_DEFINE_NO_EXISTS = "BDATA_DEFINE_NO_EXISTS";

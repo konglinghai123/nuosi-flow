@@ -23,7 +23,7 @@ public class DtoToDataDefineParserTest {
 
     @Test
     public void testParseDataDefine() throws Exception {
-        String modelConfig = "model/goods_info.xml";
+        String modelConfig = "model/goods_model.xml";
         InputStream in = getClass().getClassLoader().getResourceAsStream(modelConfig);
         DomainModel domainModel = new XmlToBizDataParser(in).getDomainModel();
         BDataDefine dataDefine = new DtoToDataDefineParser().parse(domainModel);

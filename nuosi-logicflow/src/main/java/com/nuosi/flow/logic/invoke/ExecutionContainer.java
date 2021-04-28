@@ -16,6 +16,7 @@ import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
+import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
@@ -50,21 +51,20 @@ public class ExecutionContainer {
     }
 
     private void init() {
-        initGlobalDefine();
+        initGlobalDatabus();
         initGlobalAction();
     }
 
-    private void initGlobalDefine() {
+    private void initGlobalDatabus() {
         List<Databus> databuses = logicFlow.getDatabuses();
-        for (Databus databus1 : databuses) {
-            List<Import> imports = databus1.getImports();
-            if (imports != null) {
-                initGlobalImport(imports);
-            }
-            List<Var> vars = databus1.getVars();
-            if (vars != null) {
-                initGlobalVar(vars);
-            }
+        Databus bus = databuses.get(0);
+        List<Import> imports = bus.getImports();
+        if (imports != null) {
+            initGlobalImport(imports);
+        }
+        List<Attr> attrs = bus.getAttrs();
+        if (attrs != null) {
+            initGlobalAttr(attrs);
         }
     }
 
@@ -74,9 +74,9 @@ public class ExecutionContainer {
         }
     }
 
-    private void initGlobalVar(List<Var> vars) {
-        this.bDataDefine = new DtoToDataDefineParser().parse(logicFlow.getId(), vars);
-        if(!BizDataManager.contains(logicFlow.getId())){
+    private void initGlobalAttr(List<Attr> attrs) {
+        this.bDataDefine = new DtoToDataDefineParser().parseByAttrs(logicFlow.getId(), attrs);
+        if (!BizDataManager.contains(logicFlow.getId())) {
             BizDataManager.registerDto(bDataDefine);
         }
     }
@@ -128,21 +128,20 @@ public class ExecutionContainer {
             for (Var var : vars) {
                 key = var.getKey();
                 if (key == null) {
-                    IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_TAG_ARRT_EXCEPT, logicFlow.getId(), "Start", "Var");
+                    IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_TAG_ARRT_EXCEPT, logicFlow.getId(), "start", "var");
                 }
+
                 if (!databus.containsKey(key)) {
                     IpuUtility.errorCode(LogicFlowConstants.FLOW_DATABUS_VAR_NO_EXISTS, logicFlow.getId(), key);
+                }
+
+                if (var.getModel() != null && var.getAttr() != null) {
+                    // 根据引入的业务模型做数据校验
+                    BDataDefine bDataDefine = BizDataManager.getDataDefine(var.getModel());
+                    bDataDefine.checkData(var.getAttr(), databus.get(key));
                 } else {
-                    if(var.getId()!=null){
-                        // 根据定义的数据模型做数据校验
-                        bDataDefine.checkData(key, databus.get(key));
-                    }else if(var.getModel() != null && var.getAttr() != null){
-                        // 根据引入的业务模型做数据校验
-                        BDataDefine bDataDefine = BizDataManager.getDataDefine(var.getModel());
-                        bDataDefine.checkData(var.getAttr(), databus.get(var.getKey()));
-                    } else{
-                        IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_TAG_ARRT_EXCEPT, logicFlow.getId(), "Start", "Var");
-                    }
+                    // 根据定义的数据模型做数据校验
+                    bDataDefine.checkData(key, databus.get(key));
                 }
             }
         }
@@ -174,7 +173,7 @@ public class ExecutionContainer {
     private Object executeProcesser(Action action, JMap param) throws Exception {
         Object result = null;
         IActionProcesser actionProcesser = null;
-        switch (action.getActionType()){
+        switch (action.getActionType()) {
             case SQL:
                 Sql sql = action.getSqls().get(0);
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SQL);
@@ -216,26 +215,25 @@ public class ExecutionContainer {
         String key;
         Object value = null;
         for (Var var : vars) {
-            if (!databus.containsKey(var.getKey()) && var.getInitial() == null) {
-                IpuUtility.errorCode(LogicFlowConstants.FLOW_DATABUS_VAR_NO_EXISTS, logicFlow.getId(), var.getKey());
-            } else {
-                value = databus.get(var.getKey());
-                if(value == null){
-                    // 入参使用默认值的校验
-                    if (bDataDefine.getDataTypes().containsKey(var.getKey())) {
-                        bDataDefine.checkData(var.getKey(), var.getInitial());
-                    }
-                    value = var.getInitial();
-                }
+            key = var.getKey();
+            if (!databus.containsKey(key) && var.getInitial() == null) {
+                IpuUtility.errorCode(LogicFlowConstants.FLOW_DATABUS_VAR_NO_EXISTS, logicFlow.getId(), key);
             }
-            key = var.getId() == null ? var.getKey() : var.getId();
+
+            value = databus.get(key);
+            value = value == null ? var.getInitial() : value;
+            // 入参使用默认值的校验
+            if (bDataDefine.getDataTypes().containsKey(key)) {
+                bDataDefine.checkData(key, value);
+            }
+
             param.put(key, value);
         }
         return param;
     }
 
-    private void prepareNodeOutput(Action action, Object result){
-        if(result==null){
+    private void prepareNodeOutput(Action action, Object result) {
+        if (result == null) {
             return;
         }
         List<Output> outputs = action.getOutputs();
@@ -244,26 +242,26 @@ public class ExecutionContainer {
         }
         Output output = outputs.get(0);
         List<Var> vars = output.getVars();
-        if (vars == null) {
+        if (vars == null || vars.size() == 0) {
             return;
         }
 
-        if(vars.size()>1){  //大于1表示要从结果集中获取多个值存储到数据总线中
-            if(result instanceof Map){
+        if (vars.size() > 1) {  //大于1表示要从结果集中获取多个值存储到数据总线中
+            if (result instanceof Map) {
                 Map resultMap = (Map) result;
                 String key;
                 for (Var var : vars) {
                     key = var.getKey();
-                    if(key==null){
+                    if (key == null) {
                         IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_OUTPUT_VAR_NULL, logicFlow.getId(), action.getId());
                     }
-                    if(databus.containsKey(key)){
+                    if (databus.containsKey(key)) {
                         // 覆盖数据总线的数据需要记录日志，便于debug。
                     }
                     databus.put(key, resultMap.get(key));
                 }
-            }else{
-                IpuUtility.error("配置异常：XX流程XX节点中的返回结果类型不为Map，不支持取多个值");
+            } else {
+                IpuUtility.errorCode(LogicFlowConstants.FLOW_NOT_SUPPORT_MULTIPLE_KEY, logicFlow.getId(), action.getId());
             }
         } else {
             String key = vars.get(0).getKey();
@@ -284,7 +282,7 @@ public class ExecutionContainer {
             String key;
             for (Var var : vars) {
                 key = var.getKey();
-                if(key==null){
+                if (key == null) {
                     IpuUtility.errorCode(LogicFlowConstants.FLOW_NODE_OUTPUT_VAR_NULL, logicFlow.getId(), end.getId());
                 }
                 if (bDataDefine.getDataTypes().containsKey(key)) {
@@ -298,7 +296,7 @@ public class ExecutionContainer {
 
     private Start getStart() {
         List<Start> starts = logicFlow.getStarts();
-        if (starts == null||starts.size() != 1) {
+        if (starts == null || starts.size() != 1) {
             IpuUtility.errorCode(LogicFlowConstants.FLOW_START_SINGLE, logicFlow.getId());
         }
         return starts.get(0);
@@ -306,7 +304,7 @@ public class ExecutionContainer {
 
     private End getEnd() {
         List<End> ends = logicFlow.getEnds();
-        if (ends == null||ends.size() != 1) {
+        if (ends == null || ends.size() != 1) {
             IpuUtility.errorCode(LogicFlowConstants.FLOW_END_SINGLE, logicFlow.getId());
         }
         return ends.get(0);
