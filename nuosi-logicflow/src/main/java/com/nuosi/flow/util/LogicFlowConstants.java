@@ -7,6 +7,9 @@ package com.nuosi.flow.util;
  * @version v1.0.0
  */
 public class LogicFlowConstants {
+    public static final String PACKAGE = "com.nuosi.flow";
+    public static final String PACKAGE_PATH = "com/nuosi/flow/";
+
     /*表达式内置变量*/
     public static final String DATABUS = "DATABUS";
     public static final String INPUT = "INPUT";

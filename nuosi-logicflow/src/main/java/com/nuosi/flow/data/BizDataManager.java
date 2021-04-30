@@ -3,8 +3,8 @@ package com.nuosi.flow.data;
 import com.ai.ipu.basic.util.IpuUtility;
 import com.nuosi.flow.util.LogicFlowConstants;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>desc: 业务传输对象管理类</p>
@@ -13,7 +13,7 @@ import java.util.Map;
  * @version v1.0.0
  */
 public class BizDataManager {
-    private static Map<String, BDataDefine> bizDataDefine = new HashMap<String, BDataDefine>();
+    private static Map<String, BDataDefine> bizDataDefine = new ConcurrentHashMap<String, BDataDefine>();
     static {
         //从配置文件中加载
         loadDtoConfig(bizDataDefine);
