@@ -12,6 +12,7 @@ import com.nuosi.flow.logic.parse.DtoToDataDefineParser;
 import com.nuosi.flow.logic.parse.XmlToBizDataParser;
 import com.nuosi.flow.logic.parse.XmlToLogicFlowParser;
 import com.nuosi.flow.logic.parse.XmlToLogicFlowParserTest;
+import com.nuosi.flow.mgmt.message.MessageManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +29,7 @@ public class LogicFlowEngineTest {
 
     @Test
     public void testExecute(){
+        MessageManager.registerMessage("NO_MESSAGE_CODE", "提示信息编码[%s]已存在，无需注册");
         JMap param = new JsonMap();
         param.put("goods_name","橙汁");
         param.put("goods_type",1);

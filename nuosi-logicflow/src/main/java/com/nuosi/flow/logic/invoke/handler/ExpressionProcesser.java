@@ -1,10 +1,13 @@
 package com.nuosi.flow.logic.invoke.handler;
 
 import com.ai.ipu.data.JMap;
+import com.nuosi.flow.logic.inject.basic.ExceptionUtil;
+import com.nuosi.flow.logic.inject.basic.QuickBuild;
 import com.nuosi.flow.logic.model.action.Expression;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +21,7 @@ import java.util.Map;
 public class ExpressionProcesser implements IActionProcesser{
     private static final String DATABUS = LogicFlowConstants.DATABUS;
     private static final String INPUT = LogicFlowConstants.INPUT;
+    private static final String QB = "QB";
 
     @Override
     public Object execute(Map<String, Object> databus, Object... param) throws Exception {
@@ -26,6 +30,7 @@ public class ExpressionProcesser implements IActionProcesser{
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put(DATABUS, databus);
         vars.put(INPUT, params);
+        vars.put(QB, QuickBuild.getInstance());
         Object result = MVEL.eval(expr.getExpression(), vars);
         return result;
     }

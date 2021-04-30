@@ -1,5 +1,6 @@
 package com.nuosi.flow.logic.invoke;
 
+import com.ai.ipu.basic.util.IpuBaseException;
 import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
 import com.ai.ipu.data.impl.JsonMap;
@@ -24,6 +25,7 @@ import com.nuosi.flow.logic.model.global.Databus;
 import com.nuosi.flow.logic.model.global.Import;
 import com.nuosi.flow.logic.parse.DtoToDataDefineParser;
 import com.nuosi.flow.util.LogicFlowConstants;
+import org.mvel2.PropertyAccessException;
 
 import java.util.*;
 
@@ -35,12 +37,11 @@ import java.util.*;
  * @version v1.0.0
  */
 public class ExecutionContainer {
-    private Set<String> importSet = new HashSet<String>();  //记录引用的业务对象
     private BDataDefine bDataDefine;    //将define中的var定义转化成BDataDefine，使用其数据校验逻辑
-
-    private Map<String, Action> actionMap = new HashMap<String, Action>();  //节点名和节点实体映射关系
-
     private Map<String, Object> databus = new HashMap<String, Object>();    //数据总线
+
+    private Set<String> importSet = new HashSet<String>();  //记录引用的业务对象
+    private Map<String, Action> actionMap = new HashMap<String, Action>();  //节点名和节点实体映射关系
     private Map<String, Object> nodeResult = new HashMap<String, Object>(); //节点返回数据
 
     private LogicFlow logicFlow;
@@ -180,9 +181,17 @@ public class ExecutionContainer {
                 result = actionProcesser.execute(databus, sql, param);
                 break;
             case EXPRESSION:
-                Expression expr = action.getExpressions().get(0);
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.EXPRESSION);
-                result = actionProcesser.execute(databus, expr, param);
+                try{
+                    Expression expr = action.getExpressions().get(0);
+                    actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.EXPRESSION);
+                    result = actionProcesser.execute(databus, expr, param);
+                }catch (Exception e){
+                    if(e instanceof PropertyAccessException){
+                        Throwable tr = IpuUtility.getBottomException(e);
+                        IpuUtility.error(tr);
+                    }
+                    throw e;
+                }
                 break;
             case IF:
                 List<If> ifs = action.getIfs();
