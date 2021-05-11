@@ -3,10 +3,10 @@ package com.nuosi.flow.logic.invoke.handler;
 import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.model.action.If;
+import com.nuosi.flow.util.IfUtil;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,15 +27,13 @@ public class IfProcesser implements IActionProcesser {
         List<If> ifs = (List<If>) param[0];
         JMap params = (JMap) param[1];
 
-        Map<String, Object> vars = new HashMap<String, Object>();
-        vars.put(INPUT, params);
-        vars.put(DATABUS, databus);
         Object result = null;
         for (If _if : ifs) {
-            result = MVEL.eval(_if.getTest(), vars);
+            result = MVEL.eval(_if.getTest(), databus);
             if (TURE.equals(result)) {
                 if (_if.getInterrupt() != null) {
-                    IpuUtility.error(_if.getInterrupt());
+                    String interrupt = IfUtil.renderTemplate(_if.getInterrupt(), databus);
+                    IpuUtility.error(interrupt);
                 } else if (_if.getNext() != null) {
                     return _if.getNext();
                 } else {

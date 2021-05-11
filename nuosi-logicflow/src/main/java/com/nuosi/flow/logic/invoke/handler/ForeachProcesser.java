@@ -1,9 +1,12 @@
 package com.nuosi.flow.logic.invoke.handler;
 
+import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
+import com.nuosi.flow.logic.inject.basic.QuickBuild;
 import com.nuosi.flow.logic.model.action.Foreach;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;
+import org.mvel2.PropertyAccessException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.Map;
  */
 public class ForeachProcesser implements IActionProcesser{
     private static final String DATABUS = LogicFlowConstants.DATABUS;
+    private static final String QB = LogicFlowConstants.QB;
     private static final String ITERATORS = "ITERATORS";
     private static final String ITERATOR = "ITERATOR";
     private static final String INDEX = "INDEX";
@@ -40,24 +44,38 @@ public class ForeachProcesser implements IActionProcesser{
             return null;
         }
 
-        Object result = null;
         if(iterator instanceof Iterable){
             Map<String, Object> vars = new HashMap<String, Object>();
             vars.put(DATABUS, databus);
             vars.put(ITERATORS, databus.get(foreach.getIterable()));
+            vars.put(QB, QuickBuild.getInstance());
 
             StringBuilder expr = new StringBuilder();
             expr.append("int INDEX = 0; \n");
-            appendResult(foreach, expr);
+            if(foreach.getResultType()!=null){
+                appendResult(foreach, expr);
+            }
             expr.append("foreach(ITERATOR : ITERATORS){ \r");
             expr.append("INDEX++; \r");
             expr.append(foreach.getForeach()==null?"":foreach.getForeach()).append("\r");
             expr.append("} \r");
-            expr.append("return RESULT; \r");
-            result = MVEL.eval(expr.toString(), vars);
+            if(foreach.getResultType()!=null){
+                expr.append("return RESULT; \r");
+            }
+
+            try{
+                Object result = MVEL.eval(expr.toString(), vars);
+                return result;
+            }catch (Exception e){
+                if(e instanceof PropertyAccessException){
+                    Throwable tr = IpuUtility.getBottomException(e);
+                    IpuUtility.error(tr);
+                }
+                throw e;
+            }
         }
 
-        return result;
+        return null;
     }
 
     private void appendResult(Foreach foreach, StringBuilder expr){

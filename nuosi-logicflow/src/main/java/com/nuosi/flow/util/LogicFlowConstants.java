@@ -13,6 +13,7 @@ public class LogicFlowConstants {
     /*表达式内置变量*/
     public static final String DATABUS = "DATABUS";
     public static final String INPUT = "INPUT";
+    public static final String QB = "QB";
 
     /*LogicFlow异常编码*/
     public static final String FLOW_DATABUS_VAR_NO_EXISTS = "FLOW_DATABUS_VAR_NO_EXISTS";

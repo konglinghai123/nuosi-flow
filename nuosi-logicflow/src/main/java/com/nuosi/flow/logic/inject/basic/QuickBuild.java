@@ -26,4 +26,8 @@ public class QuickBuild {
     public static void errorCode(String msgCode, String ... matcher){
         ExceptionUtil.errorCode(msgCode, matcher);
     }
+
+    public static void println(String msg){
+        System.out.println(msg);
+    }
 }

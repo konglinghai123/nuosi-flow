@@ -4,6 +4,7 @@ import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BDataLimit;
 import com.nuosi.flow.data.impl.BizDataDefine;
 import com.nuosi.flow.data.limit.*;
+import com.nuosi.flow.logic.LogicFlowManager;
 import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.domain.DomainModel;
 import com.nuosi.flow.logic.model.domain.Limit;
@@ -20,6 +21,11 @@ import java.util.List;
 public class DtoToDataDefineParser {
 
     public DtoToDataDefineParser() {
+    }
+
+    public BDataDefine parse(String domainModelName) throws Exception {
+        DomainModel domainModel = LogicFlowManager.getDomainModel(domainModelName);
+        return parse(domainModel);
     }
 
     public BDataDefine parse(DomainModel domainModel) throws Exception {

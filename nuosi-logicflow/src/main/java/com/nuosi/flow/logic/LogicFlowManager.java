@@ -1,8 +1,15 @@
 package com.nuosi.flow.logic;
 
+import com.ai.ipu.basic.util.IpuUtility;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.LogicFlow;
 import com.nuosi.flow.logic.model.domain.DomainModel;
+import com.nuosi.flow.logic.parse.XmlToBizDataParser;
+import com.nuosi.flow.logic.parse.XmlToLogicFlowParser;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,19 +29,55 @@ public class LogicFlowManager {
         logicFlowlCache = new ConcurrentHashMap<String, LogicFlow>();
     }
 
-    public static void storageDomainModel(DomainModel domainModel){
+    public static void registerDomainModel(DomainModel domainModel) {
         domainModelCache.put(domainModel.getId(), domainModel);
     }
 
-    public static DomainModel getDomainModel(String dtoName){
+    public static void registerDomainModel(InputStream is) {
+        try {
+            JSONObject beanJson = new XmlToBizDataParser(is).getBeanJson();
+            DomainModel domainModel = JSON.toJavaObject(beanJson, DomainModel.class);
+            LogicFlowManager.registerDomainModel(domainModel);
+        } catch (Exception e) {
+            IpuUtility.error(e);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    IpuUtility.error(e);
+                }
+            }
+        }
+    }
+
+    public static DomainModel getDomainModel(String dtoName) {
         return domainModelCache.get(dtoName);
     }
 
-    public static void storageLogicFlow(LogicFlow logicFlow){
+    public static void registerLogicFlow(LogicFlow logicFlow) {
         logicFlowlCache.put(logicFlow.getId(), logicFlow);
     }
 
-    public static LogicFlow getLogicFlow(String logicFlow){
+    public static void registerLogicFlow(InputStream is) {
+        try {
+            JSONObject flowJson = new XmlToLogicFlowParser(is).getBeanJson();
+            LogicFlow logicFlow = JSON.toJavaObject(flowJson, LogicFlow.class);
+            LogicFlowManager.registerLogicFlow(logicFlow);
+        } catch (Exception e) {
+            IpuUtility.error(e);
+        } finally {
+            if (is != null) {
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    IpuUtility.error(e);
+                }
+            }
+        }
+    }
+
+    public static LogicFlow getLogicFlow(String logicFlow) {
         return logicFlowlCache.get(logicFlow);
     }
 }

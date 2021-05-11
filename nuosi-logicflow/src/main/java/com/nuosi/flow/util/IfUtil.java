@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class ExpressionUtil {
+public class IfUtil {
     static String PATTERN = "\\$\\{\\w+\\}";
 
     public static String renderTemplate(String template, Map<String, Object> params) {

@@ -2,15 +2,9 @@ package com.nuosi.flow.logic;
 
 import com.ai.ipu.data.JMap;
 import com.ai.ipu.data.impl.JsonMap;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BizDataManager;
-import com.nuosi.flow.logic.model.LogicFlow;
-import com.nuosi.flow.logic.model.domain.DomainModel;
 import com.nuosi.flow.logic.parse.DtoToDataDefineParser;
-import com.nuosi.flow.logic.parse.XmlToBizDataParser;
-import com.nuosi.flow.logic.parse.XmlToLogicFlowParser;
 import com.nuosi.flow.logic.parse.XmlToLogicFlowParserTest;
 import com.nuosi.flow.mgmt.message.MessageManager;
 import org.junit.Before;
@@ -44,18 +38,12 @@ public class LogicFlowEngineTest {
         String flowConfig = "flow/simple_flow.xml";
         InputStream is2 = getClass().getClassLoader().getResourceAsStream(flowConfig);
         try {
-            JSONObject beanJson = new XmlToBizDataParser(is1).getBeanJson();
-            DomainModel domainModel = JSON.toJavaObject(beanJson, DomainModel.class);
-            LogicFlowManager.storageDomainModel(domainModel);
-            BDataDefine dataDefine = new DtoToDataDefineParser().parse(domainModel);
+            LogicFlowManager.registerDomainModel(is1);
 
+            BDataDefine dataDefine = new DtoToDataDefineParser().parse("goods_info");
             BizDataManager.registerDto(dataDefine, true);
 
-
-            JSONObject flowJson = new XmlToLogicFlowParser(is2).getBeanJson();
-            LogicFlow logicFlow = JSON.toJavaObject(flowJson, LogicFlow.class);
-            LogicFlowManager.storageLogicFlow(logicFlow);
-
+            LogicFlowManager.registerLogicFlow(is2);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

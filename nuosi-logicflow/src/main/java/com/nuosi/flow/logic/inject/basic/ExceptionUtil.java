@@ -12,9 +12,10 @@ import com.nuosi.flow.mgmt.message.MessageManager;
  */
 public class ExceptionUtil {
 
-    public static void errorCode(String msgCode, String ... matcher){
+    public static void errorCode(String msgCode, String... matcher) {
         //关键字：MEVL static
         String message = MessageManager.getMessage(msgCode, matcher);
         IpuUtility.error(message);
     }
+
 }

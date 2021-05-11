@@ -39,8 +39,8 @@
     </action>
 
     <action id="switchGoodsInfo" name="查询货物信息" next="printGoods">
-        <if test="DATABUS.goods_infos.size==0" interrupt="${DATABUS.goods_name}货物信息不能为空!"/>
-        <if test="DATABUS.goods_infos.size>=5" next="printGoods"/>
+        <if test="goods_infos.size==0" interrupt="【${goods_name}】货物信息不能为空!"/>
+        <if test="goods_infos.size>=5" next="printGoods"/>
     </action>
 
     <action id="printGoods" name="货物校验" next="end">

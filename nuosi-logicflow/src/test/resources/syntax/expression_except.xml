@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<logic-flow id="expression_except"
+            name="表达式逻辑异常语法"
+            desc="表达式逻辑异常语法">
+    <databus/>
+
+    <start id="start" name="开始节点" next="throw_exception"/>
+
+    <action id="throw_exception" name="表达式内抛出异常" next="end">
+        <expression>
+            <![CDATA[
+            if(true){
+                QB.errorCode("DEFINE_HINT");
+            }
+        ]]>
+        </expression>
+    </action>
+
+    <end id="end" name="结束节点"/>
+</logic-flow>

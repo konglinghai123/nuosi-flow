@@ -1,4 +1,4 @@
-package com.nuosi.flow.logic.invoke;
+package com.nuosi.flow.logic.parse;
 
 import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
@@ -6,7 +6,6 @@ import com.ai.ipu.data.impl.JsonMap;
 import com.ai.ipu.database.conn.SqlSessionManager;
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BizDataManager;
-import com.nuosi.flow.data.impl.BizDataDefine;
 import com.nuosi.flow.logic.invoke.handler.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.handler.IActionProcesser;
 import com.nuosi.flow.logic.model.LogicFlow;
@@ -23,29 +22,29 @@ import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
 import com.nuosi.flow.logic.model.global.Databus;
 import com.nuosi.flow.logic.model.global.Import;
-import com.nuosi.flow.logic.parse.DtoToDataDefineParser;
 import com.nuosi.flow.util.LogicFlowConstants;
 
 import java.util.*;
 
 /**
- * <p>desc: 业务逻辑流执行容器 </p>
- * <p>date: 2021/3/29 20:19 </p>
+ * <p>desc: 逻辑编排配置文件检查 </p>
+ * <p>date: 2021/4/28 17:40 </p>
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class ExecutionContainer {
-    private BDataDefine bDataDefine;    //将define中的var定义转化成BDataDefine，使用其数据校验逻辑
-    private Map<String, Object> databus = new HashMap<String, Object>();    //数据总线
-
+public class LogicFlowConfigCheck {
     private Set<String> importSet = new HashSet<String>();  //记录引用的业务对象
+    private BDataDefine bDataDefine;    //将define中的var定义转化成BDataDefine，使用其数据校验逻辑
+
     private Map<String, Action> actionMap = new HashMap<String, Action>();  //节点名和节点实体映射关系
+
+    private Map<String, Object> databus = new HashMap<String, Object>();    //数据总线
     private Map<String, Object> nodeResult = new HashMap<String, Object>(); //节点返回数据
 
     private LogicFlow logicFlow;
 
-    public ExecutionContainer(LogicFlow logicFlow) {
+    public LogicFlowConfigCheck(LogicFlow logicFlow) {
         this.logicFlow = logicFlow;
         init();
     }
@@ -63,7 +62,9 @@ public class ExecutionContainer {
             initGlobalImport(imports);
         }
         List<Attr> attrs = bus.getAttrs();
-        initGlobalAttr(attrs);
+        if (attrs != null) {
+            initGlobalAttr(attrs);
+        }
     }
 
     private void initGlobalImport(List<Import> imports) {
@@ -73,16 +74,9 @@ public class ExecutionContainer {
     }
 
     private void initGlobalAttr(List<Attr> attrs) {
-        if (attrs != null) {
-            this.bDataDefine = new DtoToDataDefineParser().parseByAttrs(logicFlow.getId(), attrs);
-            if (!BizDataManager.contains(logicFlow.getId())) {
-                BizDataManager.registerDto(bDataDefine);
-            }
-        }else{
-            if (!BizDataManager.contains(logicFlow.getId())) {
-                this.bDataDefine = new BizDataDefine(logicFlow.getId());
-                BizDataManager.registerDto(bDataDefine);
-            }
+        this.bDataDefine = new DtoToDataDefineParser().parseByAttrs(logicFlow.getId(), attrs);
+        if (!BizDataManager.contains(logicFlow.getId())) {
+            BizDataManager.registerDto(bDataDefine);
         }
     }
 
@@ -93,7 +87,7 @@ public class ExecutionContainer {
         }
     }
 
-    public JMap execute(JMap param) {
+    public JMap check(JMap param) {
         JMap result = null;
         try {
             storeDatabus(param);
@@ -113,9 +107,6 @@ public class ExecutionContainer {
     }
 
     private void storeDatabus(JMap param) {
-        if (param == null) {
-            return;
-        }
         String[] keys = param.getKeys();
         for (String key : keys) {
             //入参存储到数据总线前的校验
@@ -127,7 +118,7 @@ public class ExecutionContainer {
         }
     }
 
-    private String checkStart() {
+    public String checkStart() {
         Start start = getStart();
         List<Var> vars = start.getVars();
         if (vars != null) {
@@ -156,7 +147,7 @@ public class ExecutionContainer {
         return start.getNext();
     }
 
-    private String executeAction(String next) throws Exception {
+    public String executeAction(String next) throws Exception {
         Action action = actionMap.get(next);
         JMap param = prepareNodeInput(action);
 

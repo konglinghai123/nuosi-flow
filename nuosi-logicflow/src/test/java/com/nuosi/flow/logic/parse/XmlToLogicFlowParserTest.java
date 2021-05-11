@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.LogicFlowManager;
 import com.nuosi.flow.logic.model.LogicFlow;
-import com.nuosi.flow.logic.model.domain.DomainModel;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -21,21 +19,7 @@ public class XmlToLogicFlowParserTest {
     static {
         String flowConfig = "model/goods_model.xml";
         InputStream is = XmlToLogicFlowParserTest.class.getClassLoader().getResourceAsStream(flowConfig);
-        try {
-            JSONObject beanJson = new XmlToBizDataParser(is).getBeanJson();
-            DomainModel domainModel = JSON.toJavaObject(beanJson, DomainModel.class);
-            LogicFlowManager.storageDomainModel(domainModel);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if(is!=null){
-                try {
-                    is.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        LogicFlowManager.registerDomainModel(is);
     }
 
     @Test

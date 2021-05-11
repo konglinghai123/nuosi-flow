@@ -24,7 +24,7 @@ public class LogicFlowUtilTest {
         try {
             JSONObject flowJson = new XmlToLogicFlowParser(is).getBeanJson();
             LogicFlow logicFlow = JSON.toJavaObject(flowJson, LogicFlow.class);
-            LogicFlowManager.storageLogicFlow(logicFlow);
+            LogicFlowManager.registerLogicFlow(logicFlow);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
