@@ -15,6 +15,16 @@
 		</plugin>
 	</plugins>
 	<environments default="dynamic-form-test">
+		<environment id="quickbuild">
+			<transactionManager type="jdbc" />
+			<dataSource type="com.ai.ipu.database.datasource.DruidDataSourceFactory">
+				<property name="jdbcUrl" value="jdbc:mysql://47.105.160.21:3307/qb" />
+				<property name="username" value="aiipu" />
+				<property name="password" value="aiipu@321" />
+				<!-- 配置获取连接的等待超时时间 -->
+				<property name="maxWait" value="5000" />
+			</dataSource>
+		</environment>
 		<environment id="dynamic-form-test">
 			<transactionManager type="jdbc" />
 			<dataSource type="com.ai.ipu.database.datasource.DruidDataSourceFactory">

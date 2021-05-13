@@ -2,6 +2,7 @@ package com.nuosi.flow.logic.parse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.nuosi.flow.logic.LogicFlowManager;
 import com.nuosi.flow.logic.model.domain.DomainModel;
 import com.nuosi.flow.logic.parse.backup.BizDataParser;
 import org.junit.Assert;
@@ -49,6 +50,21 @@ public class XmlToBizDataParserTest {
 
             Assert.assertEquals("两个DomainModel转换格式不一致",
                     JSON.toJSONString(domainModel1), JSON.toJSONString(domainModel2));
+        }catch (Exception e){
+            e.printStackTrace();
+            Assert.assertTrue(false);
+        }
+    }
+
+    @Test
+    public void testDomainModeAction(){
+        try{
+            String flowConfig = "working_hours/model/working_hours_entity.xml";
+            InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
+            LogicFlowManager.registerDomainModel(is);
+            DomainModel domainModel = LogicFlowManager.getDomainModel("working_hours_entity");
+            System.out.println("action==="+JSON.toJSONString(domainModel.getFunctions()));
+            Assert.assertTrue(true);
         }catch (Exception e){
             e.printStackTrace();
             Assert.assertTrue(false);

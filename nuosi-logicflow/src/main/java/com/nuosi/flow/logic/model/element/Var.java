@@ -10,6 +10,7 @@ public class Var {
     private String model;
     private String attr;
     private String key;
+    private String alias;
     private String initial;
 
     public String getModel() {
@@ -42,5 +43,13 @@ public class Var {
 
     public void setInitial(String initial) {
         this.initial = initial;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 }

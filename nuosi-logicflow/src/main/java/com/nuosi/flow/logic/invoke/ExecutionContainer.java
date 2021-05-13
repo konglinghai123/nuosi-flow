@@ -18,6 +18,7 @@ import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.domain.Attr;
+import com.nuosi.flow.logic.model.domain.Function;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
@@ -202,6 +203,11 @@ public class ExecutionContainer {
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FOREACH);
                 result = actionProcesser.execute(databus, foreachs, param);
                 break;
+            case FUNCTION:
+                List<Function> functions = action.getFunctions();
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FUNCTION);
+                result = actionProcesser.execute(databus, functions.get(0), param);
+                break;
             default:
                 break;
         }
@@ -234,7 +240,7 @@ public class ExecutionContainer {
             if (bDataDefine.getDataTypes().containsKey(key)) {
                 bDataDefine.checkData(key, value);
             }
-
+            key = var.getAlias() != null ? var.getAlias() : key; //alias不为空时，代替key成为入参别名
             param.put(key, value);
         }
         return param;

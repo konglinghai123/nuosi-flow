@@ -4,9 +4,9 @@ import com.ai.ipu.basic.util.IpuUtility;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.action.Sql;
-import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.domain.DomainModel;
+import com.nuosi.flow.logic.model.domain.Function;
 import com.nuosi.flow.logic.model.domain.Limit;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
@@ -26,7 +26,7 @@ import java.util.List;
 public class BizDataParser {
     public static final String MODEL = "model";
     public static final String ATTR = "attr";
-    public static final String ACTION = "action";
+    public static final String FUNCTION = "function";
     public static final String CHILDREN = XmlToJsonHelper.CHILDREN_TAG;
 
     public static final String INPUT = "input";
@@ -65,16 +65,16 @@ public class BizDataParser {
         JSONArray children = domainModelObject.getJSONArray(CHILDREN);
         if (children != null && !children.isEmpty()) {
             List<Attr> attrs = new ArrayList<Attr>();
-            List<Action> actions = new ArrayList<Action>();
+            List<Function> functions = new ArrayList<Function>();
             JSONObject modelItem;
             for (int i = 0; i < children.size(); i++) {
                 modelItem = children.getJSONObject(i);
                 if (modelItem.containsKey(ATTR)) {
                     Attr attr = parserAttr(modelItem.getJSONObject(ATTR));
                     attrs.add(attr);
-                } else if (modelItem.containsKey(ACTION)) {
-                    Action action = parserAction(modelItem.getJSONObject(ACTION));
-                    actions.add(action);
+                } else if (modelItem.containsKey(FUNCTION)) {
+                    Function function = parserFunction(modelItem.getJSONObject(FUNCTION));
+                    functions.add(function);
                 } else{
                     IpuUtility.error("无可匹配标签："+ modelItem);
                 }
@@ -82,8 +82,8 @@ public class BizDataParser {
             if(!attrs.isEmpty()){
                 domainModel.setAttrs(attrs);
             }
-            if(!actions.isEmpty()){
-                domainModel.setActions(actions);
+            if(!functions.isEmpty()){
+                domainModel.setFunctions(functions);
             }
         }
 
@@ -119,43 +119,37 @@ public class BizDataParser {
 
     }
 
-    public Action parserAction(JSONObject actionObject){
-        JSONObject actionJson = actionObject.getJSONObject(ACTION + SUFFIX_ATTR);
-        Action action = actionJson.toJavaObject(Action.class);
+    public Function parserFunction(JSONObject functionObject){
+        JSONObject functionJson = functionObject.getJSONObject(FUNCTION + SUFFIX_ATTR);
+        Function function = functionJson.toJavaObject(Function.class);
 
-        JSONArray children = actionObject.getJSONArray(CHILDREN);
+        JSONArray children = functionObject.getJSONArray(CHILDREN);
         if (children != null && !children.isEmpty()) {
-            JSONObject actionItem;
+            JSONObject functionItem;
             List<Input> inputs = null;
             List<Output> outputs = null;
             List<Sql> sqls = null;
             for (int i = 0; i < children.size(); i++) {
-                actionItem = children.getJSONObject(i);
-                if (actionItem.containsKey(OUTPUT)) {
+                functionItem = children.getJSONObject(i);
+                if (functionItem.containsKey(OUTPUT)) {
                     outputs = outputs==null?new ArrayList<Output>():outputs;
-                    Output output = parserOutput(actionItem.getJSONObject(OUTPUT));
+                    Output output = parserOutput(functionItem.getJSONObject(OUTPUT));
                     outputs.add(output);
-                } else if (actionItem.containsKey(INPUT)) {
+                } else if (functionItem.containsKey(INPUT)) {
                     inputs = inputs==null?new ArrayList<Input>():inputs;
-                    Input input = parserInput(actionItem.getJSONObject(INPUT));
+                    Input input = parserInput(functionItem.getJSONObject(INPUT));
                     inputs.add(input);
-                } else if (actionItem.containsKey(SQL)) {
+                } else if (functionItem.containsKey(SQL)) {
                     sqls = sqls==null?new ArrayList<Sql>():sqls;
                     Sql sql = new Sql();
-                    sql.setSql(actionItem.getJSONObject(SQL).getString(SQL+SUFFIX_TEXT));
+                    sql.setSql(functionItem.getJSONObject(SQL).getString(SQL+SUFFIX_TEXT));
                     sqls.add(sql);
                 }else{
-                    IpuUtility.error("无可匹配标签："+ actionItem);
+                    IpuUtility.error("无可匹配标签："+ functionItem);
                 }
             }
-            action.setInputs(inputs);
-            if(outputs!=null)
-                action.setOutputs(outputs);
-            if(sqls!=null){
-                action.setSqls(sqls);
-            }
         }
-        return action;
+        return function;
     }
 
     public Output parserOutput(JSONObject outputObject){

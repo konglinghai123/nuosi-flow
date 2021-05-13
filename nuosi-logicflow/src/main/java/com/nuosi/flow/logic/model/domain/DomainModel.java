@@ -1,8 +1,8 @@
 package com.nuosi.flow.logic.model.domain;
 
-import com.nuosi.flow.logic.model.body.Action;
-
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>desc: 逻辑流元素：领域模型</p>
@@ -15,7 +15,8 @@ public class DomainModel {
     private String name;
     private String desc;
     private List<Attr> attrs;
-    private List<Action> actions;
+    private List<Function> functions;
+    private Map<String, Function> functionMap;
 
     public String getId() {
         return id;
@@ -49,11 +50,22 @@ public class DomainModel {
         this.attrs = attrs;
     }
 
-    public List<Action> getActions() {
-        return actions;
+    public List<Function> getFunctions() {
+        return functions;
     }
 
-    public void setActions(List<Action> actions) {
-        this.actions = actions;
+    public void setFunctions(List<Function> functions) {
+        if(functions!=null){
+            Map<String, Function> functionMap = new HashMap<String, Function>();
+            for(Function function : functions){
+                functionMap.put(function.getId(), function);
+            }
+            this.functionMap = functionMap;
+        }
+        this.functions = functions;
+    }
+
+    public Map<String, Function> getFunctionMap() {
+        return functionMap;
     }
 }

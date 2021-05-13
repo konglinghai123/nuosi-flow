@@ -23,7 +23,6 @@ public class LogicFlowEngineTest {
 
     @Test
     public void testExecute(){
-        MessageManager.registerMessage("NO_MESSAGE_CODE", "提示信息编码[%s]已存在，无需注册");
         JMap param = new JsonMap();
         param.put("goods_name","橙汁");
         param.put("goods_type",1);

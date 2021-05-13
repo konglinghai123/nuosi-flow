@@ -55,9 +55,6 @@
             System.out.println("goods_name==="+DATABUS.goods_name);
             System.out.println("goods_type==="+INPUT.goods_type);
             System.out.println("user_id==="+INPUT.user_id);
-            if(true){
-                QB.errorCode("NO_MESSAGE_CODE", "NO_CODE");
-            }
         ]]>
         </expression>
     </action>

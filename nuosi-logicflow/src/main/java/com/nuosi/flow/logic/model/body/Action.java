@@ -4,6 +4,7 @@ import com.nuosi.flow.logic.model.action.Expression;
 import com.nuosi.flow.logic.model.action.Foreach;
 import com.nuosi.flow.logic.model.action.If;
 import com.nuosi.flow.logic.model.action.Sql;
+import com.nuosi.flow.logic.model.domain.Function;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 
@@ -18,19 +19,25 @@ import java.util.List;
 public class Action {
 
     public static enum ActionType{
-        SQL,EXPRESSION,IF,FOREACH,SERVICE,RULE,MAPPING,EVENT
+        SQL,EXPRESSION,IF,FOREACH,SERVICE,RULE,MAPPING,EVENT,FUNCTION
     }
+
+    private ActionType actionType;
 
     private String id;
     private String name;
     private String next;
     private List<Input> inputs;
     private List<Output> outputs;
-    private ActionType actionType;
     private List<Sql> sqls;
     private List<Expression> expressions;
     private List<If> ifs;
     private List<Foreach> foreachs;
+    private List<Function> functions;
+
+    public ActionType getActionType() {
+        return actionType;
+    }
 
     public String getId() {
         return id;
@@ -74,10 +81,6 @@ public class Action {
         return this;
     }
 
-    public ActionType getActionType() {
-        return actionType;
-    }
-
     public List<Sql> getSqls() {
         return sqls;
     }
@@ -115,6 +118,16 @@ public class Action {
     public Action setForeachs(List<Foreach> foreachs) {
         this.foreachs = foreachs;
         actionType = ActionType.FOREACH;
+        return this;
+    }
+
+    public List<Function> getFunctions() {
+        return functions;
+    }
+
+    public Action setFunctions(List<Function> functions) {
+        this.functions = functions;
+        actionType = ActionType.FUNCTION;
         return this;
     }
 }

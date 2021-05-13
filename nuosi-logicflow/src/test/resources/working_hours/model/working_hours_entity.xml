@@ -8,4 +8,15 @@
     <attr id="project_name" type="string" name="项目名称"/>
     <attr id="project_stage" type="string" name="项目阶段"/>
     <attr id="project_stage_code" type="string" name="项目阶段编码"/>
+
+    <function id="queryWorkingHours" name="查询工时信息">
+        <sql conn="quickbuild">
+        <![CDATA[
+            SELECT fill_id, fill_staff, fill_date, project_stage_code, project_name
+	            , project_stage, fill_hours
+            FROM man_hour_fill
+            WHERE fill_staff = #{fill_staff};
+        ]]>
+        </sql>
+    </function>
 </model>
