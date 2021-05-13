@@ -27,6 +27,7 @@ public class ForeachProcesser implements IActionProcesser{
     private static final String ITERATOR = "ITERATOR";
     private static final String INDEX = "INDEX";
     private static final String RESULT = "RESULT";
+    private static final String KEYS = "KEYS";
 
     public enum ResultType {
         INT, STRING, MAP, LIST;
@@ -39,43 +40,71 @@ public class ForeachProcesser implements IActionProcesser{
         Foreach foreach = foreachs.get(0);
         JMap params = (JMap) param[1];
 
-        Object iterator = databus.get(foreach.getIterable());
+        Object iterator = databus.get(foreach.getIterator());
         if(iterator==null){
             return null;
         }
 
+        Map<String, Object> vars = new HashMap<String, Object>();
+
+        String foreachExpression = null;
         if(iterator instanceof Iterable){
-            Map<String, Object> vars = new HashMap<String, Object>();
-            vars.put(DATABUS, databus);
-            vars.put(ITERATORS, databus.get(foreach.getIterable()));
-            vars.put(QB, QuickBuild.getInstance());
-
-            StringBuilder expr = new StringBuilder();
-            expr.append("int INDEX = 0; \n");
-            if(foreach.getResultType()!=null){
-                appendResult(foreach, expr);
-            }
-            expr.append("foreach(ITERATOR : ITERATORS){ \r");
-            expr.append("INDEX++; \r");
-            expr.append(foreach.getForeach()==null?"":foreach.getForeach()).append("\r");
-            expr.append("} \r");
-            if(foreach.getResultType()!=null){
-                expr.append("return RESULT; \r");
-            }
-
-            try{
-                Object result = MVEL.eval(expr.toString(), vars);
-                return result;
-            }catch (Exception e){
-                if(e instanceof PropertyAccessException){
-                    Throwable tr = IpuUtility.getBottomException(e);
-                    IpuUtility.error(tr);
-                }
-                throw e;
-            }
+            vars.put(ITERATORS, iterator);
+            foreachExpression = createForeachExpressionWithIterator(foreach);
+        }else if(iterator instanceof Map){
+            Map iteratorMap = (Map) iterator;
+            vars.put(ITERATORS, iteratorMap);
+            vars.put(KEYS, iteratorMap.keySet());
+            foreachExpression = createForeachExpressionWithMap(foreach);
+        }else{
+            IpuUtility.errorCode(LogicFlowConstants.FOREACH_ITERATOR_TYPE_ERROR);
         }
+        vars.put(DATABUS, databus);
+        vars.put(QB, QuickBuild.getInstance());
 
-        return null;
+        try{
+            Object result = MVEL.eval(foreachExpression, vars);
+            return result;
+        }catch (Exception e){
+            if(e instanceof PropertyAccessException){
+                Throwable tr = IpuUtility.getBottomException(e);
+                IpuUtility.error(tr);
+            }
+            throw e;
+        }
+    }
+
+    private String createForeachExpressionWithIterator(Foreach foreach){
+        StringBuilder expr = new StringBuilder();
+        expr.append("int INDEX = 0; \n");
+        if(foreach.getResultType()!=null){
+            appendResult(foreach, expr);
+        }
+        expr.append("foreach(ITERATOR : ITERATORS){ \r");
+        expr.append("INDEX++; \r");
+        expr.append(foreach.getForeach()==null?"":foreach.getForeach()).append("\r");
+        expr.append("} \r");
+        if(foreach.getResultType()!=null){
+            expr.append("return RESULT; \r");
+        }
+        return expr.toString();
+    }
+
+    private String createForeachExpressionWithMap(Foreach foreach){
+        StringBuilder expr = new StringBuilder();
+        expr.append("int INDEX = 0; \n");
+        if(foreach.getResultType()!=null){
+            appendResult(foreach, expr);
+        }
+        expr.append("foreach(KEY : KEYS){ \r");
+        expr.append("INDEX++; \r");
+        expr.append("VALUE=ITERATORS.get(KEY); \r");
+        expr.append(foreach.getForeach()==null?"":foreach.getForeach()).append("\r");
+        expr.append("} \r");
+        if(foreach.getResultType()!=null){
+            expr.append("return RESULT; \r");
+        }
+        return expr.toString();
     }
 
     private void appendResult(Foreach foreach, StringBuilder expr){

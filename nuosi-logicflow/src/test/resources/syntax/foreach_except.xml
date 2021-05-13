@@ -8,7 +8,7 @@
     <start id="start" name="开始节点" next="throw_exception"/>
 
     <action id="throw_exception" name="循环内抛出异常" next="end">
-        <foreach iterable="input_list">
+        <foreach iterator="input_list">
         <![CDATA[
             QB.println(INDEX+"==="+ITERATOR);
             if(INDEX==7){

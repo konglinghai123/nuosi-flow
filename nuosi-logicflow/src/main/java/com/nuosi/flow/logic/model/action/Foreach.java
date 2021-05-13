@@ -9,16 +9,16 @@ package com.nuosi.flow.logic.model.action;
  * @version v1.0.0
  */
 public class Foreach {
-    private String iterable;
+    private String iterator;
     private String foreach;
     private String resultType;
 
-    public String getIterable() {
-        return iterable;
+    public String getIterator() {
+        return iterator;
     }
 
-    public void setIterable(String iterable) {
-        this.iterable = iterable;
+    public void setIterator(String iterator) {
+        this.iterator = iterator;
     }
 
     public String getForeach() {

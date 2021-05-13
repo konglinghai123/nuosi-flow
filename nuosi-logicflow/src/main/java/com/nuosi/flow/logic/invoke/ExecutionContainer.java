@@ -199,10 +199,16 @@ public class ExecutionContainer {
                 result = actionProcesser.execute(databus, ifs, param);
                 break;
             case FOREACH:
-                List<Foreach> foreachs = action.getForeachs();
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FOREACH);
-                result = actionProcesser.execute(databus, foreachs, param);
-                break;
+                try{
+                    List<Foreach> foreachs = action.getForeachs();
+                    actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FOREACH);
+                    result = actionProcesser.execute(databus, foreachs, param);
+                    break;
+                }catch (Exception e){
+                    e.printStackTrace();
+                    IpuUtility.errorCode(LogicFlowConstants.FLOW_FOREACH_ITERATOR_TYPE_ERROR,
+                            logicFlow.getId(), action.getId(), e.getMessage());
+                }
             case FUNCTION:
                 List<Function> functions = action.getFunctions();
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FUNCTION);

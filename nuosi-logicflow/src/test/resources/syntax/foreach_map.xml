@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<logic-flow id="foreach_map"
+            name="循环哈希结构"
+            desc="循环逻辑循环哈希数据结构">
+    <databus/>
+
+    <start id="start" name="开始节点" next="foreach_map"/>
+
+    <action id="foreach_map" name="循环哈希结构" next="end">
+        <foreach iterator="input_map">
+        <![CDATA[
+            QB.println(INDEX+"==="+KEY);
+            QB.println(INDEX+"==="+VALUE);
+        ]]>
+        </foreach>
+    </action>
+
+    <end id="end" name="结束节点"/>
+</logic-flow>

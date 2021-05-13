@@ -23,6 +23,23 @@ import java.io.InputStream;
 public class ForeachSyntaxTest {
 
     @Test
+    public void testForeachMap() {
+        try {
+            JMap paramMap = new JsonMap();
+            paramMap.put("name", "zhangsan");
+            paramMap.put("age", 18);
+            JMap param = new JsonMap();
+            param.put("input_map", paramMap);
+
+            LogicFlowEngine.execute("foreach_map", param);
+            Assert.assertTrue(true);
+        } catch (Exception e) {
+            System.out.println("抛出信息：" + e.getMessage());
+            Assert.assertTrue(e.getMessage(), false);
+        }
+    }
+
+    @Test
     public void testForeachExcept() {
         try {
             JList paramList = new JsonList();
@@ -45,6 +62,10 @@ public class ForeachSyntaxTest {
         System.out.println(Messages.FOREACH_DEFINE_HINT);
         String flowConfig = "syntax/foreach_except.xml";
         InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
+        LogicFlowManager.registerLogicFlow(is);
+
+        flowConfig = "syntax/foreach_map.xml";
+        is = getClass().getClassLoader().getResourceAsStream(flowConfig);
         LogicFlowManager.registerLogicFlow(is);
     }
 }
