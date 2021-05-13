@@ -2,7 +2,7 @@ package com.nuosi.flow.logic.invoke.handler;
 
 import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
-import com.nuosi.flow.logic.inject.basic.QuickBuild;
+import com.nuosi.flow.logic.inject.QuickBuild;
 import com.nuosi.flow.logic.model.action.Expression;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;

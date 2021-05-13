@@ -1,4 +1,6 @@
-package com.nuosi.flow.logic.inject.basic;
+package com.nuosi.flow.logic.inject;
+
+import com.nuosi.flow.logic.inject.basic.ExceptionUtil;
 
 /**
  * <p>desc: 表达式全局变量 </p>
