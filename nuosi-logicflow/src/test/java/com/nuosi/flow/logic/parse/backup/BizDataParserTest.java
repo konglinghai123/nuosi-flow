@@ -22,8 +22,9 @@ public class BizDataParserTest {
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
             DomainModel domainModel = new BizDataParser().parser(is);
             String strDomainModel = JSON.toJSONString(domainModel);
-            System.out.println("domainModel==="+ strDomainModel);
+            System.out.println("domainModel1==="+ strDomainModel);
             DomainModel domainModel1 = JSON.toJavaObject(JSON.parseObject(strDomainModel), DomainModel.class);
+            System.out.println("domainModel2==="+ JSON.toJSONString(domainModel1));
             Assert.assertEquals(strDomainModel, JSON.toJSONString(domainModel1));
         }catch (Exception e){
             e.printStackTrace();

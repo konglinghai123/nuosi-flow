@@ -21,6 +21,7 @@ public class DomainModel {
 
     public void setId(String id) {
         this.id = id;
+        initFunctions(id, functions);
     }
 
     public String getName() {
@@ -52,9 +53,26 @@ public class DomainModel {
     }
 
     public void setFunctions(List<Function> functions) {
+        this.functions = functions;
+        initFunctions(id, functions);
+    }
+
+    /**
+     * <p>desc: JSON转Model时，无先后顺序，需要id和function同时不为空时方可初始化 </p>
+     * <p>date: 2021/5/15 10:44</p>
+     * @author nuosi fsofs@163.com
+     * @version v1.0.0
+     * @param id 1
+     * @param functions 2
+     * @return void
+     */
+    private void initFunctions(String id, List<Function> functions){
+        if(id==null||functions==null){
+            return;
+        }
+
         if(functions!=null){
             FunctionManager.initFunctions(id, functions);
         }
-        this.functions = functions;
     }
 }
