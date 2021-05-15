@@ -9,8 +9,7 @@
     <action id="foreach_map" name="循环哈希结构" next="end">
         <foreach iterator="input_map">
         <![CDATA[
-            QB.println(INDEX+"==="+KEY);
-            QB.println(INDEX+"==="+VALUE);
+            QB.printf("第%s行数据：key=%s,value=%s", INDEX, KEY, VALUE);
         ]]>
         </foreach>
     </action>

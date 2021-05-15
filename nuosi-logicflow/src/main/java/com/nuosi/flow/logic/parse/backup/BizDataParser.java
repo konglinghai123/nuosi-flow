@@ -8,9 +8,6 @@ import com.nuosi.flow.logic.model.domain.Attr;
 import com.nuosi.flow.logic.model.domain.DomainModel;
 import com.nuosi.flow.logic.model.domain.Function;
 import com.nuosi.flow.logic.model.domain.Limit;
-import com.nuosi.flow.logic.model.element.Input;
-import com.nuosi.flow.logic.model.element.Output;
-import com.nuosi.flow.logic.model.element.Var;
 import com.nuosi.flow.logic.util.XmlToJsonHelper;
 
 import java.io.InputStream;
@@ -126,20 +123,10 @@ public class BizDataParser {
         JSONArray children = functionObject.getJSONArray(CHILDREN);
         if (children != null && !children.isEmpty()) {
             JSONObject functionItem;
-            List<Input> inputs = null;
-            List<Output> outputs = null;
             List<Sql> sqls = null;
             for (int i = 0; i < children.size(); i++) {
                 functionItem = children.getJSONObject(i);
-                if (functionItem.containsKey(OUTPUT)) {
-                    outputs = outputs==null?new ArrayList<Output>():outputs;
-                    Output output = parserOutput(functionItem.getJSONObject(OUTPUT));
-                    outputs.add(output);
-                } else if (functionItem.containsKey(INPUT)) {
-                    inputs = inputs==null?new ArrayList<Input>():inputs;
-                    Input input = parserInput(functionItem.getJSONObject(INPUT));
-                    inputs.add(input);
-                } else if (functionItem.containsKey(SQL)) {
+                if (functionItem.containsKey(SQL)) {
                     sqls = sqls==null?new ArrayList<Sql>():sqls;
                     Sql sql = new Sql();
                     sql.setSql(functionItem.getJSONObject(SQL).getString(SQL+SUFFIX_TEXT));
@@ -148,40 +135,8 @@ public class BizDataParser {
                     IpuUtility.error("无可匹配标签："+ functionItem);
                 }
             }
+            function.setSqls(sqls);
         }
         return function;
-    }
-
-    public Output parserOutput(JSONObject outputObject){
-        JSONArray children = outputObject.getJSONArray(CHILDREN);
-        List<Var> vars = new ArrayList<Var>();
-        Var var;
-        if (children != null && !children.isEmpty()) {
-            for (int i = 0; i < children.size(); i++) {
-                var = parserVar(children.getJSONObject(i));
-                vars.add(var);
-            }
-        }
-        return new Output().setVars(vars);
-    }
-
-    public Input parserInput(JSONObject inputObject){
-        JSONArray children = inputObject.getJSONArray(CHILDREN);
-        List<Var> vars = new ArrayList<Var>();
-        Var var;
-        if (children != null && !children.isEmpty()) {
-            for (int i = 0; i < children.size(); i++) {
-                var = parserVar(children.getJSONObject(i));
-                vars.add(var);
-            }
-        }
-        return new Input().setVars(vars);
-    }
-
-    public Var parserVar(JSONObject varObject){
-        JSONObject varJson = varObject.getJSONObject(VAR);
-        JSONObject varAttr = varJson.getJSONObject(VAR + SUFFIX_ATTR);
-        Var var = varAttr.toJavaObject(Var.class);
-        return var;
     }
 }

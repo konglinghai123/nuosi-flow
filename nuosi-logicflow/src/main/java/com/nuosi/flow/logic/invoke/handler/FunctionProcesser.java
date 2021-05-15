@@ -3,10 +3,9 @@ package com.nuosi.flow.logic.invoke.handler;
 import com.ai.ipu.data.JMap;
 import com.ai.ipu.database.dao.ISqlDao;
 import com.ai.ipu.database.dao.impl.SqlDao;
-import com.nuosi.flow.logic.LogicFlowManager;
 import com.nuosi.flow.logic.model.action.Sql;
-import com.nuosi.flow.logic.model.domain.DomainModel;
 import com.nuosi.flow.logic.model.domain.Function;
+import com.nuosi.flow.logic.model.domain.FunctionManager;
 
 import java.util.List;
 import java.util.Map;
@@ -42,8 +41,7 @@ public class FunctionProcesser implements IActionProcesser {
     }
 
     private Function getModelFunction(String model, String id){
-        DomainModel domainModel = LogicFlowManager.getDomainModel(model);
-        Function function = domainModel.getFunctionMap().get(id);
+        Function function = FunctionManager.getFunction(model, id);
         return function;
     }
 

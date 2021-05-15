@@ -41,6 +41,7 @@ public class ForeachSyntaxTest {
 
     @Test
     public void testForeachExcept() {
+        System.out.println(Messages.FOREACH_DEFINE_HINT);
         try {
             JList paramList = new JsonList();
             for (int i = 0; i < 10; i++) {
@@ -59,7 +60,6 @@ public class ForeachSyntaxTest {
 
     @Before
     public void setUp() {
-        System.out.println(Messages.FOREACH_DEFINE_HINT);
         String flowConfig = "syntax/foreach_except.xml";
         InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
         LogicFlowManager.registerLogicFlow(is);

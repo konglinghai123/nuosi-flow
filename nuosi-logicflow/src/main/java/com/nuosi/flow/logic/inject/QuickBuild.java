@@ -29,7 +29,11 @@ public class QuickBuild {
         ExceptionUtil.errorCode(msgCode, matcher);
     }
 
-    public static void println(String msg){
+    public static void print(String msg){
         System.out.println(msg);
+    }
+
+    public static void printf(String format, Object ... args){
+        System.out.printf(format + "%n", args);
     }
 }
