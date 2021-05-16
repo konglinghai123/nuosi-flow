@@ -9,6 +9,7 @@ import java.util.List;
  * @version v1.0.0
  */
 public class Output {
+    private boolean mapping;
     private List<Var> vars;
 
     public List<Var> getVars() {
@@ -18,5 +19,13 @@ public class Output {
     public Output setVars(List<Var> vars) {
         this.vars = vars;
         return this;
+    }
+
+    public boolean isMapping() {
+        return mapping;
+    }
+
+    public void setMapping(boolean mapping) {
+        this.mapping = mapping;
     }
 }

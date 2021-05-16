@@ -23,6 +23,7 @@ public class ActionProcesserManager {
         map.put(Action.ActionType.IF, new IfProcesser());
         map.put(Action.ActionType.FOREACH, new ForeachProcesser());
         map.put(Action.ActionType.FUNCTION, new FunctionProcesser());
+        map.put(Action.ActionType.SUBFLOW, new SubflowProcesser());
         actionProcessers = Collections.unmodifiableMap(map);
     }
 

@@ -10,10 +10,7 @@ import com.nuosi.flow.data.impl.BizDataDefine;
 import com.nuosi.flow.logic.invoke.handler.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.handler.IActionProcesser;
 import com.nuosi.flow.logic.model.LogicFlow;
-import com.nuosi.flow.logic.model.action.Expression;
-import com.nuosi.flow.logic.model.action.Foreach;
-import com.nuosi.flow.logic.model.action.If;
-import com.nuosi.flow.logic.model.action.Sql;
+import com.nuosi.flow.logic.model.action.*;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
@@ -80,8 +77,8 @@ public class ExecutionContainer {
                 BizDataManager.registerDto(bDataDefine);
             }
         }else{
+            this.bDataDefine = new BizDataDefine(logicFlow.getId());
             if (!BizDataManager.contains(logicFlow.getId())) {
-                this.bDataDefine = new BizDataDefine(logicFlow.getId());
                 BizDataManager.registerDto(bDataDefine);
             }
         }
@@ -209,6 +206,11 @@ public class ExecutionContainer {
                     IpuUtility.errorCode(LogicFlowConstants.FLOW_FOREACH_ITERATOR_TYPE_ERROR,
                             logicFlow.getId(), action.getId(), e.getMessage());
                 }
+            case SUBFLOW:
+                List<Subflow> subflows = action.getSubflows();
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SUBFLOW);
+                result = actionProcesser.execute(databus, subflows.get(0), param);
+                break;
             case FUNCTION:
                 List<Function> functions = action.getFunctions();
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FUNCTION);
@@ -266,7 +268,7 @@ public class ExecutionContainer {
             return;
         }
 
-        if (vars.size() > 1) {  //大于1表示要从结果集中获取多个值存储到数据总线中
+        if (output.isMapping()) {  //是否映射数据：表示要从结果集中获取多个值存储到数据总线中
             if (result instanceof Map) {
                 Map resultMap = (Map) result;
                 String key;
