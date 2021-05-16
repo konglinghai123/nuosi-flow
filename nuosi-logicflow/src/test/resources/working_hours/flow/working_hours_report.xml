@@ -63,7 +63,7 @@
     </action>
 
     <action id="insertWorkingHours" name="记录填报工时" next="end">
-        <function api="inertBatch" key="staff_date_hours"/>
+        <behavior api="inertBatch" key="staff_date_hours"/>
         <output>
             <var key="recordWorkingHoursNumber"/>
         </output>

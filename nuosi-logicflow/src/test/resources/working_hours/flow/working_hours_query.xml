@@ -14,7 +14,7 @@
         <input>
             <var key="staff_id" alias="fill_staff"/>
         </input>
-        <function model="working_hours_entity" id="queryWorkingHours"/>
+        <behavior model="working_hours_entity" id="queryWorkingHours"/>
         <output>
             <var key="working_hours_infos"/>
         </output>

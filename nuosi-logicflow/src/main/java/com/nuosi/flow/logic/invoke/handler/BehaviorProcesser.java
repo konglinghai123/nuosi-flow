@@ -4,31 +4,31 @@ import com.ai.ipu.data.JMap;
 import com.ai.ipu.database.dao.ISqlDao;
 import com.ai.ipu.database.dao.impl.SqlDao;
 import com.nuosi.flow.logic.model.action.Sql;
-import com.nuosi.flow.logic.model.domain.Function;
-import com.nuosi.flow.logic.model.domain.FunctionManager;
+import com.nuosi.flow.logic.model.domain.Behavior;
+import com.nuosi.flow.logic.model.domain.BehaviorManager;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * <p>desc: 节点执行处理器的模型函数类型实现 </p>
+ * <p>desc: 节点执行处理器的模型行为类型实现 </p>
  * <p>date: 2021/5/13 18:41 </p>
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class FunctionProcesser implements IActionProcesser {
+public class BehaviorProcesser implements IActionProcesser {
 
     @Override
     public Object execute(Map<String, Object> databus, Object... param) throws Exception {
-        Function flowFunction = (Function) param[0];
+        Behavior flowBehavior = (Behavior) param[0];
         JMap params = (JMap) param[1];
 
-        Function modelFunction = getModelFunction(flowFunction.getModel(), flowFunction.getId());
+        Behavior modelBehavior = getModelBehavior(flowBehavior.getModel(), flowBehavior.getId());
         Object result = null;
-        switch (modelFunction.getActionType()) {
+        switch (modelBehavior.getActionType()) {
             case SQL:
-                Sql sql = modelFunction.getSqls().get(0);
+                Sql sql = modelBehavior.getSqls().get(0);
                 result = executeSql(databus, sql, params);
             case EXPRESSION:
                 break;
@@ -40,9 +40,9 @@ public class FunctionProcesser implements IActionProcesser {
         return result;
     }
 
-    private Function getModelFunction(String model, String id){
-        Function function = FunctionManager.getFunction(model, id);
-        return function;
+    private Behavior getModelBehavior(String model, String id){
+        Behavior behavior = BehaviorManager.getBehavior(model, id);
+        return behavior;
     }
 
     private Object executeSql(Map<String, Object> databus, Sql sql, JMap params) throws Exception {

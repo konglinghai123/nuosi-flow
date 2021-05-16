@@ -63,7 +63,7 @@ public class XmlToBizDataParserTest {
             InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
             LogicFlowManager.registerDomainModel(is);
             DomainModel domainModel = LogicFlowManager.getDomainModel("working_hours_entity");
-            System.out.println("action==="+JSON.toJSONString(domainModel.getFunctions()));
+            System.out.println("action==="+JSON.toJSONString(domainModel.getBehaviors()));
             Assert.assertTrue(true);
         }catch (Exception e){
             e.printStackTrace();

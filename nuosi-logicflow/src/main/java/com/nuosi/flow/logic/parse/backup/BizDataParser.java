@@ -5,8 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.domain.Attr;
+import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.logic.model.domain.DomainModel;
-import com.nuosi.flow.logic.model.domain.Function;
 import com.nuosi.flow.logic.model.domain.Limit;
 import com.nuosi.flow.logic.util.XmlToJsonHelper;
 
@@ -23,7 +23,7 @@ import java.util.List;
 public class BizDataParser {
     public static final String MODEL = "model";
     public static final String ATTR = "attr";
-    public static final String FUNCTION = "function";
+    public static final String BEHAVIOR = "behavior";
     public static final String CHILDREN = XmlToJsonHelper.CHILDREN_TAG;
 
     public static final String INPUT = "input";
@@ -62,16 +62,16 @@ public class BizDataParser {
         JSONArray children = domainModelObject.getJSONArray(CHILDREN);
         if (children != null && !children.isEmpty()) {
             List<Attr> attrs = new ArrayList<Attr>();
-            List<Function> functions = new ArrayList<Function>();
+            List<Behavior> behaviors = new ArrayList<Behavior>();
             JSONObject modelItem;
             for (int i = 0; i < children.size(); i++) {
                 modelItem = children.getJSONObject(i);
                 if (modelItem.containsKey(ATTR)) {
                     Attr attr = parserAttr(modelItem.getJSONObject(ATTR));
                     attrs.add(attr);
-                } else if (modelItem.containsKey(FUNCTION)) {
-                    Function function = parserFunction(modelItem.getJSONObject(FUNCTION));
-                    functions.add(function);
+                } else if (modelItem.containsKey(BEHAVIOR)) {
+                    Behavior behavior = parserBehavior(modelItem.getJSONObject(BEHAVIOR));
+                    behaviors.add(behavior);
                 } else{
                     IpuUtility.error("无可匹配标签："+ modelItem);
                 }
@@ -79,8 +79,8 @@ public class BizDataParser {
             if(!attrs.isEmpty()){
                 domainModel.setAttrs(attrs);
             }
-            if(!functions.isEmpty()){
-                domainModel.setFunctions(functions);
+            if(!behaviors.isEmpty()){
+                domainModel.setBehaviors(behaviors);
             }
         }
 
@@ -116,27 +116,27 @@ public class BizDataParser {
 
     }
 
-    public Function parserFunction(JSONObject functionObject){
-        JSONObject functionJson = functionObject.getJSONObject(FUNCTION + SUFFIX_ATTR);
-        Function function = functionJson.toJavaObject(Function.class);
+    public Behavior parserBehavior(JSONObject behaviorObject){
+        JSONObject behaviorJson = behaviorObject.getJSONObject(BEHAVIOR + SUFFIX_ATTR);
+        Behavior behavior = behaviorJson.toJavaObject(Behavior.class);
 
-        JSONArray children = functionObject.getJSONArray(CHILDREN);
+        JSONArray children = behaviorObject.getJSONArray(CHILDREN);
         if (children != null && !children.isEmpty()) {
-            JSONObject functionItem;
+            JSONObject behaviorItem;
             List<Sql> sqls = null;
             for (int i = 0; i < children.size(); i++) {
-                functionItem = children.getJSONObject(i);
-                if (functionItem.containsKey(SQL)) {
+                behaviorItem = children.getJSONObject(i);
+                if (behaviorItem.containsKey(SQL)) {
                     sqls = sqls==null?new ArrayList<Sql>():sqls;
                     Sql sql = new Sql();
-                    sql.setSql(functionItem.getJSONObject(SQL).getString(SQL+SUFFIX_TEXT));
+                    sql.setSql(behaviorItem.getJSONObject(SQL).getString(SQL+SUFFIX_TEXT));
                     sqls.add(sql);
                 }else{
-                    IpuUtility.error("无可匹配标签："+ functionItem);
+                    IpuUtility.error("无可匹配标签："+ behaviorItem);
                 }
             }
-            function.setSqls(sqls);
+            behavior.setSqls(sqls);
         }
-        return function;
+        return behavior;
     }
 }

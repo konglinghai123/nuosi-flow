@@ -15,7 +15,7 @@ import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.domain.Attr;
-import com.nuosi.flow.logic.model.domain.Function;
+import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
@@ -211,10 +211,10 @@ public class ExecutionContainer {
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SUBFLOW);
                 result = actionProcesser.execute(databus, subflows.get(0), param);
                 break;
-            case FUNCTION:
-                List<Function> functions = action.getFunctions();
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FUNCTION);
-                result = actionProcesser.execute(databus, functions.get(0), param);
+            case BEHAVIOR:
+                List<Behavior> behaviors = action.getBehaviors();
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.BEHAVIOR);
+                result = actionProcesser.execute(databus, behaviors.get(0), param);
                 break;
             default:
                 break;

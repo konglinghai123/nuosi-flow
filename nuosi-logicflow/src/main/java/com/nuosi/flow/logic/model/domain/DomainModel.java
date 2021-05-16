@@ -13,7 +13,7 @@ public class DomainModel {
     private String name;
     private String desc;
     private List<Attr> attrs;
-    private List<Function> functions;
+    private List<Behavior> behaviors;
 
     public String getId() {
         return id;
@@ -21,7 +21,7 @@ public class DomainModel {
 
     public void setId(String id) {
         this.id = id;
-        initFunctions(id, functions);
+        initBehaviors(id, behaviors);
     }
 
     public String getName() {
@@ -48,31 +48,31 @@ public class DomainModel {
         this.attrs = attrs;
     }
 
-    public List<Function> getFunctions() {
-        return functions;
+    public List<Behavior> getBehaviors() {
+        return behaviors;
     }
 
-    public void setFunctions(List<Function> functions) {
-        this.functions = functions;
-        initFunctions(id, functions);
+    public void setBehaviors(List<Behavior> behaviors) {
+        this.behaviors = behaviors;
+        initBehaviors(id, behaviors);
     }
 
     /**
-     * <p>desc: JSON转Model时，无先后顺序，需要id和function同时不为空时方可初始化 </p>
+     * <p>desc: JSON转Model时，无先后顺序，需要id和behavior同时不为空时方可初始化 </p>
      * <p>date: 2021/5/15 10:44</p>
      * @author nuosi fsofs@163.com
      * @version v1.0.0
      * @param id 1
-     * @param functions 2
+     * @param behaviors 2
      * @return void
      */
-    private void initFunctions(String id, List<Function> functions){
-        if(id==null||functions==null){
+    private void initBehaviors(String id, List<Behavior> behaviors){
+        if(id==null|| behaviors ==null){
             return;
         }
 
-        if(functions!=null){
-            FunctionManager.initFunctions(id, functions);
+        if(behaviors !=null){
+            BehaviorManager.initBehaviors(id, behaviors);
         }
     }
 }

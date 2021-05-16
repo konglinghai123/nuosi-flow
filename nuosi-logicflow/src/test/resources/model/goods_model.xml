@@ -11,7 +11,7 @@
         <limit precision="6" scale="2" maxDecimal="9999" minDecimal="99"/>
     </attr>
 
-    <function id="queryGoodsInfo" name="查询货物信息">
+    <behavior id="queryGoodsInfo" name="查询货物信息">
         <sql>
         <![CDATA[
         SELECT id, goods_name, price, goods_type
@@ -19,5 +19,5 @@
             WHERE goods_name = #{goods_name} and goods_type = #{goods_type};
         ]]>
         </sql>
-    </function>
+    </behavior>
 </model>

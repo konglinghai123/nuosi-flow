@@ -13,16 +13,16 @@ import org.junit.Test;
 import java.io.InputStream;
 
 /**
- * <p>desc: 模型函数相关语法展示 </p>
+ * <p>desc: 模型行为相关语法展示 </p>
  * <p>date: 2021/5/13 18:44 </p>
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class FunctionProcesserTest {
+public class BehaviorProcesserTest {
 
     @Test
-    public void testModelFunction() {
+    public void testModelBehavior() {
         JMap param = new JsonMap();
         param.put("staff_id","zhangs");
         Object result = LogicFlowEngine.execute("working_hours_query",param);

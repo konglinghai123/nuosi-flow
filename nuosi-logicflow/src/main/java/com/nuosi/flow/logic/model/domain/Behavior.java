@@ -8,13 +8,13 @@ import com.nuosi.flow.logic.model.body.Action;
 import java.util.List;
 
 /**
- * <p>desc: 逻辑流元素：领域模型功能 </p>
+ * <p>desc: 逻辑流元素：领域模型行为 </p>
  * <p>date: 2021/5/13 15:52 </p>
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class Function {
+public class Behavior {
     private Action.ActionType actionType;
     private String model;
     private String id;
@@ -55,7 +55,7 @@ public class Function {
         return sqls;
     }
 
-    public Function setSqls(List<Sql> sqls) {
+    public Behavior setSqls(List<Sql> sqls) {
         this.sqls = sqls;
         actionType = Action.ActionType.SQL;
         return this;
@@ -65,7 +65,7 @@ public class Function {
         return expressions;
     }
 
-    public Function setExpressions(List<Expression> expressions) {
+    public Behavior setExpressions(List<Expression> expressions) {
         this.expressions = expressions;
         actionType = Action.ActionType.EXPRESSION;
         return this;
@@ -75,7 +75,7 @@ public class Function {
         return foreachs;
     }
 
-    public Function setForeachs(List<Foreach> foreachs) {
+    public Behavior setForeachs(List<Foreach> foreachs) {
         this.foreachs = foreachs;
         actionType = Action.ActionType.FOREACH;
         return this;

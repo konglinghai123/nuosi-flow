@@ -1,7 +1,7 @@
 package com.nuosi.flow.logic.model.body;
 
 import com.nuosi.flow.logic.model.action.*;
-import com.nuosi.flow.logic.model.domain.Function;
+import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class Action {
 
     public static enum ActionType{
-        SQL,EXPRESSION,IF,FOREACH,FUNCTION,SUBFLOW,SERVICE,RULE,MAPPING,EVENT
+        SQL,EXPRESSION,IF,FOREACH,BEHAVIOR,SUBFLOW,SERVICE,RULE,MAPPING,EVENT
     }
 
     private ActionType actionType;
@@ -30,7 +30,7 @@ public class Action {
     private List<Expression> expressions;
     private List<If> ifs;
     private List<Foreach> foreachs;
-    private List<Function> functions;
+    private List<Behavior> behaviors;
     private List<Subflow> subflows;
 
     public ActionType getActionType() {
@@ -119,13 +119,13 @@ public class Action {
         return this;
     }
 
-    public List<Function> getFunctions() {
-        return functions;
+    public List<Behavior> getBehaviors() {
+        return behaviors;
     }
 
-    public Action setFunctions(List<Function> functions) {
-        this.functions = functions;
-        actionType = ActionType.FUNCTION;
+    public Action setBehaviors(List<Behavior> behaviors) {
+        this.behaviors = behaviors;
+        actionType = ActionType.BEHAVIOR;
         return this;
     }
 
