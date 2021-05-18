@@ -6,7 +6,6 @@ import com.ai.ipu.data.impl.JsonList;
 import com.ai.ipu.data.impl.JsonMap;
 import com.nuosi.flow.logic.LogicFlowEngine;
 import com.nuosi.flow.logic.LogicFlowManager;
-import com.nuosi.flow.mgmt.message.Messages;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +40,6 @@ public class ForeachSyntaxTest {
 
     @Test
     public void testForeachExcept() {
-        System.out.println(Messages.FOREACH_DEFINE_HINT);
         try {
             JList paramList = new JsonList();
             for (int i = 0; i < 10; i++) {

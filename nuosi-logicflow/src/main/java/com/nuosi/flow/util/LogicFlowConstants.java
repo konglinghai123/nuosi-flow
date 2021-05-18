@@ -46,7 +46,7 @@ public class LogicFlowConstants {
     public static final String BDATA_CHECK_DATETIME_START = "BDATA_CHECK_DATETIME_START";
     public static final String BDATA_CHECK_DATETIME_END = "BDATA_CHECK_DATETIME_END";
 
-    public static final String FLOW_FOREACH_ITERATOR_TYPE_ERROR = "FLOW_FOREACH_ITERATOR_TYPE_ERROR";
+    public static final String FLOW_ACTION_ERROR = "FLOW_ACTION_ERROR";
     public static final String FOREACH_ITERATOR_TYPE_ERROR = "FOREACH_ITERATOR_TYPE_ERROR";
 
 }

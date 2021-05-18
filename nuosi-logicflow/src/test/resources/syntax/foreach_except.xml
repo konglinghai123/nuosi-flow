@@ -5,9 +5,9 @@
     <databus>
     </databus>
 
-    <start id="start" name="开始节点" next="throw_exception"/>
+    <start id="start" name="开始节点" next="action_foreach_except"/>
 
-    <action id="throw_exception" name="循环内抛出异常" next="end">
+    <action id="action_foreach_except" name="循环内抛出异常" next="end">
         <foreach iterator="input_list">
         <![CDATA[
             QB.print(INDEX+"==="+ITERATOR);

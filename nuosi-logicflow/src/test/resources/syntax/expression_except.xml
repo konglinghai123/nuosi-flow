@@ -4,11 +4,11 @@
             desc="表达式逻辑异常语法">
     <databus/>
 
-    <start id="start" name="开始节点" next="throw_exception"/>
+    <start id="start" name="开始节点" next="action_expression_except"/>
 
-    <action id="throw_exception" name="表达式内抛出异常" next="end">
+    <action id="action_expression_except" name="表达式内抛出异常" next="end">
         <expression>
-            <![CDATA[
+        <![CDATA[
             if(true){
                 QB.errorCode("DEFINE_HINT");
             }

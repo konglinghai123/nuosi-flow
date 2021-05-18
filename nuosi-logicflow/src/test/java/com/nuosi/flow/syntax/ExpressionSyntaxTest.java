@@ -2,7 +2,6 @@ package com.nuosi.flow.syntax;
 
 import com.nuosi.flow.logic.LogicFlowEngine;
 import com.nuosi.flow.logic.LogicFlowManager;
-import com.nuosi.flow.mgmt.message.Messages;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,6 @@ public class ExpressionSyntaxTest {
 
     @Before
     public void setUp(){
-        System.out.println(Messages.EXPRESSION_DEFINE_HINT);
         String flowConfig = "syntax/expression_except.xml";
         InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
         LogicFlowManager.registerLogicFlow(is);

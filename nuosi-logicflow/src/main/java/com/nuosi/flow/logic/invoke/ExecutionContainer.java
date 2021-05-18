@@ -209,8 +209,7 @@ public class ExecutionContainer {
                     result = actionProcesser.execute(databus, foreachs, param);
                     break;
                 }catch (Exception e){
-                    e.printStackTrace();
-                    IpuUtility.errorCode(LogicFlowConstants.FLOW_FOREACH_ITERATOR_TYPE_ERROR,
+                    IpuUtility.errorCode(LogicFlowConstants.FLOW_ACTION_ERROR,
                             logicFlow.getId(), action.getId(), e.getMessage());
                 }
             case SUBFLOW:

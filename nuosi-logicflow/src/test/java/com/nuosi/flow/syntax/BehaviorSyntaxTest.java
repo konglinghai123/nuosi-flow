@@ -1,4 +1,4 @@
-package com.nuosi.flow.logic.invoke;
+package com.nuosi.flow.syntax;
 
 import com.ai.ipu.data.JMap;
 import com.ai.ipu.data.impl.JsonMap;
@@ -13,19 +13,27 @@ import org.junit.Test;
 import java.io.InputStream;
 
 /**
- * <p>desc: 模型行为相关语法展示 </p>
- * <p>date: 2021/5/13 18:44 </p>
+ * <p>desc: 业务行为逻辑相关语法展示 </p>
+ * <p>date: 2021/5/18 23:40 </p>
  *
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class BehaviorProcesserTest {
+public class BehaviorSyntaxTest {
 
     @Test
-    public void testModelBehaviorSql() {
+    public void testBehaviorSql() {
         JMap param = new JsonMap();
-        param.put("staff_id","zhangs");
-        Object result = LogicFlowEngine.execute("working_hours_query",param);
+        param.put("fill_staff","zhangs");
+        Object result = LogicFlowEngine.execute("behavior_sql",param);
+        System.out.println("result===" + result);
+    }
+
+    @Test
+    public void testBehaviorFunction() {
+        JMap param = new JsonMap();
+        param.put("fill_id","202104160001");
+        Object result = LogicFlowEngine.execute("behavior_function",param);
         System.out.println("result===" + result);
     }
 
@@ -48,11 +56,15 @@ public class BehaviorProcesserTest {
 
     @Before
     public void setUp() {
-        String flowConfig = "working_hours/flow/working_hours_query.xml";
+        String flowConfig = "syntax/behavior_sql.xml";
         InputStream is = getClass().getClassLoader().getResourceAsStream(flowConfig);
         LogicFlowManager.registerLogicFlow(is);
 
-        flowConfig = "working_hours/flow/working_hours_insert.xml";
+        flowConfig = "syntax/behavior_function.xml";
+        is = getClass().getClassLoader().getResourceAsStream(flowConfig);
+        LogicFlowManager.registerLogicFlow(is);
+
+        flowConfig = "working_hours/flow/working_hours_query.xml";
         is = getClass().getClassLoader().getResourceAsStream(flowConfig);
         LogicFlowManager.registerLogicFlow(is);
 

@@ -4,9 +4,9 @@
             desc="循环逻辑循环哈希数据结构">
     <databus/>
 
-    <start id="start" name="开始节点" next="foreach_map"/>
+    <start id="start" name="开始节点" next="action_foreach_map"/>
 
-    <action id="foreach_map" name="循环哈希结构" next="end">
+    <action id="action_foreach_map" name="循环哈希结构" next="end">
         <foreach iterator="input_map">
         <![CDATA[
             QB.printf("第%s行数据：key=%s,value=%s", INDEX, KEY, VALUE);

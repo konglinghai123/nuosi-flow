@@ -7,11 +7,12 @@
         </attr>
     </databus>
 
-    <start id="start" name="开始节点" next="queryWorkingHoursBySubflow">
+    <start id="start" name="开始节点" next="action_subflow_simple">
         <var key="staff_id" />
     </start>
 
-    <action id="queryWorkingHoursBySubflow" name="子流程查询工时信息" next="printWorkingHours">
+    <action id="action_subflow_simple" name="子流程查询工时信息" next="action_print">
+        <!-- 调用子流程需要在action-input中准备入参 -->
         <input>
             <var key="staff_id"/>
         </input>
@@ -21,15 +22,15 @@
         </output>
     </action>
 
-    <action id="printWorkingHours" name="循环打印工时信息" next="end">
+    <action id="action_print" name="循环打印工时信息" next="end">
         <foreach iterator="working_hours_infos">
-            <![CDATA[
+        <![CDATA[
             QB.printf("第%s行数据，数据内容：%s", INDEX, ITERATOR);
         ]]>
         </foreach>
     </action>
 
     <end id="end" name="结束节点">
-        <var key="working_hours_infos"/>
+        <var key="working_hours_infos" />
     </end>
 </logic-flow>
