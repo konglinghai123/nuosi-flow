@@ -2,6 +2,7 @@ package com.nuosi.flow.logic;
 
 import com.ai.ipu.basic.util.IpuBaseException;
 import com.ai.ipu.data.JMap;
+import com.nuosi.flow.logic.inject.function.FunctionManager;
 import com.nuosi.flow.logic.invoke.ExecutionContainer;
 import com.nuosi.flow.logic.model.LogicFlow;
 
@@ -12,6 +13,10 @@ import com.nuosi.flow.logic.model.LogicFlow;
  * @version v1.0.0
  */
 public class LogicFlowEngine {
+    static {
+        registerExceptionCode();
+        FunctionManager.initDomainFunction();
+    }
 
     public static JMap execute(String flowName, JMap param){
         // 1.获取逻辑流程的配置
@@ -19,10 +24,6 @@ public class LogicFlowEngine {
         // 2.解析配置执行逻辑节点
         JMap result = new ExecutionContainer(logicFlow).execute(param);
         return result;
-    }
-
-    static {
-        registerExceptionCode();
     }
 
     public static void init() {

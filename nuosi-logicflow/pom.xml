@@ -29,6 +29,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <ipu>3.1-SNAPSHOT</ipu>
+        <ipu-db>3.2-SNAPSHOT</ipu-db>
         <junit>4.12</junit>
         <mvel2>2.4.10.Final</mvel2>
     </properties>
@@ -58,7 +59,7 @@
         <dependency>
             <groupId>com.ai.ipu</groupId>
             <artifactId>ipu-database</artifactId>
-            <version>${ipu}</version>
+            <version>${ipu-db}</version>
         </dependency>
 
         <!-- 第三方Jar引入 -->

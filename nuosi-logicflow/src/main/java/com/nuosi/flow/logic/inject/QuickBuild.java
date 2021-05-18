@@ -1,6 +1,8 @@
 package com.nuosi.flow.logic.inject;
 
+import com.ai.ipu.basic.util.IpuUtility;
 import com.nuosi.flow.logic.inject.basic.ExceptionUtil;
+import com.nuosi.flow.logic.inject.function.impl.DbDomainFunction;
 
 /**
  * <p>desc: 表达式全局变量 </p>
@@ -25,15 +27,24 @@ public class QuickBuild {
         return instance;
     }
 
-    public static void errorCode(String msgCode, String ... matcher){
+    public void errorCode(String msgCode, String ... matcher){
         ExceptionUtil.errorCode(msgCode, matcher);
     }
 
-    public static void print(String msg){
+    public void print(String msg){
         System.out.println(msg);
     }
 
-    public static void printf(String format, Object ... args){
+    public void printf(String format, Object ... args){
         System.out.printf(format + "%n", args);
+    }
+
+    public DbDomainFunction getDataModelPersistence(String connName) {
+        try {
+            return new DbDomainFunction();
+        } catch (Exception e) {
+            IpuUtility.error(e);
+        }
+        return null;
     }
 }

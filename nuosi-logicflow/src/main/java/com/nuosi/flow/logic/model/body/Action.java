@@ -16,7 +16,7 @@ import java.util.List;
 public class Action {
 
     public static enum ActionType{
-        SQL,EXPRESSION,IF,FOREACH,BEHAVIOR,SUBFLOW,SERVICE,RULE,MAPPING,EVENT
+        SQL,EXPRESSION,IF,FOREACH,BEHAVIOR,SUBFLOW,FUNCTION,SERVICE,RULE,MAPPING,EVENT
     }
 
     private ActionType actionType;
@@ -32,6 +32,7 @@ public class Action {
     private List<Foreach> foreachs;
     private List<Behavior> behaviors;
     private List<Subflow> subflows;
+    private List<Function> functions;
 
     public ActionType getActionType() {
         return actionType;
@@ -85,7 +86,7 @@ public class Action {
 
     public Action setSqls(List<Sql> sqls) {
         this.sqls = sqls;
-        actionType = ActionType.SQL;
+        this.actionType = ActionType.SQL;
         return this;
     }
 
@@ -95,7 +96,7 @@ public class Action {
 
     public Action setExpressions(List<Expression> expressions) {
         this.expressions = expressions;
-        actionType = ActionType.EXPRESSION;
+        this.actionType = ActionType.EXPRESSION;
         return this;
     }
 
@@ -105,7 +106,7 @@ public class Action {
 
     public Action setIfs(List<If> ifs) {
         this.ifs = ifs;
-        actionType = ActionType.IF;
+        this.actionType = ActionType.IF;
         return this;
     }
 
@@ -115,7 +116,7 @@ public class Action {
 
     public Action setForeachs(List<Foreach> foreachs) {
         this.foreachs = foreachs;
-        actionType = ActionType.FOREACH;
+        this.actionType = ActionType.FOREACH;
         return this;
     }
 
@@ -125,7 +126,7 @@ public class Action {
 
     public Action setBehaviors(List<Behavior> behaviors) {
         this.behaviors = behaviors;
-        actionType = ActionType.BEHAVIOR;
+        this.actionType = ActionType.BEHAVIOR;
         return this;
     }
 
@@ -135,7 +136,17 @@ public class Action {
 
     public Action setSubflows(List<Subflow> subflows) {
         this.subflows = subflows;
-        actionType = ActionType.SUBFLOW;
+        this.actionType = ActionType.SUBFLOW;
+        return this;
+    }
+
+    public List<Function> getFunctions() {
+        return functions;
+    }
+
+    public Action setFunctions(List<Function> functions) {
+        this.functions = functions;
+        this.actionType = ActionType.FUNCTION;
         return this;
     }
 }

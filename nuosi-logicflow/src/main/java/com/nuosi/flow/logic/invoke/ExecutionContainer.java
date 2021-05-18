@@ -147,7 +147,9 @@ public class ExecutionContainer {
                     bDataDefine.checkData(var.getAttr(), databus.get(key));
                 } else {
                     // 根据定义的数据模型做数据校验
-                    bDataDefine.checkData(key, databus.get(key));
+                    if (bDataDefine.getDataTypes().containsKey(key)) {
+                        bDataDefine.checkData(key, databus.get(key));
+                    }
                 }
             }
         }
@@ -189,6 +191,11 @@ public class ExecutionContainer {
                 Expression expr = action.getExpressions().get(0);
                 actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.EXPRESSION);
                 result = actionProcesser.execute(databus, expr, param);
+                break;
+            case FUNCTION:
+                List<Function> functions = action.getFunctions();
+                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FUNCTION);
+                result = actionProcesser.execute(databus, functions, param);
                 break;
             case IF:
                 List<If> ifs = action.getIfs();

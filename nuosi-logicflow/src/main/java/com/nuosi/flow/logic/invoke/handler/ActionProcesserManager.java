@@ -24,6 +24,7 @@ public class ActionProcesserManager {
         map.put(Action.ActionType.FOREACH, new ForeachProcesser());
         map.put(Action.ActionType.BEHAVIOR, new BehaviorProcesser());
         map.put(Action.ActionType.SUBFLOW, new SubflowProcesser());
+        map.put(Action.ActionType.FUNCTION, new FunctionProcesser());
         actionProcessers = Collections.unmodifiableMap(map);
     }
 
