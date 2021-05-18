@@ -1,14 +1,10 @@
 package com.nuosi.flow.mgmt.message;
 
-import com.ai.ipu.basic.log.ILogger;
-import com.ai.ipu.basic.log.IpuLoggerFactory;
+import com.ai.ipu.basic.util.IpuBaseException;
 import com.ai.ipu.basic.util.IpuUtility;
+import com.nuosi.flow.util.LogicFlowConstants;
 
-import java.lang.reflect.Field;
-import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -21,6 +17,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class MessageManager {
     /**自定义提示信息的二级缓存*/
     private static Map<String, String> messageCache = new ConcurrentHashMap<String, String>();
+
+    public static void init(){
+        Messages.initializeMessages(LogicFlowConstants.PACKAGE_PATH + "messages",
+                "com.nuosi.flow.mgmt.message.Messages");
+    }
 
     public static String getMessage(String msgCode, String ... matcher){
         String message = parseCodeToMessage(msgCode);

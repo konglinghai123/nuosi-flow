@@ -5,6 +5,8 @@ import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.inject.function.FunctionManager;
 import com.nuosi.flow.logic.invoke.ExecutionContainer;
 import com.nuosi.flow.logic.model.LogicFlow;
+import com.nuosi.flow.mgmt.message.MessageManager;
+import com.nuosi.flow.util.LogicFlowConstants;
 
 /**
  * <p>desc: 逻辑流引擎入口类</p>
@@ -14,8 +16,9 @@ import com.nuosi.flow.logic.model.LogicFlow;
  */
 public class LogicFlowEngine {
     static {
-        registerExceptionCode();
-        FunctionManager.initDomainFunction();
+        init();
+        MessageManager.init();
+        FunctionManager.init();
     }
 
     public static JMap execute(String flowName, JMap param){
@@ -27,11 +30,11 @@ public class LogicFlowEngine {
     }
 
     public static void init() {
+        initExceptionCode();
     }
 
-    private static void registerExceptionCode(){
+    static void initExceptionCode(){
         // 热部署会多次加载，因此需要捕获并忽略异常
-        String exceptionMessagesConfig = "com/nuosi/flow/exception_messages";
-        IpuBaseException.registerCode(exceptionMessagesConfig);
+        IpuBaseException.registerCode(LogicFlowConstants.PACKAGE_PATH + "exception_messages", true);
     }
 }

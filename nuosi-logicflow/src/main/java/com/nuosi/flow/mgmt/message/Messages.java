@@ -31,7 +31,7 @@ public class Messages {
     public static String EXPRESSION_DEFINE_HINT;
     public static String FOREACH_DEFINE_HINT;
 
-    private static void initializeMessages(String bundleName, String className) {
+    public static void initializeMessages(String bundleName, String className) {
         ResourceBundle messages = ResourceBundle.getBundle(bundleName, Locale.getDefault());
 
         try {

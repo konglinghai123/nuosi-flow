@@ -31,7 +31,7 @@ public class BehaviorProcesserTest {
 
     @Test
     public void testModelBehaviorFunction() {
-        JMap param = new JsonMap();
+        /*JMap param = new JsonMap();
         JMap data = new JsonMap();
         data.put("fill_id","202104160005");
         data.put("fill_staff","zhangs");
@@ -43,7 +43,7 @@ public class BehaviorProcesserTest {
 
         param.put("working_hours", data);
         Object result = LogicFlowEngine.execute("working_hours_insert",param);
-        System.out.println("result===" + result);
+        System.out.println("result===" + result);*/
     }
 
     @Before

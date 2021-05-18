@@ -43,5 +43,6 @@ public class MessageManagerTest {
     @Before
     public void setUp() {
         msgCode = "NO_MESSAGE_CODE";
+        MessageManager.init();
     }
 }

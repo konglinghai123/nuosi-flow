@@ -17,15 +17,15 @@ public class FunctionManager {
 
     private static Map<String, IDomainFunction> domainFunctionCache = new ConcurrentHashMap<String, IDomainFunction>();
 
+    public static void init() {
+        registerDomainFunction(DB, new DbDomainFunction());
+    }
+
     public static void registerDomainFunction(String domain, IDomainFunction domainFunction) {
         domainFunctionCache.put(domain, domainFunction);
     }
 
     public static IDomainFunction getDomainFunction(String domain) {
         return domainFunctionCache.get(domain);
-    }
-
-    public static void initDomainFunction() {
-        registerDomainFunction(DB, new DbDomainFunction());
     }
 }
