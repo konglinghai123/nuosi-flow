@@ -20,4 +20,20 @@
         ]]>
         </sql>
     </behavior>
+
+    <behavior id="queryWorkingHours" name="查询工时信息">
+        <function domain="DB" name="select" outkey="working_hours_info">
+            <param value="quickbuild" type="string"/>
+            <param value="man_hour_fill" type="string"/>
+            <param key="param" type="map"/>
+        </function>
+    </behavior>
+
+    <behavior id="insertWorkingHours" name="新增工时信息">
+        <function domain="DB" name="insert" outkey="working_hours_num">
+            <param value="quickbuild" type="string"/>
+            <param value="man_hour_fill" type="string"/>
+            <param key="working_hours" type="map"/>
+        </function>
+    </behavior>
 </model>

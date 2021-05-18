@@ -3,6 +3,9 @@ package com.nuosi.flow.logic.invoke.handler;
 import com.ai.ipu.data.JMap;
 import com.ai.ipu.database.dao.ISqlDao;
 import com.ai.ipu.database.dao.impl.SqlDao;
+import com.nuosi.flow.logic.inject.function.FunctionManager;
+import com.nuosi.flow.logic.inject.function.IDomainFunction;
+import com.nuosi.flow.logic.model.action.Function;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.logic.model.domain.BehaviorManager;
@@ -32,6 +35,9 @@ public class BehaviorProcesser implements IActionProcesser {
                 result = executeSql(databus, sql, params);
             case EXPRESSION:
                 break;
+            case FUNCTION:
+                List<Function> functions = modelBehavior.getFunctions();
+                result = executeFunction(databus, functions, params);
             case FOREACH:
                 break;
             default:
@@ -50,6 +56,19 @@ public class BehaviorProcesser implements IActionProcesser {
         System.out.println("执行SQL参数：" + params);
         ISqlDao dao = new SqlDao(sql.getConn());
         List<Map<String, Object>> result = dao.executeSelect(sql.getSql(), params);
+        return result;
+    }
+
+    private Object executeFunction(Map<String, Object> databus, List<Function> functions, JMap params) throws Exception {
+        IDomainFunction domainFunction;
+        Object result = null;
+        for(Function function : functions){
+            domainFunction = FunctionManager.getDomainFunction(function.getDomain());
+            result = domainFunction.invoke(databus, function);
+            if(function.getOutkey()!=null){
+                databus.put(function.getOutkey(), result);
+            }
+        }
         return result;
     }
 }

@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version v1.0.0
  */
 public class FunctionManager {
-    public static final String DATA_MODEL = "DataModel";
+    public static final String DB = "DB";
 
     private static Map<String, IDomainFunction> domainFunctionCache = new ConcurrentHashMap<String, IDomainFunction>();
 
@@ -26,6 +26,6 @@ public class FunctionManager {
     }
 
     public static void initDomainFunction() {
-        registerDomainFunction(DATA_MODEL, new DbDomainFunction());
+        registerDomainFunction(DB, new DbDomainFunction());
     }
 }

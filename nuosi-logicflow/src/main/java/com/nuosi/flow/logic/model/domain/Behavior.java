@@ -2,6 +2,7 @@ package com.nuosi.flow.logic.model.domain;
 
 import com.nuosi.flow.logic.model.action.Expression;
 import com.nuosi.flow.logic.model.action.Foreach;
+import com.nuosi.flow.logic.model.action.Function;
 import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 
@@ -22,6 +23,7 @@ public class Behavior {
     private List<Sql> sqls;
     private List<Expression> expressions;
     private List<Foreach> foreachs;
+    private List<Function> functions;
 
     public Action.ActionType getActionType() {
         return actionType;
@@ -57,7 +59,7 @@ public class Behavior {
 
     public Behavior setSqls(List<Sql> sqls) {
         this.sqls = sqls;
-        actionType = Action.ActionType.SQL;
+        this.actionType = Action.ActionType.SQL;
         return this;
     }
 
@@ -67,7 +69,7 @@ public class Behavior {
 
     public Behavior setExpressions(List<Expression> expressions) {
         this.expressions = expressions;
-        actionType = Action.ActionType.EXPRESSION;
+        this.actionType = Action.ActionType.EXPRESSION;
         return this;
     }
 
@@ -77,7 +79,17 @@ public class Behavior {
 
     public Behavior setForeachs(List<Foreach> foreachs) {
         this.foreachs = foreachs;
-        actionType = Action.ActionType.FOREACH;
+        this.actionType = Action.ActionType.FOREACH;
+        return this;
+    }
+
+    public List<Function> getFunctions() {
+        return functions;
+    }
+
+    public Behavior setFunctions(List<Function> functions) {
+        this.functions = functions;
+        this.actionType = Action.ActionType.FUNCTION;
         return this;
     }
 }
