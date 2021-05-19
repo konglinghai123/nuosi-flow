@@ -22,7 +22,6 @@ public class Behavior {
     private String name;
     private List<Sql> sqls;
     private List<Expression> expressions;
-    private List<Foreach> foreachs;
     private List<Function> functions;
 
     public Action.ActionType getActionType() {
@@ -70,16 +69,6 @@ public class Behavior {
     public Behavior setExpressions(List<Expression> expressions) {
         this.expressions = expressions;
         this.actionType = Action.ActionType.EXPRESSION;
-        return this;
-    }
-
-    public List<Foreach> getForeachs() {
-        return foreachs;
-    }
-
-    public Behavior setForeachs(List<Foreach> foreachs) {
-        this.foreachs = foreachs;
-        this.actionType = Action.ActionType.FOREACH;
         return this;
     }
 
