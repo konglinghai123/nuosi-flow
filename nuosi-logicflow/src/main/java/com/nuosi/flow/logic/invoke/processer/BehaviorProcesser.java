@@ -1,12 +1,6 @@
 package com.nuosi.flow.logic.invoke.processer;
 
 import com.ai.ipu.data.JMap;
-import com.ai.ipu.database.dao.ISqlDao;
-import com.ai.ipu.database.dao.impl.SqlDao;
-import com.nuosi.flow.logic.inject.function.FunctionManager;
-import com.nuosi.flow.logic.inject.function.IDomainFunction;
-import com.nuosi.flow.logic.model.action.Function;
-import com.nuosi.flow.logic.model.action.Sql;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.logic.model.domain.BehaviorManager;
@@ -24,52 +18,18 @@ import java.util.Map;
 public class BehaviorProcesser implements IActionProcesser {
 
     @Override
-    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object... param) throws Exception {
         List<Behavior> behaviors = action.getBehaviors();
         Behavior behavior = behaviors.get(0);
-
         Behavior modelBehavior = getModelBehavior(behavior.getModel(), behavior.getId());
-        Object result = null;
-        switch (modelBehavior.getActionType()) {
-            case SQL:
-                Sql sql = modelBehavior.getSqls().get(0);
-                result = executeSql(databus, sql, input);
-            case EXPRESSION:
-                break;
-            case FUNCTION:
-                List<Function> functions = modelBehavior.getFunctions();
-                result = executeFunction(databus, functions, input);
-            case FOREACH:
-                break;
-            default:
-                break;
-        }
+
+        IBehaviorProcesser behaviorProcesser = ProcesserManager.getBehaviorProcesser(modelBehavior.getActionType());
+        Object result = behaviorProcesser.execute(databus, modelBehavior, input, param);
         return result;
     }
 
-    private Behavior getModelBehavior(String model, String id){
+    private Behavior getModelBehavior(String model, String id) {
         Behavior behavior = BehaviorManager.getBehavior(model, id);
         return behavior;
-    }
-
-    private Object executeSql(Map<String, Object> databus, Sql sql, JMap params) throws Exception {
-        System.out.println("执行SQL语句：" + sql.getSql());
-        System.out.println("执行SQL参数：" + params);
-        ISqlDao dao = new SqlDao(sql.getConn());
-        List<Map<String, Object>> result = dao.executeSelect(sql.getSql(), params);
-        return result;
-    }
-
-    private Object executeFunction(Map<String, Object> databus, List<Function> functions, JMap params) throws Exception {
-        IDomainFunction domainFunction;
-        Object result = null;
-        for(Function function : functions){
-            domainFunction = FunctionManager.getDomainFunction(function.getDomain());
-            result = domainFunction.invoke(databus, function);
-            if(function.getOutkey()!=null){
-                databus.put(function.getOutkey(), result);
-            }
-        }
-        return result;
     }
 }

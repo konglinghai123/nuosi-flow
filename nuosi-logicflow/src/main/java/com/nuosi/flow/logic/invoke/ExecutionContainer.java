@@ -7,8 +7,8 @@ import com.ai.ipu.database.conn.SqlSessionManager;
 import com.nuosi.flow.data.BDataDefine;
 import com.nuosi.flow.data.BizDataManager;
 import com.nuosi.flow.data.impl.BizDataDefine;
-import com.nuosi.flow.logic.invoke.processer.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.processer.IActionProcesser;
+import com.nuosi.flow.logic.invoke.processer.ProcesserManager;
 import com.nuosi.flow.logic.model.LogicFlow;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
@@ -180,7 +180,7 @@ public class ExecutionContainer {
     private Object executeProcesser(Action action, JMap input) throws Exception {
         Object result = null;
         try{
-            IActionProcesser actionProcesser = ActionProcesserManager.getProcesser(action.getActionType());
+            IActionProcesser actionProcesser = ProcesserManager.getActionProcesser(action.getActionType());
             result = actionProcesser.execute(databus, action, input);
         }catch (Exception e){
             /**

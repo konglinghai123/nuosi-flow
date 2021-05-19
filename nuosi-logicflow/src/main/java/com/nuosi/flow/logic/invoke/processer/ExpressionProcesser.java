@@ -5,6 +5,7 @@ import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.inject.QuickBuild;
 import com.nuosi.flow.logic.model.action.Expression;
 import com.nuosi.flow.logic.model.body.Action;
+import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;
 import org.mvel2.PropertyAccessException;
@@ -20,7 +21,7 @@ import java.util.Map;
  * @author nuosi fsofs@163.com
  * @version v1.0.0
  */
-public class ExpressionProcesser implements IActionProcesser{
+public class ExpressionProcesser implements IActionProcesser, IBehaviorProcesser {
     private static final String DATABUS = LogicFlowConstants.DATABUS;
     private static final String INPUT = LogicFlowConstants.INPUT;
     private static final String QB = LogicFlowConstants.QB;
@@ -29,11 +30,21 @@ public class ExpressionProcesser implements IActionProcesser{
     public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
         List<Expression> expressions = action.getExpressions();
         Expression expr = expressions.get(0);
+        return execute(databus, expr, input, param);
+    }
+
+    @Override
+    public Object execute(Map<String, Object> databus, Behavior behavior, JMap input, Object... param) throws Exception {
+        List<Expression> expressions = behavior.getExpressions();
+        Expression expr = expressions.get(0);
+        return execute(databus, expr, input, param);
+    }
+
+    private Object execute(Map<String, Object> databus, Expression expr, JMap input, Object... param) throws Exception {
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put(DATABUS, databus);
         vars.put(INPUT, input);
         vars.put(QB, QuickBuild.getInstance());
-
         try{
             Object result = MVEL.eval(expr.getExpression(), vars);
             return result;
