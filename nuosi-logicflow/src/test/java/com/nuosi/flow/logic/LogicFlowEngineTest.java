@@ -22,7 +22,7 @@ import java.io.InputStream;
 public class LogicFlowEngineTest {
 
     @Test
-    public void testExecute(){
+    public void testExecute() throws Exception {
         JMap param = new JsonMap();
         param.put("goods_name","橙汁");
         param.put("goods_type",1);

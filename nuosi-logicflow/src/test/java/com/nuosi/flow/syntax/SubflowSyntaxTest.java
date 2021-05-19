@@ -23,7 +23,7 @@ import java.io.InputStream;
 public class SubflowSyntaxTest {
 
     @Test
-    public void testSubflowSimple() {
+    public void testSubflowSimple() throws Exception {
         JMap param = new JsonMap();
         param.put("staff_id","zhangs");
         Object result = LogicFlowEngine.execute("subflow_simple",param);

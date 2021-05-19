@@ -10,7 +10,7 @@
         <expression>
         <![CDATA[
             if(true){
-                QB.errorCode("DEFINE_HINT");
+                QB.errorCode("EXPRESSION_DEFINE_HINT");
             }
         ]]>
         </expression>

@@ -22,7 +22,7 @@ import java.io.InputStream;
 public class FunctionSyntaxTest {
 
     @Test
-    public void testFunctionSimple() {
+    public void testFunctionSimple() throws Exception {
         JMap param = new JsonMap();
         param.put("fill_id","202104160001");
         Object result = LogicFlowEngine.execute("function_simple",param);

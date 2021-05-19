@@ -10,12 +10,10 @@ import com.nuosi.flow.data.impl.BizDataDefine;
 import com.nuosi.flow.logic.invoke.handler.ActionProcesserManager;
 import com.nuosi.flow.logic.invoke.handler.IActionProcesser;
 import com.nuosi.flow.logic.model.LogicFlow;
-import com.nuosi.flow.logic.model.action.*;
 import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.body.End;
 import com.nuosi.flow.logic.model.body.Start;
 import com.nuosi.flow.logic.model.domain.Attr;
-import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.logic.model.element.Input;
 import com.nuosi.flow.logic.model.element.Output;
 import com.nuosi.flow.logic.model.element.Var;
@@ -25,6 +23,7 @@ import com.nuosi.flow.logic.parse.DtoToDataDefineParser;
 import com.nuosi.flow.util.LogicFlowConstants;
 
 import java.util.*;
+
 
 /**
  * <p>desc: 业务逻辑流执行容器 </p>
@@ -91,7 +90,7 @@ public class ExecutionContainer {
         }
     }
 
-    public JMap execute(JMap param) {
+    public JMap execute(JMap param) throws Exception {
         JMap result = null;
         try {
             storeDatabus(param);
@@ -103,7 +102,7 @@ public class ExecutionContainer {
             SqlSessionManager.commitAll();
         } catch (Exception e) {
             SqlSessionManager.rollbackAll();
-            IpuUtility.error(e);
+            throw e;
         } finally {
             SqlSessionManager.closeAll();
         }
@@ -178,54 +177,15 @@ public class ExecutionContainer {
         }
     }
 
-    private Object executeProcesser(Action action, JMap param) throws Exception {
+    private Object executeProcesser(Action action, JMap input) throws Exception {
         Object result = null;
-        IActionProcesser actionProcesser = null;
-        switch (action.getActionType()) {
-            case SQL:
-                Sql sql = action.getSqls().get(0);
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SQL);
-                result = actionProcesser.execute(databus, sql, param);
-                break;
-            case EXPRESSION:
-                Expression expr = action.getExpressions().get(0);
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.EXPRESSION);
-                result = actionProcesser.execute(databus, expr, param);
-                break;
-            case FUNCTION:
-                List<Function> functions = action.getFunctions();
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FUNCTION);
-                result = actionProcesser.execute(databus, functions, param);
-                break;
-            case IF:
-                List<If> ifs = action.getIfs();
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.IF);
-                result = actionProcesser.execute(databus, ifs, param);
-                break;
-            case FOREACH:
-                try{
-                    List<Foreach> foreachs = action.getForeachs();
-                    actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.FOREACH);
-                    result = actionProcesser.execute(databus, foreachs, param);
-                    break;
-                }catch (Exception e){
-                    IpuUtility.errorCode(LogicFlowConstants.FLOW_ACTION_ERROR,
-                            logicFlow.getId(), action.getId(), e.getMessage());
-                }
-            case SUBFLOW:
-                List<Subflow> subflows = action.getSubflows();
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.SUBFLOW);
-                result = actionProcesser.execute(databus, subflows.get(0), param);
-                break;
-            case BEHAVIOR:
-                List<Behavior> behaviors = action.getBehaviors();
-                actionProcesser = ActionProcesserManager.getProcesser(Action.ActionType.BEHAVIOR);
-                result = actionProcesser.execute(databus, behaviors.get(0), param);
-                break;
-            default:
-                break;
+        try{
+            IActionProcesser actionProcesser = ActionProcesserManager.getProcesser(action.getActionType());
+            result = actionProcesser.execute(databus, action, input);
+        }catch (Exception e){
+            IpuUtility.errorCode(LogicFlowConstants.FLOW_ACTION_ERROR,
+                    logicFlow.getId(), action.getId(), e.getMessage());
         }
-
         return result;
     }
 

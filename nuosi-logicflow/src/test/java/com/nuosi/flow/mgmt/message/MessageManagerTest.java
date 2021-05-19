@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * <p>desc: 描述这个类功能的注释 </p>
+ * <p>desc: 信息管理测试类 </p>
  * <p>date: 2021/4/30 13:00 </p>
  *
  * @author nuosi fsofs@163.com

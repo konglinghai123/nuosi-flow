@@ -1,6 +1,8 @@
 package com.nuosi.flow.logic.invoke.handler;
 
+import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.invoke.ExecutionContainer;
+import com.nuosi.flow.logic.model.body.Action;
 
 import java.util.Map;
 
@@ -12,5 +14,5 @@ import java.util.Map;
  */
 public interface IActionProcesser {
 
-    public Object execute(Map<String, Object> databus, Object ... param) throws Exception;
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception;
 }

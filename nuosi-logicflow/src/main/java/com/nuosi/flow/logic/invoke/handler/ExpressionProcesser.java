@@ -4,11 +4,13 @@ import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.inject.QuickBuild;
 import com.nuosi.flow.logic.model.action.Expression;
+import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;
 import org.mvel2.PropertyAccessException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,12 +26,12 @@ public class ExpressionProcesser implements IActionProcesser{
     private static final String QB = LogicFlowConstants.QB;
 
     @Override
-    public Object execute(Map<String, Object> databus, Object... param) throws Exception {
-        Expression expr = (Expression) param[0];
-        JMap params = (JMap) param[1];
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+        List<Expression> expressions = action.getExpressions();
+        Expression expr = expressions.get(0);
         Map<String, Object> vars = new HashMap<String, Object>();
         vars.put(DATABUS, databus);
-        vars.put(INPUT, params);
+        vars.put(INPUT, input);
         vars.put(QB, QuickBuild.getInstance());
 
         try{

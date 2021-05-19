@@ -3,6 +3,7 @@ package com.nuosi.flow.logic.invoke.handler;
 import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.model.action.If;
+import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.util.IfUtil;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;
@@ -23,19 +24,18 @@ public class IfProcesser implements IActionProcesser {
     private static final Boolean TURE = Boolean.valueOf(true);
 
     @Override
-    public Object execute(Map<String, Object> databus, Object... param) throws Exception {
-        List<If> ifs = (List<If>) param[0];
-        JMap params = (JMap) param[1];
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+        List<If> ifs = action.getIfs();
 
         Object result = null;
-        for (If _if : ifs) {
-            result = MVEL.eval(_if.getTest(), databus);
+        for (If ifttt : ifs) {
+            result = MVEL.eval(ifttt.getTest(), databus);
             if (TURE.equals(result)) {
-                if (_if.getInterrupt() != null) {
-                    String interrupt = IfUtil.renderTemplate(_if.getInterrupt(), databus);
+                if (ifttt.getInterrupt() != null) {
+                    String interrupt = IfUtil.renderTemplate(ifttt.getInterrupt(), databus);
                     IpuUtility.error(interrupt);
-                } else if (_if.getNext() != null) {
-                    return _if.getNext();
+                } else if (ifttt.getNext() != null) {
+                    return ifttt.getNext();
                 } else {
                     IpuUtility.error("IF节点属性配置异常");
                 }

@@ -4,6 +4,7 @@ import com.ai.ipu.data.JMap;
 import com.ai.ipu.database.dao.ISqlDao;
 import com.ai.ipu.database.dao.impl.SqlDao;
 import com.nuosi.flow.logic.model.action.Sql;
+import com.nuosi.flow.logic.model.body.Action;
 
 import java.util.List;
 import java.util.Map;
@@ -18,13 +19,14 @@ import java.util.Map;
 public class SqlProcesser implements IActionProcesser {
 
     @Override
-    public Object execute(Map<String, Object> databus, Object ... param) throws Exception {
-        Sql sql = (Sql) param[0];
-        JMap params = (JMap) param[1];
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+        List<Sql> sqls = action.getSqls();
+        Sql sql = sqls.get(0);
+
         System.out.println("执行SQL语句：" + sql.getSql());
-        System.out.println("执行SQL参数：" + params);
+        System.out.println("执行SQL参数：" + input);
         ISqlDao dao = new SqlDao(sql.getConn());
-        List<Map<String, Object>> result = dao.executeSelect(sql.getSql(), params);
+        List<Map<String, Object>> result = dao.executeSelect(sql.getSql(), input);
         return result;
     }
 }

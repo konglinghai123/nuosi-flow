@@ -7,6 +7,7 @@ import com.nuosi.flow.logic.inject.function.FunctionManager;
 import com.nuosi.flow.logic.inject.function.IDomainFunction;
 import com.nuosi.flow.logic.model.action.Function;
 import com.nuosi.flow.logic.model.action.Sql;
+import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.logic.model.domain.Behavior;
 import com.nuosi.flow.logic.model.domain.BehaviorManager;
 
@@ -23,21 +24,21 @@ import java.util.Map;
 public class BehaviorProcesser implements IActionProcesser {
 
     @Override
-    public Object execute(Map<String, Object> databus, Object... param) throws Exception {
-        Behavior flowBehavior = (Behavior) param[0];
-        JMap params = (JMap) param[1];
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+        List<Behavior> behaviors = action.getBehaviors();
+        Behavior behavior = behaviors.get(0);
 
-        Behavior modelBehavior = getModelBehavior(flowBehavior.getModel(), flowBehavior.getId());
+        Behavior modelBehavior = getModelBehavior(behavior.getModel(), behavior.getId());
         Object result = null;
         switch (modelBehavior.getActionType()) {
             case SQL:
                 Sql sql = modelBehavior.getSqls().get(0);
-                result = executeSql(databus, sql, params);
+                result = executeSql(databus, sql, input);
             case EXPRESSION:
                 break;
             case FUNCTION:
                 List<Function> functions = modelBehavior.getFunctions();
-                result = executeFunction(databus, functions, params);
+                result = executeFunction(databus, functions, input);
             case FOREACH:
                 break;
             default:

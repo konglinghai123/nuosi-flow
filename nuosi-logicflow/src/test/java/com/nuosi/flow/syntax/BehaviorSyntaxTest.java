@@ -22,7 +22,7 @@ import java.io.InputStream;
 public class BehaviorSyntaxTest {
 
     @Test
-    public void testBehaviorSql() {
+    public void testBehaviorSql() throws Exception {
         JMap param = new JsonMap();
         param.put("fill_staff","zhangs");
         Object result = LogicFlowEngine.execute("behavior_sql",param);
@@ -30,7 +30,7 @@ public class BehaviorSyntaxTest {
     }
 
     @Test
-    public void testBehaviorFunction() {
+    public void testBehaviorFunction() throws Exception {
         JMap param = new JsonMap();
         param.put("fill_id","202104160001");
         Object result = LogicFlowEngine.execute("behavior_function",param);

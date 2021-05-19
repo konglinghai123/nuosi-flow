@@ -13,7 +13,7 @@
 
     <action id="param_preparation" name="参数预处理" next="action_behavior_function">
         <expression>
-            <![CDATA[
+        <![CDATA[
             java.util.Map result = new java.util.HashMap();
             result.put("fill_id", DATABUS.get("fill_id"));
             return result;

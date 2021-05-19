@@ -3,7 +3,9 @@ package com.nuosi.flow.logic.invoke.handler;
 import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.LogicFlowEngine;
 import com.nuosi.flow.logic.model.action.Subflow;
+import com.nuosi.flow.logic.model.body.Action;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,10 +18,11 @@ import java.util.Map;
 public class SubflowProcesser implements IActionProcesser{
 
     @Override
-    public Object execute(Map<String, Object> databus, Object... param) throws Exception {
-        Subflow subflow = (Subflow) param[0];
-        JMap params = (JMap) param[1];
-        Object result = LogicFlowEngine.execute(subflow.getFlow(), params);
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+        List<Subflow> subflows = action.getSubflows();
+        Subflow subflow = subflows.get(0);
+
+        Object result = LogicFlowEngine.execute(subflow.getFlow(), input);
         return result;
     }
 }

@@ -4,6 +4,7 @@ import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.inject.function.FunctionManager;
 import com.nuosi.flow.logic.inject.function.IDomainFunction;
 import com.nuosi.flow.logic.model.action.Function;
+import com.nuosi.flow.logic.model.body.Action;
 
 import java.util.List;
 import java.util.Map;
@@ -18,8 +19,8 @@ import java.util.Map;
 public class FunctionProcesser implements IActionProcesser{
 
     @Override
-    public Object execute(Map<String, Object> databus, Object... param) throws Exception {
-        List<Function> functions = (List<Function>) param[0];
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+        List<Function> functions = action.getFunctions();
 
         IDomainFunction domainFunction;
         Object result = null;

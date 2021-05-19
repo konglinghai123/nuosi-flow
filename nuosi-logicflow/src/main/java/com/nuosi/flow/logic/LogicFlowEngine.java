@@ -21,7 +21,7 @@ public class LogicFlowEngine {
         FunctionManager.init();
     }
 
-    public static JMap execute(String flowName, JMap param){
+    public static JMap execute(String flowName, JMap param) throws Exception {
         // 1.获取逻辑流程的配置
         LogicFlow logicFlow = LogicFlowManager.getLogicFlow(flowName);
         // 2.解析配置执行逻辑节点

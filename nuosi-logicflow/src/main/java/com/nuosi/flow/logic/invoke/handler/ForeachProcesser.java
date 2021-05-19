@@ -4,6 +4,7 @@ import com.ai.ipu.basic.util.IpuUtility;
 import com.ai.ipu.data.JMap;
 import com.nuosi.flow.logic.inject.QuickBuild;
 import com.nuosi.flow.logic.model.action.Foreach;
+import com.nuosi.flow.logic.model.body.Action;
 import com.nuosi.flow.util.LogicFlowConstants;
 import org.mvel2.MVEL;
 import org.mvel2.PropertyAccessException;
@@ -35,10 +36,9 @@ public class ForeachProcesser implements IActionProcesser{
 
 
     @Override
-    public Object execute(Map<String, Object> databus, Object... param) throws Exception {
-        List< Foreach> foreachs = (List< Foreach>) param[0];
+    public Object execute(Map<String, Object> databus, Action action, JMap input, Object ... param) throws Exception {
+        List<Foreach> foreachs = action.getForeachs();
         Foreach foreach = foreachs.get(0);
-        JMap params = (JMap) param[1];
 
         Object iterator = databus.get(foreach.getIterator());
         if(iterator==null){

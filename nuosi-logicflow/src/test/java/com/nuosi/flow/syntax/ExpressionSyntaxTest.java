@@ -24,7 +24,7 @@ public class ExpressionSyntaxTest {
             Assert.assertTrue(false);
         }catch (Exception e){
             System.out.println("抛出信息：" + e.getMessage());
-            Assert.assertTrue(e.getMessage(), true);
+            Assert.assertTrue(true);
         }
     }
 
