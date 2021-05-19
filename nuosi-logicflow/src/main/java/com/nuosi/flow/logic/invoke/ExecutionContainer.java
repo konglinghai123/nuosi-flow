@@ -250,6 +250,7 @@ public class ExecutionContainer {
                     if (databus.containsKey(key)) {
                         // 覆盖数据总线的数据需要记录日志，便于debug。
                     }
+                    key = var.getAlias() != null ? var.getAlias() : key; //alias不为空时，代替key成为入参别名
                     databus.put(key, resultMap.get(key));
                 }
             } else {
